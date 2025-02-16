@@ -46,9 +46,9 @@ public class ${name}MobEffect extends MobEffect {
 	}
 
 	<#if data.isInstant>
-		@Override public boolean isInstantenous() {
-			return true;
-		}
+	@Override public boolean isInstantenous() {
+		return true;
+	}
 	</#if>
 
 	<#if data.isCuredbyHoney>
@@ -60,6 +60,8 @@ public class ${name}MobEffect extends MobEffect {
 		return cures;
 	}
 	</#if>
+
+
 
 	<#if hasProcedure(data.onStarted)>
 		<#if data.isInstant>
@@ -100,6 +102,8 @@ public class ${name}MobEffect extends MobEffect {
 			}/>
 		}
 	</#if>
+
+
 
 	<#if hasProcedure(data.onExpired)>
 		@Override public void removeAttributeModifiers(LivingEntity entity, AttributeMap attributeMap, int amplifier) {
