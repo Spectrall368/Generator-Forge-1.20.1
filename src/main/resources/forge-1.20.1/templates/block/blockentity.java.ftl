@@ -29,6 +29,8 @@
 -->
 
 <#-- @formatter:off -->
+<#include "../procedures.java.ftl">
+
 package ${package}.block.entity;
 
 <#compress>
