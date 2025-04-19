@@ -35,7 +35,7 @@ import com.mojang.math.Axis;
 
 public class ${name}Renderer extends EntityRenderer<${name}Entity> {
 
-	private static final ResourceLocation texture = new ResourceLocation("${modid}:textures/entities/${data.customModelTexture}");
+	private static final ResourceLocation texture = ResourceLocation.parse("${modid}:textures/entities/${data.customModelTexture}");
 
 	private final ${data.entityModel} model;
 

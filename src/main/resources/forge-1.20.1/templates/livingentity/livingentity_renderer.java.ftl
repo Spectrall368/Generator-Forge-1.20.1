@@ -107,7 +107,7 @@ public class ${name}Renderer extends <#if humanoid>Humanoid</#if>MobRenderer<${n
 
 		<#list data.modelLayers as layer>
 		this.addLayer(new RenderLayer<${name}Entity, ${model}>(this) {
-			final ResourceLocation LAYER_TEXTURE = new ResourceLocation("${modid}:textures/entities/${layer.texture}");
+			final ResourceLocation LAYER_TEXTURE = ResourceLocation.parse("${modid}:textures/entities/${layer.texture}");
 
 			<#compress>
 			@Override public void render(PoseStack poseStack, MultiBufferSource bufferSource, int light,
@@ -159,7 +159,7 @@ public class ${name}Renderer extends <#if humanoid>Humanoid</#if>MobRenderer<${n
 	</#if>
 
 	@Override public ResourceLocation getTextureLocation(${name}Entity entity) {
-		return new ResourceLocation("${modid}:textures/entities/${data.mobModelTexture}");
+		return ResourceLocation.parse("${modid}:textures/entities/${data.mobModelTexture}");
 	}
 
 	<#if data.transparentModelCondition?? && (hasProcedure(data.transparentModelCondition) || data.transparentModelCondition.getFixedValue())>

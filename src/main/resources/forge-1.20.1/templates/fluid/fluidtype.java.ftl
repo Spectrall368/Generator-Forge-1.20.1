@@ -57,7 +57,7 @@ public class ${name}FluidType extends FluidType {
 			<#if data.rarity != "COMMON">.rarity(Rarity.${data.rarity})</#if>
 			.sound(SoundActions.BUCKET_FILL, SoundEvents.BUCKET_FILL)
 			<#if data.emptySound?has_content && data.emptySound.getMappedValue()?has_content>
-			.sound(SoundActions.BUCKET_EMPTY, ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.emptySound}")))
+			.sound(SoundActions.BUCKET_EMPTY, ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.parse("${data.emptySound}")))
 			<#else>
 			.sound(SoundActions.BUCKET_EMPTY, SoundEvents.BUCKET_EMPTY)
 			</#if>
@@ -66,10 +66,10 @@ public class ${name}FluidType extends FluidType {
 
 	@Override public void initializeClient(Consumer<IClientFluidTypeExtensions> consumer) {
 		consumer.accept(new IClientFluidTypeExtensions() {
-			private static final ResourceLocation STILL_TEXTURE = new ResourceLocation("${data.textureStill.format("%s:block/%s")}");
-			private static final ResourceLocation FLOWING_TEXTURE = new ResourceLocation("${data.textureFlowing.format("%s:block/%s")}");
+			private static final ResourceLocation STILL_TEXTURE = ResourceLocation.parse("${data.textureStill.format("%s:block/%s")}");
+			private static final ResourceLocation FLOWING_TEXTURE = ResourceLocation.parse("${data.textureFlowing.format("%s:block/%s")}");
 			<#if data.textureRenderOverlay?has_content>
-			private static final ResourceLocation RENDER_OVERLAY_TEXTURE = new ResourceLocation("${data.textureRenderOverlay.format("%s:textures/%s")}.png");
+			private static final ResourceLocation RENDER_OVERLAY_TEXTURE = ResourceLocation.parse("${data.textureRenderOverlay.format("%s:textures/%s")}.png");
 			</#if>
 
 				@Override public ResourceLocation getStillTexture() {

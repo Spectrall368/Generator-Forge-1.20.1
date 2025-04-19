@@ -49,7 +49,7 @@ package ${package}.init;
 			registerProfession(
 				"${villagerprofession.getModElement().getRegistryName()}",
 				() -> ${mappedBlockToBlock(villagerprofession.pointOfInterest)},
-				() -> ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${villagerprofession.actionSound}"))
+				() -> ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.parse("${villagerprofession.actionSound}"))
 			);
 	</#list>
 

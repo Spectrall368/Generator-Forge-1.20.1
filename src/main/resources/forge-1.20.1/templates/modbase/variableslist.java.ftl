@@ -251,7 +251,7 @@ import net.minecraft.nbt.Tag;
 
 		@SubscribeEvent public static void onAttachCapabilities(AttachCapabilitiesEvent<Entity> event) {
 			if (event.getObject() instanceof Player && !(event.getObject() instanceof FakePlayer))
-				event.addCapability(new ResourceLocation("${modid}", "player_variables"), new PlayerVariablesProvider());
+				event.addCapability(ResourceLocation.fromNamespaceAndPath("${modid}", "player_variables"), new PlayerVariablesProvider());
 		}
 
 		private final PlayerVariables playerVariables = new PlayerVariables();

@@ -74,7 +74,7 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 	</#if>
 
 	<#if data.renderBgLayer>
-		private static final ResourceLocation texture = new ResourceLocation("${modid}:textures/screens/${registryname}.png" );
+		private static final ResourceLocation texture = ResourceLocation.parse("${modid}:textures/screens/${registryname}.png");
 	</#if>
 
 	@Override public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
@@ -135,7 +135,7 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 
 		<#list data.getComponentsOfType("Image") as component>
 			<#if hasProcedure(component.displayCondition)>if (<@procedureOBJToConditionCode component.displayCondition/>) {</#if>
-				guiGraphics.blit(new ResourceLocation("${modid}:textures/screens/${component.image}"),
+				guiGraphics.blit(ResourceLocation.parse("${modid}:textures/screens/${component.image}"),
 					this.leftPos + ${component.gx(data.width)}, this.topPos + ${component.gy(data.height)}, 0, 0,
 					${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())},
 					${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())});
@@ -144,7 +144,7 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 
 		<#list data.getComponentsOfType("Sprite") as component>
 			<#if hasProcedure(component.displayCondition)>if (<@procedureOBJToConditionCode component.displayCondition/>) {</#if>
-				guiGraphics.blit(new ResourceLocation("${modid}:textures/screens/${component.sprite}"),
+				guiGraphics.blit(ResourceLocation.parse("${modid}:textures/screens/${component.sprite}"),
 					this.leftPos + ${component.gx(data.width)}, this.topPos + ${component.gy(data.height)},
 					<#if (component.getTextureWidth(w.getWorkspace()) > component.getTextureHeight(w.getWorkspace()))>
 						<@getSpriteByIndex component "width"/>, 0
@@ -269,7 +269,7 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 				this.leftPos + ${component.gx(data.width)}, this.topPos + ${component.gy(data.height)},
 				${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())},
 				0, 0, ${component.getHeight(w.getWorkspace())},
-				new ResourceLocation("${modid}:textures/screens/atlas/${component.getName()}.png"),
+				ResourceLocation.parse("${modid}:textures/screens/atlas/${component.getName()}.png"),
 				${component.getWidth(w.getWorkspace())},
 				${component.getHeight(w.getWorkspace()) * 2},
 				<@buttonOnClick component/>

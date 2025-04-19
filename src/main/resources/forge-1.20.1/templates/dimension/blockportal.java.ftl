@@ -91,7 +91,7 @@ public class ${name}PortalBlock extends NetherPortalBlock {
 		if (random.nextInt(110) == 0)
 			world.playSound(null, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5,
 					ForgeRegistries.SOUND_EVENTS
-							.getValue(new ResourceLocation(("${data.portalSound}"))), SoundSource.BLOCKS, 0.5f,
+							.getValue(ResourceLocation.parse("${data.portalSound}")), SoundSource.BLOCKS, 0.5f,
 					random.nextFloat() * 0.4f + 0.8f);
         </#if>
 	}
@@ -100,9 +100,9 @@ public class ${name}PortalBlock extends NetherPortalBlock {
 		if (entity.canChangeDimensions() && !entity.level().isClientSide() && <@procedureOBJToConditionCode data.portalUseCondition/>) {
 			if (entity.isOnPortalCooldown()) {
 				entity.setPortalCooldown();
-			} else if (entity.level().dimension() != ResourceKey.create(Registries.DIMENSION, new ResourceLocation("${modid}:${registryname}"))) {
+			} else if (entity.level().dimension() != ResourceKey.create(Registries.DIMENSION, ResourceLocation.parse("${modid}:${registryname}"))) {
 				entity.setPortalCooldown();
-				teleportToDimension(entity, pos, ResourceKey.create(Registries.DIMENSION, new ResourceLocation("${modid}:${registryname}")));
+				teleportToDimension(entity, pos, ResourceKey.create(Registries.DIMENSION, ResourceLocation.parse("${modid}:${registryname}")));
 			} else {
 				entity.setPortalCooldown();
 				teleportToDimension(entity, pos, Level.OVERWORLD);

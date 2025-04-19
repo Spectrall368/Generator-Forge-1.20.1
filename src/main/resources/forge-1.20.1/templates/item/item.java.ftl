@@ -40,7 +40,7 @@ public class ${name}Item extends <#if data.isMusicDisc>Record</#if>Item {
 
 	public ${name}Item() {
 		<#if data.isMusicDisc>
-		super(${data.musicDiscAnalogOutput}, () -> ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.musicDiscMusic}" )), new Item.Properties()
+		super(${data.musicDiscAnalogOutput}, () -> ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.parse("${data.musicDiscMusic}")), new Item.Properties()
 		<#else>
 		super(new Item.Properties()
 		</#if>
@@ -343,7 +343,7 @@ public class ${name}Item extends <#if data.isMusicDisc>Record</#if>Item {
 			projectile.shootFromRotation(entity, entity.getXRot(), entity.getYRot(), 0, <#if data.rangedItemChargesPower>pullingPower * </#if>3.15f, 1.0F);
 			world.addFreshEntity(projectile);
 			world.playSound(null, entity.getX(), entity.getY(), entity.getZ(), ForgeRegistries.SOUND_EVENTS
-				.getValue(new ResourceLocation("entity.arrow.shoot")), SoundSource.PLAYERS, 1, 1f / (world.getRandom().nextFloat() * 0.5f + 1));
+				.getValue(ResourceLocation.parse("entity.arrow.shoot")), SoundSource.PLAYERS, 1, 1f / (world.getRandom().nextFloat() * 0.5f + 1));
 		</#if>
 
 		<#if data.damageCount != 0>

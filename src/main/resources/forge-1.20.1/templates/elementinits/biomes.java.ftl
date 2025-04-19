@@ -73,7 +73,7 @@ import com.mojang.datafixers.util.Pair;
 							Climate.Parameter.span(${biome.genWeirdness.min}f, ${biome.genWeirdness.max}f),
 							0 <#-- offset -->
 						),
-						biomeRegistry.getHolderOrThrow(ResourceKey.create(Registries.BIOME, new ResourceLocation("${modid}", "${biome.getModElement().getRegistryName()}")))
+						biomeRegistry.getHolderOrThrow(ResourceKey.create(Registries.BIOME, ResourceLocation.fromNamespaceAndPath("${modid}", "${biome.getModElement().getRegistryName()}")))
 					));
 					addParameterPoint(parameters, new Pair<>(
 						new Climate.ParameterPoint(
@@ -85,7 +85,7 @@ import com.mojang.datafixers.util.Pair;
 							Climate.Parameter.span(${biome.genWeirdness.min}f, ${biome.genWeirdness.max}f),
 							0 <#-- offset -->
 						),
-						biomeRegistry.getHolderOrThrow(ResourceKey.create(Registries.BIOME, new ResourceLocation("${modid}", "${biome.getModElement().getRegistryName()}")))
+						biomeRegistry.getHolderOrThrow(ResourceKey.create(Registries.BIOME, ResourceLocation.fromNamespaceAndPath("${modid}", "${biome.getModElement().getRegistryName()}")))
 					));
 					</#list>
 
@@ -100,7 +100,7 @@ import com.mojang.datafixers.util.Pair;
 							Climate.Parameter.span(${biome.genWeirdness.min}f, ${biome.genWeirdness.max}f),
 							0 <#-- offset -->
 						),
-						biomeRegistry.getHolderOrThrow(ResourceKey.create(Registries.BIOME, new ResourceLocation("${modid}", "${biome.getModElement().getRegistryName()}")))
+						biomeRegistry.getHolderOrThrow(ResourceKey.create(Registries.BIOME, ResourceLocation.fromNamespaceAndPath("${modid}", "${biome.getModElement().getRegistryName()}")))
 					));
 					</#list>
 
@@ -119,7 +119,7 @@ import com.mojang.datafixers.util.Pair;
 
 						<#list spawn_overworld_caves as biome>
 						addSurfaceRule(surfaceRules, 1, anySurfaceRule(
-							ResourceKey.create(Registries.BIOME, new ResourceLocation("${modid}", "${biome.getModElement().getRegistryName()}")),
+							ResourceKey.create(Registries.BIOME, ResourceLocation.fromNamespaceAndPath("${modid}", "${biome.getModElement().getRegistryName()}")),
 							${mappedBlockToBlockStateCode(biome.groundBlock)},
 							${mappedBlockToBlockStateCode(biome.undergroundBlock)},
 							${mappedBlockToBlockStateCode(biome.getUnderwaterBlock())}
@@ -128,7 +128,7 @@ import com.mojang.datafixers.util.Pair;
 
 						<#list spawn_overworld as biome>
 						addSurfaceRule(surfaceRules, 1, preliminarySurfaceRule(
-							ResourceKey.create(Registries.BIOME, new ResourceLocation("${modid}", "${biome.getModElement().getRegistryName()}")),
+							ResourceKey.create(Registries.BIOME, ResourceLocation.fromNamespaceAndPath("${modid}", "${biome.getModElement().getRegistryName()}")),
 							${mappedBlockToBlockStateCode(biome.groundBlock)},
 							${mappedBlockToBlockStateCode(biome.undergroundBlock)},
 							${mappedBlockToBlockStateCode(biome.getUnderwaterBlock())}
@@ -173,7 +173,7 @@ import com.mojang.datafixers.util.Pair;
 							Climate.Parameter.span(${biome.genWeirdness.min}f, ${biome.genWeirdness.max}f),
 							0 <#-- offset -->
 						),
-						biomeRegistry.getHolderOrThrow(ResourceKey.create(Registries.BIOME, new ResourceLocation("${modid}", "${biome.getModElement().getRegistryName()}")))
+						biomeRegistry.getHolderOrThrow(ResourceKey.create(Registries.BIOME, ResourceLocation.fromNamespaceAndPath("${modid}", "${biome.getModElement().getRegistryName()}")))
 					));
 					addParameterPoint(parameters, new Pair<>(
 						new Climate.ParameterPoint(
@@ -185,7 +185,7 @@ import com.mojang.datafixers.util.Pair;
 							Climate.Parameter.span(${biome.genWeirdness.min}f, ${biome.genWeirdness.max}f),
 							0 <#-- offset -->
 						),
-						biomeRegistry.getHolderOrThrow(ResourceKey.create(Registries.BIOME, new ResourceLocation("${modid}", "${biome.getModElement().getRegistryName()}")))
+						biomeRegistry.getHolderOrThrow(ResourceKey.create(Registries.BIOME, ResourceLocation.fromNamespaceAndPath("${modid}", "${biome.getModElement().getRegistryName()}")))
 					));
 					</#list>
 
@@ -204,7 +204,7 @@ import com.mojang.datafixers.util.Pair;
 
 						<#list spawn_nether as biome>
 						addSurfaceRule(surfaceRules, 2, anySurfaceRule(
-							ResourceKey.create(Registries.BIOME, new ResourceLocation("${modid}", "${biome.getModElement().getRegistryName()}")),
+							ResourceKey.create(Registries.BIOME, ResourceLocation.fromNamespaceAndPath("${modid}", "${biome.getModElement().getRegistryName()}")),
 							${mappedBlockToBlockStateCode(biome.groundBlock)},
 							${mappedBlockToBlockStateCode(biome.undergroundBlock)},
 							${mappedBlockToBlockStateCode(biome.getUnderwaterBlock())}

@@ -74,11 +74,11 @@ public class ${name}Block extends ${getPlantClass(data.plantType)}Block
 		</#if>
 		<#if data.isCustomSoundType>
 			.sound(new ForgeSoundType(1.0f, 1.0f,
-				() -> ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.breakSound}")),
-				() -> ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.stepSound}")),
-				() -> ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.placeSound}")),
-				() -> ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.hitSound}")),
-				() -> ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.fallSound}"))
+				() -> ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.parse("${data.breakSound}")),
+				() -> ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.parse("${data.stepSound}")),
+				() -> ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.parse("${data.placeSound}")),
+				() -> ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.parse("${data.hitSound}")),
+				() -> ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.parse("${data.fallSound}"))
 			))
 		<#else>
 			.sound(SoundType.${data.soundOnStep})
