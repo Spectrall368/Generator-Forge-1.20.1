@@ -10,13 +10,13 @@ import org.apache.logging.log4j.Logger;
 
 	public static final String MODID = "${modid}";
 
-	public ${JavaModName}() {
+	public ${JavaModName}(FMLJavaModLoadingContext context) {
 		// Start of user code block mod constructor
 		// End of user code block mod constructor
 
 		MinecraftForge.EVENT_BUS.register(this);
 
-		IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
+		IEventBus bus = context.getModEventBus();
 		<#if w.hasSounds()>${JavaModName}Sounds.REGISTRY.register(bus);</#if>
 		<#if w.hasElementsOfBaseType("block")>${JavaModName}Blocks.REGISTRY.register(bus);</#if>
 		<#if w.hasElementsOfBaseType("blockentity")>${JavaModName}BlockEntities.REGISTRY.register(bus);</#if>
@@ -47,7 +47,7 @@ import org.apache.logging.log4j.Logger;
 
 	private static final String PROTOCOL_VERSION = "1";
 	public static final SimpleChannel PACKET_HANDLER = NetworkRegistry.newSimpleChannel(
-			new ResourceLocation(MODID, MODID),
+			ResourceLocation.fromNamespaceAndPath(MODID, MODID),
 			() -> PROTOCOL_VERSION,
 			PROTOCOL_VERSION::equals,
 			<#if settings.isServerSideOnly()>clientVersion -> true<#else>PROTOCOL_VERSION::equals</#if>
