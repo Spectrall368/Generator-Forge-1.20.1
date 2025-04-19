@@ -1,6 +1,6 @@
 name: Minecraft Forge for @minecraft (@buildfileversion)
 status: legacy
-buildfileversion: 47.3.0
+buildfileversion: 47.4.0
 subversion: 1.2 # force setup re-run to update build script for MCREATOR_JVM_OPTIONS
 
 import:
