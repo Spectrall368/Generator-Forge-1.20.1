@@ -27,7 +27,6 @@ subprojects { subproject ->
     subproject.plugins.withType(JavaPlugin) {
         test {
             useJUnitPlatform()
-            include '**/GeneratorsTest.class'
 
             dependsOn rootProject.jar
 
