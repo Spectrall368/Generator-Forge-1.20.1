@@ -26,10 +26,14 @@ tasks.register('runMCreatorWithPlugin', JavaExec) {
 subprojects { subproject ->
     subproject.plugins.withType(JavaPlugin) {
         test {
+            useJUnitPlatform()
+            include '**/GeneratorsTest.class'
+
             dependsOn rootProject.jar
 
             environment("MCREATOR_PLUGINS_FOLDER", new File(rootProject.projectDir, "/build/libs"))
             environment("MCREATOR_PLUGINS_DEV", "")
+            environment("MCREATOR_TEST_GENERATORS", "forge-1.20.1, datapack-1.20.1")
 
             workingDir = mcreator_path
         }
