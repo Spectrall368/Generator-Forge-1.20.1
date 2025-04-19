@@ -103,7 +103,6 @@ public class ${name}Block extends
 
 	<#macro blockProperties>
 		BlockBehaviour.Properties.of()
-		${data.material}
 		<#if generator.map(data.colorOnMap, "mapcolors") != "DEFAULT">
 			.mapColor(MapColor.${generator.map(data.colorOnMap, "mapcolors")})
 		</#if>
@@ -166,6 +165,12 @@ public class ${name}Block extends
 		<#if data.offsetType != "NONE">
 			.offsetType(Block.OffsetType.${data.offsetType})
 		</#if>
+		<#if data.ignitedByLava>
+			.ignitedByLava()
+		</#if>
+		<#if data.noteBlockInstrument != "harp">
+			.instrument(${generator.map(data.noteBlockInstrument, "noteblockinstruments")})
+		</#if>
 		<#if data.blockBase?has_content && (
 				data.blockBase == "FenceGate" ||
 				data.blockBase == "PressurePlate" ||
@@ -179,30 +184,18 @@ public class ${name}Block extends
 	</#macro>
 
 	public ${name}Block() {
-		<#if data.blockBase?has_content && data.blockBase == "Stairs">
-			super(() -> Blocks.AIR.defaultBlockState(), <@blockProperties/>);
-		<#elseif data.blockBase?has_content && data.blockBase == "PressurePlate">
-		    <#if data.material.getUnmappedValue() == "WOOD">
-		        super(Sensitivity.EVERYTHING, <@blockProperties/>, BlockSetType.OAK);
-		    <#else>
-		        super(Sensitivity.MOBS, <@blockProperties/>, BlockSetType.IRON);
-		    </#if>
-		<#elseif data.blockBase?has_content && data.blockBase == "Button">
-			<#if data.material.getUnmappedValue() == "WOOD">
-		        super(<@blockProperties/>, BlockSetType.OAK, 30, true);
-			<#else>
-		        super(<@blockProperties/>, BlockSetType.STONE, 20, false);
+		<#if data.blockBase?has_content>
+			<#if data.blockBase == "Stairs">
+				super(() -> Blocks.AIR.defaultBlockState(), <@blockProperties/>);
+			<#elseif data.blockBase == "PressurePlate">
+			    super(Sensitivity.<#if data.blockSetType == "OAK">EVERYTHING<#else>MOBS</#if>, <@blockProperties/>, BlockSetType.${data.blockSetType});
+			<#elseif data.blockBase == "Button">
+			    super(<@blockProperties/>, BlockSetType.${data.blockSetType}, <#if data.blockSetType == "OAK">30, true<#else>20, false</#if>);
+			<#elseif (data.blockBase == "TrapDoor" || data.blockBase == "Door")>
+				super(<@blockProperties/>, BlockSetType.${data.blockSetType});
+			<#elseif data.blockBase == "FenceGate">
+				super(<@blockProperties/>, WoodType.OAK);
 			</#if>
-		<#elseif data.blockBase?has_content && (data.blockBase == "TrapDoor" || data.blockBase == "Door")>
-			<#if data.material.getUnmappedValue() == "IRON">
-				super(<@blockProperties/>, BlockSetType.IRON);
-			<#elseif data.material.getUnmappedValue() == "WOOD">
-				super(<@blockProperties/>, BlockSetType.OAK);
-			<#else>
-				super(<@blockProperties/>, BlockSetType.STONE);
-			</#if>
-		<#elseif data.blockBase?has_content && data.blockBase == "FenceGate">
-			super(<@blockProperties/>, WoodType.OAK);
 		<#else>
 			super(<@blockProperties/>);
 		</#if>
