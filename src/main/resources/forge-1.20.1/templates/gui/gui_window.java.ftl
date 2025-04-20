@@ -173,7 +173,7 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 		return super.keyPressed(key, b, c);
 	}
 
-	<#if data.getComponentsOfType("Button")?filter(component -> hasProcedure(component.displayCondition))?size != 0>
+	<#if data.getComponentsOfType("Button")?filter(component -> hasProcedure(component.displayCondition))?size != 0 || data.getComponentsOfType("TextField")?has_content>
 	@Override protected void containerTick() {
 		super.containerTick();
 
@@ -187,17 +187,13 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 				this.${component.getName()}.visible = <@procedureOBJToConditionCode component.displayCondition/>;
 			</#if>
 		</#list>
+		<#list data.getComponentsOfType("TextField") as component>
+			${component.getName()}.tick();
+		</#list>
 	}
 	</#if>
 
 	<#if data.getComponentsOfType("TextField")?has_content>
-	@Override public void containerTick() {
-		super.containerTick();
-		<#list data.getComponentsOfType("TextField") as component>
-		${component.getName()}.tick();
-		</#list>
-	}
-
 	@Override public void resize(Minecraft minecraft, int width, int height) {
 		<#list data.getComponentsOfType("TextField") as component>
 		String ${component.getName()}Value = ${component.getName()}.getValue();
