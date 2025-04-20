@@ -220,6 +220,12 @@ public class ${name}Block extends
 		</#if>
 	}
 
+	<#if data.renderType() == 4>
+    @Override public RenderShape getRenderShape(BlockState p_389569_) {
+		return RenderShape.INVISIBLE;
+	}
+	</#if>
+
 	<#if data.blockBase?has_content && data.blockBase == "Stairs">
    	@Override public float getExplosionResistance() {
 		return ${data.resistance}f;
