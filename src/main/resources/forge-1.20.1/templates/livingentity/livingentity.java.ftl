@@ -75,7 +75,7 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 	</#if>
 
 	public ${name}Entity(PlayMessages.SpawnEntity packet, Level world) {
-    	this(${JavaModName}Entities.${data.getModElement().getRegistryNameUpper()}.get(), world);
+    	this(${JavaModName}Entities.${REGISTRYNAME}.get(), world);
     }
 
 	public ${name}Entity(EntityType<${name}Entity> type, Level world) {
@@ -670,7 +670,7 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 	    @Override public void performRangedAttack(LivingEntity target, float flval) {
 			<#if data.rangedItemType == "Default item">
 				<#if !data.rangedAttackItem.isEmpty()>
-				${name}EntityProjectile entityarrow = new ${name}EntityProjectile(${JavaModName}Entities.${data.getModElement().getRegistryNameUpper()}_PROJECTILE.get(), this, this.level());
+				${name}EntityProjectile entityarrow = new ${name}EntityProjectile(${JavaModName}Entities.${REGISTRYNAME}_PROJECTILE.get(), this, this.level());
 				<#else>
 				Arrow entityarrow = new Arrow(this.level(), this);
 				</#if>
@@ -687,7 +687,7 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 
 	<#if data.breedable>
         @Override public AgeableMob getBreedOffspring(ServerLevel serverWorld, AgeableMob ageable) {
-			${name}Entity retval = ${JavaModName}Entities.${data.getModElement().getRegistryNameUpper()}.get().create(serverWorld);
+			${name}Entity retval = ${JavaModName}Entities.${REGISTRYNAME}.get().create(serverWorld);
 			retval.finalizeSpawn(serverWorld, serverWorld.getCurrentDifficultyAt(retval.blockPosition()), MobSpawnType.BREEDING, null, null);
 			return retval;
 		}
@@ -857,7 +857,7 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 	public static void init() {
 		<#if data.spawnThisMob>
 			<#if data.mobSpawningType == "creature">
-			SpawnPlacements.register(${JavaModName}Entities.${data.getModElement().getRegistryNameUpper()}.get(),
+			SpawnPlacements.register(${JavaModName}Entities.${REGISTRYNAME}.get(),
 					SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
 				<#if hasProcedure(data.spawningCondition)>
 					(entityType, world, reason, pos, random) -> {
@@ -872,7 +872,7 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 				</#if>
 			);
 			<#elseif data.mobSpawningType == "ambient" || data.mobSpawningType == "misc">
-			SpawnPlacements.register(${JavaModName}Entities.${data.getModElement().getRegistryNameUpper()}.get(),
+			SpawnPlacements.register(${JavaModName}Entities.${REGISTRYNAME}.get(),
 					SpawnPlacements.Type.NO_RESTRICTIONS, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
 					<#if hasProcedure(data.spawningCondition)>
 					(entityType, world, reason, pos, random) -> {
@@ -886,7 +886,7 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 					</#if>
 			);
 			<#elseif data.mobSpawningType == "waterCreature" || data.mobSpawningType == "waterAmbient">
-			SpawnPlacements.register(${JavaModName}Entities.${data.getModElement().getRegistryNameUpper()}.get(),
+			SpawnPlacements.register(${JavaModName}Entities.${REGISTRYNAME}.get(),
 					SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
 					<#if hasProcedure(data.spawningCondition)>
 					(entityType, world, reason, pos, random) -> {
@@ -901,7 +901,7 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 					</#if>
 			);
 			<#elseif data.mobSpawningType == "undergroundWaterCreature">
-			SpawnPlacements.register(${JavaModName}Entities.${data.getModElement().getRegistryNameUpper()}.get(),
+			SpawnPlacements.register(${JavaModName}Entities.${REGISTRYNAME}.get(),
 					SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
 					<#if hasProcedure(data.spawningCondition)>
 					(entityType, world, reason, pos, random) -> {
@@ -917,7 +917,7 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 					</#if>
 			);
 			<#else>
-			SpawnPlacements.register(${JavaModName}Entities.${data.getModElement().getRegistryNameUpper()}.get(),
+			SpawnPlacements.register(${JavaModName}Entities.${REGISTRYNAME}.get(),
 					SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
 					<#if hasProcedure(data.spawningCondition)>
 					(entityType, world, reason, pos, random) -> {
@@ -936,11 +936,11 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 		</#if>
 
 		<#if data.spawnInDungeons>
-			DungeonHooks.addDungeonMob(${JavaModName}Entities.${data.getModElement().getRegistryNameUpper()}.get(), 180);
+			DungeonHooks.addDungeonMob(${JavaModName}Entities.${REGISTRYNAME}.get(), 180);
 		</#if>
 
 		<#if data.mobBehaviourType == "Raider">
-		Raid.RaiderType.create("${registryname}", ${JavaModName}Entities.${data.getModElement().getRegistryNameUpper()}.get(), new int[]{0, ${data.raidSpawnsCount[0]}, ${data.raidSpawnsCount[1]}, ${data.raidSpawnsCount[2]}, ${data.raidSpawnsCount[3]}, ${data.raidSpawnsCount[4]}, ${data.raidSpawnsCount[5]}, ${data.raidSpawnsCount[6]}});
+		Raid.RaiderType.create("${registryname}", ${JavaModName}Entities.${REGISTRYNAME}.get(), new int[]{0, ${data.raidSpawnsCount[0]}, ${data.raidSpawnsCount[1]}, ${data.raidSpawnsCount[2]}, ${data.raidSpawnsCount[3]}, ${data.raidSpawnsCount[4]}, ${data.raidSpawnsCount[5]}, ${data.raidSpawnsCount[6]}});
 		</#if>
 	}
 

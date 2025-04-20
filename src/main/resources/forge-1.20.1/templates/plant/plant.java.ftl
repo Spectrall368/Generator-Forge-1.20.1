@@ -348,7 +348,7 @@ public class ${name}Block extends ${getPlantClass(data.plantType)}Block
 						Minecraft.getInstance().level.getBiome(pos).value().getWaterFogColor() : 329011;
 					</#if>
 				</#if>
-			}, ${JavaModName}Blocks.${data.getModElement().getRegistryNameUpper()}.get());
+			}, ${JavaModName}Blocks.${REGISTRYNAME}.get());
 		}
 
 		<#if data.isItemTinted>
@@ -371,7 +371,7 @@ public class ${name}Block extends ${getPlantClass(data.plantType)}Block
 				<#else>
 					return 329011;
 				</#if>
-			}, ${JavaModName}Blocks.${data.getModElement().getRegistryNameUpper()}.get());
+			}, ${JavaModName}Blocks.${REGISTRYNAME}.get());
 		}
 		</#if>
 	</#if>

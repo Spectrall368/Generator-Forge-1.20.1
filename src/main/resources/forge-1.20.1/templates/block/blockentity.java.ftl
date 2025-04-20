@@ -41,7 +41,7 @@ public class ${name}BlockEntity extends RandomizableContainerBlockEntity impleme
 	private final LazyOptional<? extends IItemHandler>[] handlers = SidedInvWrapper.create(this, Direction.values());
 
 	public ${name}BlockEntity(BlockPos position, BlockState state) {
-		super(${JavaModName}BlockEntities.${data.getModElement().getRegistryNameUpper()}.get(), position, state);
+		super(${JavaModName}BlockEntities.${REGISTRYNAME}.get(), position, state);
 	}
 
 	@Override public void load(CompoundTag compound) {
