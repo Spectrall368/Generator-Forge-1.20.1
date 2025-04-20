@@ -182,6 +182,11 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 				this.${component.getName()}.visible = <@procedureOBJToConditionCode component.displayCondition/>;
 			</#if>
 		</#list>
+		<#list data.getComponentsOfType("ImageButton") as component>
+			<#if hasProcedure(component.displayCondition)>
+				this.${component.getName()}.visible = <@procedureOBJToConditionCode component.displayCondition/>;
+			</#if>
+		</#list>
 	}
 	</#if>
 
@@ -278,8 +283,7 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 				ResourceLocation.parse("${modid}:textures/screens/atlas/${component.getName()}.png"),
 				${component.getWidth(w.getWorkspace())},
 				${component.getHeight(w.getWorkspace()) * 2},
-				<@buttonOnClick component/>
-			)<@buttonDisplayCondition component/>;
+				<@buttonOnClick component/>);
 
 			guistate.put("button:${component.getName()}", ${component.getName()});
 			this.addRenderableWidget(${component.getName()});
