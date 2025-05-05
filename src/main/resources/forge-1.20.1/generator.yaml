@@ -1,7 +1,7 @@
 name: Minecraft Forge for @minecraft (@buildfileversion)
 status: legacy
 buildfileversion: 47.4.0
-subversion: 1.2 # force setup re-run to update build script for MCREATOR_JVM_OPTIONS
+subversion: 1.3 # force setup re-run to update build script to use MDG
 
 import:
   - datapack-1.20.1
@@ -47,7 +47,7 @@ armor_textures_dir: "@MODASSETSROOT/textures/models/armor"
 other_textures_dir: "@MODASSETSROOT/textures"
 
 # vanilla resources
-vanilla_resources_jar: "client-extra.jar"
+vanilla_resources_jar: "client-extra-.*.jar"
 vanilla_block_textures_dir: "assets/minecraft/textures/block"
 vanilla_item_textures_dir: "assets/minecraft/textures/item"
 

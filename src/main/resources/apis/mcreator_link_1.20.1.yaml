@@ -7,7 +7,7 @@ forge-1.20.1:
   resource_paths:
     block_textures_dir: "lib/mcreator_link.jar!/assets/mcreator_link/textures/block"
   gradle: |
-    task mcreatorLink(type: DefaultTask) {
+    tasks.register('mcreatorLink') {
       ant.mkdir(dir: 'lib/');
       ant.get(src: 'https://mcreator.net/link/download/dev_1.20.1', dest: 'lib/mcreator_link.jar', skipexisting: 'true');
     }
