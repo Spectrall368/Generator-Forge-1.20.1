@@ -1,49 +1,42 @@
 plugins {
     id 'eclipse'
-    id 'net.minecraftforge.gradle' version '[6.0.16,6.2)'
+    id 'net.neoforged.moddev.legacyforge' version '2.0.86'
 }
 
 version = '1.0'
-group = 'com.yourname.modid'
-archivesBaseName = 'modid'
+base.archivesName = "modid"
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
-minecraft {
-    mappings channel: 'official', version: '${generator.getGeneratorMinecraftVersion()}'
-
-    accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
-
-    copyIdeResources = true
+legacyForge {
+    version = "${generator.getGeneratorMinecraftVersion()}-${generator.getGeneratorBuildFileVersion()}"
 
     runs {
         client {
+            client()
+
             def mcreatorJvmOptions = System.getenv('MCREATOR_JVM_OPTIONS')
             if (mcreatorJvmOptions) {
-                jvmArgs += mcreatorJvmOptions.split("\\s+").findAll { it.trim() }.toList()
-            }
-        }
-
-        server {
-        }
-
-        configureEach {
-            workingDirectory project.file('run')
-
-            property 'forge.logging.markers', 'REGISTRIES'
-            property 'forge.logging.console.level', 'debug'
-
-            mods {
-                examplemod {
-                    source sourceSets.main
+                mcreatorJvmOptions.split("\\s+").findAll { it.trim() }.each { arg ->
+                    jvmArgument(arg)
                 }
             }
         }
-    }
-}
+        server {
+            server()
+        }
 
-dependencies {
-    minecraft 'net.minecraftforge:forge:${generator.getGeneratorMinecraftVersion()}-${generator.getGeneratorBuildFileVersion()}'
+        configureEach {
+            systemProperty 'forge.logging.markers', 'REGISTRIES'
+            logLevel = org.slf4j.event.Level.DEBUG
+        }
+    }
+
+    mods {
+        mcreator {
+            sourceSet sourceSets.main
+        }
+    }
 }
 
 tasks.withType(JavaCompile).configureEach {
@@ -51,4 +44,3 @@ tasks.withType(JavaCompile).configureEach {
 }
 
 apply from: 'mcreator.gradle'
-
