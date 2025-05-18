@@ -40,6 +40,12 @@ public class ${name}BlockEntity extends RandomizableContainerBlockEntity impleme
 
 	private final LazyOptional<? extends IItemHandler>[] handlers = SidedInvWrapper.create(this, Direction.values());
 
+	<#if data.renderType() == 4>
+		<#list data.animations as animation>
+		public final AnimationState animationState${animation?index} = new AnimationState();
+		</#list>
+	</#if>
+
 	public ${name}BlockEntity(BlockPos position, BlockState state) {
 		super(${JavaModName}BlockEntities.${REGISTRYNAME}.get(), position, state);
 	}
