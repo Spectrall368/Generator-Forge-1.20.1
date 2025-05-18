@@ -42,18 +42,30 @@ public class ${name}Entity extends AbstractArrow implements ItemSupplier {
 
 	public ${name}Entity(PlayMessages.SpawnEntity packet, Level world) {
 		super(${JavaModName}Entities.${REGISTRYNAME}.get(), world);
+		<#if data.disableGravity>
+		setNoGravity(true);
+		</#if>
 	}
 
 	public ${name}Entity(EntityType<? extends ${name}Entity> type, Level world) {
 		super(type, world);
+		<#if data.disableGravity>
+		setNoGravity(true);
+		</#if>
 	}
 
 	public ${name}Entity(EntityType<? extends ${name}Entity> type, double x, double y, double z, Level world) {
 		super(type, x, y, z, world);
+		<#if data.disableGravity>
+		setNoGravity(true);
+		</#if>
 	}
 
 	public ${name}Entity(EntityType<? extends ${name}Entity> type, LivingEntity entity, Level world) {
 		super(type, entity, world);
+		<#if data.disableGravity>
+		setNoGravity(true);
+		</#if>
 	}
 
 	@Override public Packet<ClientGamePacketListener> getAddEntityPacket() {
