@@ -34,17 +34,19 @@ package ${package}.procedures;
 import net.minecraftforge.eventbus.api.Event;
 
 <#assign nullableDependencies = []/>
-<#list dependencies as dependency>
-	<#if dependency.getType(generator.getWorkspace()) != "double"
-		&& dependency.getType(generator.getWorkspace()) != "LevelAccessor"
-		&& dependency.getType(generator.getWorkspace()) != "ItemStack"
-		&& dependency.getType(generator.getWorkspace()) != "BlockState"
-		&& dependency.getType(generator.getWorkspace()) != "InteractionResult"
-		&& dependency.getType(generator.getWorkspace()) != "boolean"
-		&& dependency.getType(generator.getWorkspace()) != "CommandContext<CommandSourceStack>">
-		<#assign nullableDependencies += [dependency.getName()]/>
-	</#if>
-</#list>
+<#if !(data.skipDependencyNullCheck)>
+	<#list dependencies as dependency>
+		<#if dependency.getType(generator.getWorkspace()) != "double"
+			&& dependency.getType(generator.getWorkspace()) != "LevelAccessor"
+			&& dependency.getType(generator.getWorkspace()) != "ItemStack"
+			&& dependency.getType(generator.getWorkspace()) != "BlockState"
+			&& dependency.getType(generator.getWorkspace()) != "InteractionResult"
+			&& dependency.getType(generator.getWorkspace()) != "boolean"
+			&& dependency.getType(generator.getWorkspace()) != "CommandContext<CommandSourceStack>">
+			<#assign nullableDependencies += [dependency.getName()]/>
+		</#if>
+	</#list>
+</#if>
 
 <#compress>
 
