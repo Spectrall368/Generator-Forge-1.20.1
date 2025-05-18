@@ -221,7 +221,7 @@ public class ${name}Block extends
 	}
 
 	<#if data.renderType() == 4>
-    @Override public RenderShape getRenderShape(BlockState p_389569_) {
+    @Override public RenderShape getRenderShape(BlockState state) {
 		return RenderShape.INVISIBLE;
 	}
 	</#if>
