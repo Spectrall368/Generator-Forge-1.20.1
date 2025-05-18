@@ -32,9 +32,8 @@
 <#include "../procedures.java.ftl">
 package ${package}.client.gui;
 
-public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
-
-	private final static HashMap<String, Object> guistate = ${name}Menu.guistate;
+<#compress>
+public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implements ${JavaModName}Screens.ScreenAccessor {
 
 	private final Level world;
 	private final int x, y, z;
@@ -65,6 +64,18 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 		this.entity = container.entity;
 		this.imageWidth = ${data.width};
 		this.imageHeight = ${data.height};
+	}
+
+	@Override public void onMenuStateUpdate(int elementType, String name, Object elementState) {
+		<#if textFields?has_content>
+		if (elementType == 0 && elementState instanceof String stringState) {
+			<#list textFields as component>
+				<#if !component?is_first>else</#if> if (name.equals("${component.getName()}"))
+				${component.getName()}.setValue(stringState);
+			</#list>
+		}
+		</#if>
+		<#-- onMenuStateUpdate is not implemented for checkboxes, as there is no procedure block to set checkbox state currently -->
 	}
 
 	<#if data.doesPauseGame>
@@ -244,9 +255,10 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 			<#if component.placeholder?has_content>
 			${component.getName()}.setSuggestion(Component.translatable("gui.${modid}.${registryname}.${component.getName()}").getString());
 			</#if>
-			${component.getName()}.setMaxLength(32767);
+			${component.getName()}.setMaxLength(8192);
+			${component.getName()}.setResponder(content -> menu.sendMenuStateUpdate(world, 0, "${component.getName()}", content, false));
 
-			guistate.put("text:${component.getName()}", ${component.getName()});
+
 			this.addWidget(this.${component.getName()});
 		</#list>
 
@@ -265,7 +277,6 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 					${component.width}, ${component.height}).build();
 			</#if>
 
-			guistate.put("button:${component.getName()}", ${component.getName()});
 			this.addRenderableWidget(${component.getName()});
 
 			<#assign btid +=1>
@@ -281,23 +292,32 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 				${component.getHeight(w.getWorkspace()) * 2},
 				<@buttonOnClick component/>);
 
-			guistate.put("button:${component.getName()}", ${component.getName()});
 			this.addRenderableWidget(${component.getName()});
 
 			<#assign btid +=1>
 		</#list>
 
 		<#list data.getComponentsOfType("Checkbox") as component>
+			<#if hasProcedure(component.isCheckedProcedure)>boolean ${component.getName()}Selected = <@procedureOBJToConditionCode component.isCheckedProcedure/>;</#if>
 			${component.getName()} = new Checkbox(this.leftPos + ${component.gx(data.width)}, this.topPos + ${component.gy(data.height)},
-					20, 20, Component.translatable("gui.${modid}.${registryname}.${component.getName()}"), <#if hasProcedure(component.isCheckedProcedure)>
-				<@procedureOBJToConditionCode component.isCheckedProcedure/><#else>false</#if>);
+				20, 20, Component.translatable("gui.${modid}.${registryname}.${component.getName()}"),
+				<#if hasProcedure(component.isCheckedProcedure)>${component.getName()}Selected<#else>false</#if>) {
+				@Override public void onPress() {
+					super.onPress();
+					menu.sendMenuStateUpdate(world, 1, "${component.getName()}", this.selected(), false);
+				}
+			};
+			<#if hasProcedure(component.isCheckedProcedure)>
+			if (${component.getName()}Selected)
+				menu.sendMenuStateUpdate(world, 1, "${component.getName()}", true, false);
+			</#if>
 
-			guistate.put("checkbox:${component.getName()}", ${component.getName()});
 			this.addRenderableWidget(${component.getName()});
 		</#list>
 	}
 
 }
+</#compress>
 
 <#macro buttonOnClick component>
 e -> {
