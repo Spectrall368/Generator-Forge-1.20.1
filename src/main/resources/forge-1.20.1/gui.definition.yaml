@@ -9,6 +9,8 @@ templates:
   - template: gui/gui_msg_slot.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/network/@NAMESlotMessage.java"
     condition: hasSlotEvents()
+  - template: gui/gui_msg_menustate.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/network/MenuStateUpdateMessage.java"
 
 global_templates:
   - template: elementinits/menus.java.ftl
