@@ -296,7 +296,7 @@ public class ${name}Menu extends AbstractContainerMenu implements ${JavaModName}
 		return customSlots;
 	}
 
-	@Override public HashMap<String, Object> getMenuState() {
+	@Override public Map<String, Object> getMenuState() {
 		return menuState;
 	}
 

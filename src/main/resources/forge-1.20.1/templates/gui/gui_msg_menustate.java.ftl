@@ -33,13 +33,13 @@
 
 package ${package}.network;
 
-@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public class ${name}MenuStateUpdateMessage {
+@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public class MenuStateUpdateMessage {
 
     private final int elementType;
     private final String name;
     private final Object elementState;
 
-    public ${name}MenuStateUpdateMessage(FriendlyByteBuf buffer) {
+    public MenuStateUpdateMessage(FriendlyByteBuf buffer) {
         this.elementType = buffer.readInt();
         this.name = buffer.readUtf();
         Object elementState = null;
@@ -51,13 +51,13 @@ package ${package}.network;
         this.elementState = elementState;
     }
 
-    public ${name}MenuStateUpdateMessage(int elementType, String name, Object elementState) {
+    public MenuStateUpdateMessage(int elementType, String name, Object elementState) {
         this.elementType = elementType;
         this.name = name;
         this.elementState = elementState;
     }
 
-    public static void buffer(${name}MenuStateUpdateMessage message, FriendlyByteBuf buffer) {
+    public static void buffer(MenuStateUpdateMessage message, FriendlyByteBuf buffer) {
         buffer.writeInt(message.elementType);
         buffer.writeUtf(message.name);
         if (message.elementType == 0) {
@@ -67,7 +67,7 @@ package ${package}.network;
         }
     }
 
-    public static void handler(${name}MenuStateUpdateMessage message, Supplier<NetworkEvent.Context> contextSupplier) {
+    public static void handler(MenuStateUpdateMessage message, Supplier<NetworkEvent.Context> contextSupplier) {
         if (message.name.length() > 256 || message.elementState instanceof String string && string.length() > 8192)
             return;
 
@@ -75,7 +75,7 @@ package ${package}.network;
         context.enqueueWork(() -> {
             if (context.getSender().containerMenu instanceof ${JavaModName}Menus.MenuAccessor menu) {
                 menu.getMenuState().put(message.elementType + ":" + message.name, message.elementState);
-                if (context.flow() == PacketFlow.CLIENTBOUND && Minecraft.getInstance().screen instanceof ${JavaModName}Screens.ScreenAccessor accessor) {
+                if (!context.getDirection().getReceptionSide().isServer() && Minecraft.getInstance().screen instanceof ${JavaModName}Screens.ScreenAccessor accessor) {
                     accessor.updateMenuState(message.elementType, message.name, message.elementState);
                 }
             }
@@ -84,7 +84,7 @@ package ${package}.network;
     }
 
     @SubscribeEvent public static void registerMessage(FMLCommonSetupEvent event) {
-        ${JavaModName}.addNetworkMessage(${name}MenuStateUpdateMessage.class, ${name}MenuStateUpdateMessage::buffer, ${name}MenuStateUpdateMessage::new, ${name}MenuStateUpdateMessage::handler);
+        ${JavaModName}.addNetworkMessage(MenuStateUpdateMessage.class, MenuStateUpdateMessage::buffer, MenuStateUpdateMessage::new, MenuStateUpdateMessage::handler);
     }
 
 }
