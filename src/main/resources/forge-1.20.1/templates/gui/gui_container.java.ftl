@@ -293,7 +293,7 @@ public class ${name}Menu extends AbstractContainerMenu implements ${JavaModName}
 	</#if>
 
 	@Override public Map<Integer, Slot> getSlots() {
-		return customSlots;
+		return Collections.unmodifiableMap(customSlots);
 	}
 
 	@Override public Map<String, Object> getMenuState() {
