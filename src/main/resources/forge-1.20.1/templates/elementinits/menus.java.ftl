@@ -46,7 +46,9 @@ public class ${JavaModName}Menus {
 	</#list>
 
 	public interface MenuAccessor {
-		HashMap<String, Object> getMenuState();
+		Map<String, Object> getMenuState();
+
+		Map<Integer, Slot> getSlots();
 
 		default void sendMenuStateUpdate(Level world, int elementType, String name, Object elementState, boolean needClientUpdate) {
 			getMenuState().put(elementType + ":" + name, elementState);
