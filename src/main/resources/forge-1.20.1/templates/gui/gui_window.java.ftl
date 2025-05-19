@@ -39,6 +39,8 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implemen
 	private final int x, y, z;
 	private final Player entity;
 
+	private boolean menuStateUpdateActive = false;
+
 	<#list data.getComponentsOfType("TextField") as component>
 	EditBox ${component.getName()};
 	</#list>
@@ -66,7 +68,9 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implemen
 		this.imageHeight = ${data.height};
 	}
 
-	@Override public void onMenuStateUpdate(int elementType, String name, Object elementState) {
+	@Override public void updateMenuState(int elementType, String name, Object elementState) {
+		menuStateUpdateActive = true;
+
 		<#if textFields?has_content>
 		if (elementType == 0 && elementState instanceof String stringState) {
 			<#list textFields as component>
@@ -75,7 +79,9 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implemen
 			</#list>
 		}
 		</#if>
-		<#-- onMenuStateUpdate is not implemented for checkboxes, as there is no procedure block to set checkbox state currently -->
+		<#-- updateMenuState is not implemented for checkboxes, as there is no procedure block to set checkbox state currently -->
+
+		menuStateUpdateActive = false;
 	}
 
 	<#if data.doesPauseGame>
@@ -256,8 +262,10 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implemen
 			${component.getName()}.setSuggestion(Component.translatable("gui.${modid}.${registryname}.${component.getName()}").getString());
 			</#if>
 			${component.getName()}.setMaxLength(8192);
-			${component.getName()}.setResponder(content -> menu.sendMenuStateUpdate(world, 0, "${component.getName()}", content, false));
-
+			${component.getName()}.setResponder(content -> {
+				if (!menuStateUpdateActive)
+					menu.sendMenuStateUpdate(entity, 0, "${component.getName()}", content, false);
+			});
 
 			this.addWidget(this.${component.getName()});
 		</#list>
@@ -304,12 +312,13 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implemen
 				<#if hasProcedure(component.isCheckedProcedure)>${component.getName()}Selected<#else>false</#if>) {
 				@Override public void onPress() {
 					super.onPress();
-					menu.sendMenuStateUpdate(world, 1, "${component.getName()}", this.selected(), false);
+					if (!menuStateUpdateActive)
+						menu.sendMenuStateUpdate(entity, 1, "${component.getName()}", this.selected(), false);
 				}
 			};
 			<#if hasProcedure(component.isCheckedProcedure)>
 			if (${component.getName()}Selected)
-				menu.sendMenuStateUpdate(world, 1, "${component.getName()}", true, false);
+				menu.sendMenuStateUpdate(entity, 1, "${component.getName()}", true, false);
 			</#if>
 
 			this.addRenderableWidget(${component.getName()});
