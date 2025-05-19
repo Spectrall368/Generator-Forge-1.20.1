@@ -239,7 +239,7 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implemen
 			${component.getName()} = new EditBox(this.font, this.leftPos + ${component.gx(data.width) + 1}, this.topPos + ${component.gy(data.height) + 1},
 			${component.width - 2}, ${component.height - 2}, Component.translatable("gui.${modid}.${registryname}.${component.getName()}"));
 			<#if component.placeholder?has_content>
-			${component.getName()}.setHint(Component.translatable("gui.${modid}.${registryname}.${component.getName()}").getString());
+			${component.getName()}.setHint(Component.translatable("gui.${modid}.${registryname}.${component.getName()}"));
 			</#if>
 			${component.getName()}.setMaxLength(8192);
 			${component.getName()}.setResponder(content -> {
