@@ -185,6 +185,10 @@ public class ${name}Block extends ${getPlantClass(data.plantType)}Block
 	@Override public ItemStack getCloneItemStack(BlockState state, HitResult target, BlockGetter world, BlockPos pos, Player player) {
 		return ${mappedMCItemToItemStackCode(data.creativePickItem, 1)};
 	}
+	<#elseif !data.hasBlockItem>
+	@Override public ItemStack getCloneItemStack(BlockState state, HitResult target, BlockGetter world, BlockPos pos, Player player) {
+		return ItemStack.EMPTY;
+	}
 	</#if>
 
 	<#if (data.canBePlacedOn?size > 0) || hasProcedure(data.placingCondition)>
@@ -351,7 +355,7 @@ public class ${name}Block extends ${getPlantClass(data.plantType)}Block
 			}, ${JavaModName}Blocks.${REGISTRYNAME}.get());
 		}
 
-		<#if data.isItemTinted>
+		<#if data.isItemTinted && data.hasBlockItem>
 		@OnlyIn(Dist.CLIENT) public static void itemColorLoad(RegisterColorHandlersEvent.Item event) {
 			event.getItemColors().register((stack, index) -> {
 				<#if data.tintType == "Grass">
