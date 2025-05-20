@@ -195,6 +195,8 @@ public class ${name}Block extends
 				super(<@blockProperties/>, BlockSetType.${data.blockSetType});
 			<#elseif data.blockBase == "FenceGate">
 				super(<@blockProperties/>, WoodType.OAK);
+			<#else>
+				super(<@blockProperties/>);
 			</#if>
 		<#else>
 			super(<@blockProperties/>);
