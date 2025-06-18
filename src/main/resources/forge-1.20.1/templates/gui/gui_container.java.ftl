@@ -137,7 +137,7 @@ public class ${name}Menu extends AbstractContainerMenu implements ${JavaModName}
 						<#if hasProcedure(component.onTakenFromSlot)>
 						@Override public void onTake(Player entity, ItemStack stack) {
 							super.onTake(entity, stack);
-							slotChanged(${component.id}, 1, 0);
+							slotChanged(${component.id}, 1, stack.getCount());
 						}
 						</#if>
 
