@@ -33,13 +33,13 @@
 package ${package}.item.inventory;
 
 <#compress>
-@Mod.EventBusSubscriber(Dist.CLIENT) public class ${name}InventoryCapability implements ICapabilitySerializable<CompoundTag> {
+@Mod.EventBusSubscriber public class ${name}InventoryCapability implements ICapabilitySerializable<CompoundTag> {
 
-	@SubscribeEvent @OnlyIn(Dist.CLIENT) public static void onItemDropped(ItemTossEvent event) {
-		if(event.getEntity().getItem().getItem() == ${JavaModName}Items.${REGISTRYNAME}.get()) {
-			if (Minecraft.getInstance().screen instanceof ${data.guiBoundTo}Screen) {
-				Minecraft.getInstance().player.closeContainer();
-			}
+	@SubscribeEvent public static void onItemDropped(ItemTossEvent event) {
+		if (event.getEntity().getItem().getItem() == ${JavaModName}Items.${REGISTRYNAME}.get()) {
+			Player player = event.getPlayer();
+			if (player.containerMenu instanceof ${data.guiBoundTo}Menu)
+				player.closeContainer();
 		}
 	}
 
