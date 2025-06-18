@@ -118,9 +118,11 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implemen
 			}
 		</#list>
 
-		this.renderTooltip(guiGraphics, mouseX, mouseY);
-
-		<#list data.getComponentsOfType("Tooltip") as component>
+		<#assign tooltips = data.getComponentsOfType("Tooltip")>
+		<#if tooltips?has_content>Add commentMore actions
+		boolean customTooltipShown = false;
+		</#if>
+		<#list tooltips as component>
 			<#assign x = component.gx(data.width)>
 			<#assign y = component.gy(data.height)>
 			<#if hasProcedure(component.displayCondition)>
@@ -134,10 +136,14 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implemen
 					}
 					<#else>
 						guiGraphics.renderTooltip(font, Component.translatable("gui.${modid}.${registryname}.${component.getName()}"), mouseX, mouseY);
-
 					</#if>
+					customTooltipShown = true;
 				}
 		</#list>
+		<#if tooltips?has_content>
+		if (!customTooltipShown)
+		</#if>
+		this.renderTooltip(guiGraphics, mouseX, mouseY);
 	}
 
 	@Override protected void renderBg(GuiGraphics guiGraphics, float partialTicks, int gx, int gy) {
