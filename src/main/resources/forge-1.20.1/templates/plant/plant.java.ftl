@@ -113,6 +113,9 @@ public class ${name}Block extends ${getPlantClass(data.plantType)}Block
 		<#if data.isReplaceable>
 		.replaceable()
 		</#if>
+		<#if data.ignitedByLava>
+		.ignitedByLava()
+		</#if>
 		.offsetType(BlockBehaviour.OffsetType.${data.offsetType}).pushReaction(PushReaction.DESTROY)
 		);
 
