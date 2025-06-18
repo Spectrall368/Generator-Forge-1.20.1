@@ -1,0 +1,23 @@
+_default: null
+# number parameters
+FALL_DISTANCE:
+  - LivingFallEvent
+  - setDistance #float
+  - entity_falls
+FALL_DAMAGE_MULTIPLIER:
+  - LivingFallEvent
+  - setDamageMultiplier #float
+  - entity_falls
+CRITICAL_DAMAGE_MULTIPLIER:
+  - CriticalHitEvent
+  - setDamageModifier #float
+  - player_critical_hit
+DROPPED_EXPERIENCE:
+  - LivingExperienceDropEvent
+  - setDroppedExperience #int
+  - entity_dropxp
+# logic parameters
+SHIELD_BLOCKED:
+  - ShieldBlockEvent
+  - setShieldTakesDamage
+  - entity_blocks
