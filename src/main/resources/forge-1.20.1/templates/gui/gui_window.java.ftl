@@ -119,7 +119,7 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implemen
 		</#list>
 
 		<#assign tooltips = data.getComponentsOfType("Tooltip")>
-		<#if tooltips?has_content>Add commentMore actions
+		<#if tooltips?has_content>
 		boolean customTooltipShown = false;
 		</#if>
 		<#list tooltips as component>
