@@ -28,4 +28,9 @@ templates:
     name: "@RESROOT/data/@[getNamespace()]/recipes/@[getName()].json"
     condition: "recipeType %= Smithing"
 
+  - template: recipe/unlocking_advancement.json.ftl
+    writer: json
+    name: "@MODDATAROOT/advancements/recipes/@registryname.json"
+    condition: "hasAdvancement()"
+
 field_exclusions: [brewingRecipeMaker]
