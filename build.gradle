@@ -5,7 +5,7 @@ plugins {
 java.toolchain.languageVersion = JavaLanguageVersion.of(21)
 
 tasks.jar {
-    archiveFileName.set("generator-minecraft-forge-1.20.1-2025.2-1.1.0.zip")
+    archiveFileName.set("generator-minecraft-forge-1.20.1-2025.2-2.0.0.zip")
 }
 
 tasks.register('runMCreatorWithPlugin', JavaExec) {
