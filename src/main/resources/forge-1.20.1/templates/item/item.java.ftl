@@ -70,6 +70,20 @@ public class ${name}Item extends <#if data.isMusicDisc>Record</#if>Item {
 		</#if>
 	}
 
+	<#if data.hasCustomJAVAModel() || data.getModels()?filter(e -> e.hasCustomJAVAModel())?has_content>
+	@Override public void initializeClient(Consumer<IClientItemExtensions> consumer) {
+		consumer.accept(new IClientItemExtensions() {
+			private ${name}ItemRenderer rendererInstance;
+
+			@Override public BlockEntityWithoutLevelRenderer getCustomRenderer() {
+				if (rendererInstance == null)
+					rendererInstance = new ${name}ItemRenderer(Minecraft.getInstance().getBlockEntityRenderDispatcher(), Minecraft.getInstance().getEntityModels());
+				return rendererInstance;
+			}
+		});
+	}
+	</#if>
+
 	<#if data.hasNonDefaultAnimation()>
 	@Override public UseAnim getUseAnimation(ItemStack itemstack) {
 		return UseAnim.${data.animation?upper_case};
