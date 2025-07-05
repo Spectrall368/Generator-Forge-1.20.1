@@ -33,7 +33,7 @@ subprojects { subproject ->
 
             environment("MCREATOR_PLUGINS_FOLDER", new File(rootProject.projectDir, "/build/libs"))
             environment("MCREATOR_PLUGINS_DEV", "")
-            environment("MCREATOR_TEST_GENERATORS", "forge-1.20.1, datapack-1.20.1")
+            environment("MCREATOR_TEST_GENERATORS", "forge-1.20.1, datapack-1.20.1, resourcepack-1.20.1")
 
             workingDir = mcreator_path
         }
