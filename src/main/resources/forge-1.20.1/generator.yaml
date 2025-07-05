@@ -1,4 +1,4 @@
-name: Minecraft Forge for @minecraft (@buildfileversion)
+name: Forge for @minecraft (@buildfileversion)
 status: legacy
 buildfileversion: 47.4.0
 subversion: 1.3 # force setup re-run to update build script to use MDG
@@ -98,7 +98,7 @@ sources_setup_tasks:
     to: "@SRCROOT/@BASEPACKAGEPATH/client/model/animations"
 
 tags:
-  template: tags.json.ftl
+  template: tags.json.ftl # loaded from datapack generator
   name: "@RESROOT/data/@namespace/tags/@folder_pre21/@name.json"
 
 language_file:

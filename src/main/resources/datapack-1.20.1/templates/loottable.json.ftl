@@ -1,6 +1,6 @@
 <#include "mcitems.ftl">
 <#function hasToolContext>
-    <#return data.type == "Block" || data.type == "Fishing" || data.type == "Generic">
+  <#return data.type == "Block" || data.type == "Fishing" || data.type == "Generic">
 </#function>
 {
   "type": "minecraft:${data.type?lower_case?replace(" ", "_")}",
@@ -17,19 +17,24 @@
           </#if>
           <#if pool.hasbonusrolls>
               <#if pool.minbonusrolls == pool.maxbonusrolls>
-            "bonus_rolls": ${pool.minbonusrolls},
+              "bonus_rolls": ${pool.minbonusrolls},
               <#else>
-            "bonus_rolls": {
-              "min": ${pool.minbonusrolls},
-              "max": ${pool.maxbonusrolls}
-            },
+              "bonus_rolls": {
+                "min": ${pool.minbonusrolls},
+                "max": ${pool.maxbonusrolls}
+              },
               </#if>
           </#if>
           "entries": [
             <#list pool.entries as entry>
               {
+                <#assign item = mappedMCItemToRegistryName(entry.item)>
+                <#if entry.item.isAir() || item == "minecraft:air">
+                "type": "minecraft:empty",
+                <#else>
                 "type": "minecraft:${entry.type}",
-                "name": "${mappedMCItemToRegistryName(entry.item)}",
+                "name": "${item}",
+                </#if>
                 "weight": ${entry.weight},
                 <#if entry.silkTouchMode == 1 && hasToolContext()>
                 "conditions": [
@@ -68,42 +73,41 @@
                 ],
                 </#if>
                 "functions": [
-                    {
-                      "function": "set_count",
-                      "count": {
-                        "min": ${entry.minCount},
-                        "max": ${entry.maxCount}
-                      }
+                  {
+                    "function": "minecraft:set_count",
+                    "count": {
+                      "min": ${entry.minCount},
+                      "max": ${entry.maxCount}
                     }
-                    <#if entry.minEnchantmentLevel != 0 || entry.maxEnchantmentLevel != 0>
-                    ,{
-                      "function": "enchant_with_levels",
-                      "treasure": true,
-                      "levels": {
-                        "min": ${entry.minEnchantmentLevel},
-                        "max": ${entry.maxEnchantmentLevel}
-                      }
+                  }
+                  <#if entry.minEnchantmentLevel != 0 || entry.maxEnchantmentLevel != 0>
+                  ,{
+                    "function": "minecraft:enchant_with_levels",
+                    "treasure": true,
+                    "levels": {
+                      "min": ${entry.minEnchantmentLevel},
+                      "max": ${entry.maxEnchantmentLevel}
                     }
-                    </#if>
-                    <#if entry.explosionDecay>
-                    ,{
-                      "function": "minecraft:explosion_decay"
-                    }
-                    </#if>
-                    <#if entry.affectedByFortune && hasToolContext()>
-                    ,{
-                      "function": "minecraft:apply_bonus",
-                      "enchantment": "minecraft:fortune",
-                      "formula": "minecraft:ore_drops"
-                    }
-                    </#if>
+                  }
+                  </#if>
+                  <#if entry.explosionDecay>
+                  ,{
+                    "function": "minecraft:explosion_decay"
+                  }
+                  </#if>
+                  <#if entry.affectedByFortune && hasToolContext()>
+                  ,{
+                    "function": "minecraft:apply_bonus",
+                    "enchantment": "minecraft:fortune",
+                    "formula": "minecraft:ore_drops"
+                  }
+                  </#if>
                 ]
               }
                 <#if entry?has_next>,</#if>
             </#list>
           ]
-        }
-        <#if pool?has_next>,</#if>
+        }<#if pool?has_next>,</#if>
     </#list>
   ],
   "random_sequence": "${data.getNamespace()}:${data.getName()}"
