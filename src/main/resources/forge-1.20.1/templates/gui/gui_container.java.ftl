@@ -257,7 +257,9 @@ public class ${name}Menu extends AbstractContainerMenu implements ${JavaModName}
 								if(j == ${component.id}) continue;
 							</#if>
 						</#list>
-						playerIn.drop(internal.extractItem(j, internal.getStackInSlot(j).getCount(), false), false);
+						playerIn.drop(internal.getStackInSlot(j), false);
+ 						if (internal instanceof IItemHandlerModifiable ihm)
+ 							ihm.setStackInSlot(j, ItemStack.EMPTY);
 					}
 				} else {
 					for(int i = 0; i < internal.getSlots(); ++i) {
@@ -266,7 +268,9 @@ public class ${name}Menu extends AbstractContainerMenu implements ${JavaModName}
 								if(i == ${component.id}) continue;
 							</#if>
 						</#list>
-						playerIn.getInventory().placeItemBackInInventory(internal.extractItem(i, internal.getStackInSlot(i).getCount(), false));
+						playerIn.getInventory().placeItemBackInInventory(internal.getStackInSlot(i));
+ 						if (internal instanceof IItemHandlerModifiable ihm)
+ 							ihm.setStackInSlot(i, ItemStack.EMPTY);
 					}
 				}
 			}
