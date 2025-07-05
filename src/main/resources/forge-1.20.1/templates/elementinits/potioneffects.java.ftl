@@ -64,7 +64,7 @@ package ${package}.init;
 				"damage": "event.getAmount()"
 			}/>
         }
-        </#list>
+		</#list>
         </#compress>
     }
 	</#if>
@@ -73,18 +73,21 @@ package ${package}.init;
 	@SubscribeEvent public static void onMobRemoved(LivingDeathEvent event) {
         <#compress>
         LivingEntity entity = event.getEntity();
-		<#list mobRemoved as effect>
-		if (entity.hasEffect(${JavaModName}MobEffects.${effect.getModElement().getRegistryNameUpper()}.get())) {
-	        <@procedureCode effect.onMobRemoved, {
-				"x": "entity.getX()",
-				"y": "entity.getY()",
-				"z": "entity.getZ()",
-				"world": "entity.level()",
-				"entity": "entity",
-				"amplifier": "entity.getEffect(" + JavaModName + "MobEffects." + effect.getModElement().getRegistryNameUpper() + ".get()).getAmplifier()"
-			}/>
+        Entity.RemovalReason reason = entity.getRemovalReason();
+        if (reason != null && reason == Entity.RemovalReason.KILLED) {
+            <#list mobRemoved as effect>
+            if (entity.hasEffect(${JavaModName}MobEffects.${effect.getModElement().getRegistryNameUpper()}.get())) {
+                <@procedureCode effect.onMobRemoved, {
+                    "x": "entity.getX()",
+                    "y": "entity.getY()",
+                    "z": "entity.getZ()",
+                    "world": "entity.level()",
+                    "entity": "entity",
+                    "amplifier": "entity.getEffect(" + JavaModName + "MobEffects." + effect.getModElement().getRegistryNameUpper() + ".get()).getAmplifier()"
+                }/>
+            }
+            </#list>
         }
-        </#list>
         </#compress>
     }
 	</#if>
