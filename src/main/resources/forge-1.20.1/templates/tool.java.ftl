@@ -98,6 +98,9 @@ public class ${name}Item extends ${data.toolType?replace("Spade", "Shovel")?repl
 				<#if data.immuneToFire>
 				.fireResistant()
 				</#if>
+				<#if data.stayInGridWhenCrafting && data.usageCount != 0>
+				.setNoRepair()
+				</#if>
 		</#if>);
 	}
 
@@ -186,6 +189,9 @@ public class ${name}Item extends Item {
 			<#if data.immuneToFire>
 			.fireResistant()
 			</#if>
+			<#if data.stayInGridWhenCrafting && data.usageCount != 0>
+			.setNoRepair()
+			</#if>
 		);
 	}
 
@@ -225,6 +231,9 @@ public class ${name}Item extends FishingRodItem {
 			.durability(${data.usageCount})
 			<#if data.immuneToFire>
 			.fireResistant()
+			</#if>
+			<#if data.stayInGridWhenCrafting && data.usageCount != 0>
+			.setNoRepair()
 			</#if>
 		);
 	}
@@ -280,20 +289,10 @@ public class ${name}Item extends FishingRodItem {
 				}
 				return retval;
 			}
-
-			@Override public boolean isRepairable(ItemStack itemstack) {
-				return false;
-			}
 		<#else>
 			@Override public ItemStack getCraftingRemainingItem(ItemStack itemstack) {
 				return new ItemStack(this);
 			}
-
-			<#if data.usageCount != 0>
-				@Override public boolean isRepairable(ItemStack itemstack) {
-					return false;
-				}
-			</#if>
 		</#if>
 	</#if>
 
