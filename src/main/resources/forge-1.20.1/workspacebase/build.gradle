@@ -43,8 +43,21 @@ tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8' // Use the UTF-8 charset for Java compilation
 }
 
+<#if w.getGElementsOfType('biome')?filter(e -> e.spawnBiome || e.spawnInCaves || e.spawnBiomeNether)?size != 0>
+mixin {
+    config "${modid}.mixins.json"
+}
+
 dependencies {
     implementation(jarJar("io.github.llamalad7:mixinextras-neoforge:0.4.1"))
+    annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
 }
+
+jar {
+    manifest.attributes([
+            "MixinConfigs": "${modid}.mixins.json"
+    ])
+}
+</#if>
 
 apply from: 'mcreator.gradle'
