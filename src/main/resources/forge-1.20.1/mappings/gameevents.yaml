@@ -59,8 +59,8 @@ ENTITY_PLACE:
   - GameEvent.ENTITY_PLACE
   - entity_place
 ENTITY_ACTION:
-  - GameEvent.ENTITY_ACTION
-  - entity_action
+  - GameEvent.ENTITY_ROAR
+  - entity_roar
 EQUIP:
   - GameEvent.EQUIP
   - equip
@@ -130,9 +130,6 @@ SWIM:
 TELEPORT:
   - GameEvent.TELEPORT
   - teleport
-UNEQUIP:
-  - GameEvent.UNEQUIP
-  - unequip
 RESONATE_1:
   - GameEvent.RESONATE_1
   - resonate_1
