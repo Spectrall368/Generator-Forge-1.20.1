@@ -120,8 +120,9 @@ public class ${JavaModName}Items {
 
 	<#if hasItemsWithProperties>
 	<#compress>
-	@SubscribeEvent public static void clientLoad(FMLClientSetupEvent event) {
+	@SubscribeEvent @OnlyIn(Dist.CLIENT) public static void clientLoad(FMLClientSetupEvent event) {
 		event.enqueueWork(() -> {
+		<#compress>
 		<#list items as item>
 			<#if item.getModElement().getTypeString() == "item">
 				<#list item.customProperties.entrySet() as property>
@@ -145,6 +146,7 @@ public class ${JavaModName}Items {
 					ItemProperties.getProperty(Items.SHIELD, ResourceLocation.parse("blocking")));
 			</#if>
 		</#list>
+		</#compress>
 		});
 	}
 	</#compress>
