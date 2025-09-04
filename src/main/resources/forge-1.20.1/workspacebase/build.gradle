@@ -43,10 +43,11 @@ tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8' // Use the UTF-8 charset for Java compilation
 }
 
-<#if w.getGElementsOfType('biome')?filter(e -> e.spawnBiome || e.spawnInCaves || e.spawnBiomeNether)?size != 0>
 mixin {
-    add sourceSets.main, "${modid}.refmap.json"
-    config "${modid}.mixins.json"
+    if (file("src/main/resources/${modid}.mixins.json").exists()) {
+        add sourceSets.main, "${modid}.refmap.json"
+        config "${modid}.mixins.json"
+    }
 }
 
 dependencies {
@@ -55,10 +56,11 @@ dependencies {
 }
 
 jar {
-    manifest.attributes([
-            "MixinConfigs": "${modid}.mixins.json"
-    ])
+    if (file("src/main/resources/${modid}.mixins.json").exists()) {
+        manifest.attributes([
+                "MixinConfigs": "${modid}.mixins.json"
+        ])
+    }
 }
-</#if>
 
 apply from: 'mcreator.gradle'
