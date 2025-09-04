@@ -215,6 +215,8 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 		return MobType.${data.mobCreatureType};
 	}
 
+	${extra_templates_code}
+
 	<#if !data.doesDespawnWhenIdle>
 	@Override public boolean removeWhenFarAway(double distanceToClosestPlayer) {
 		return false;
