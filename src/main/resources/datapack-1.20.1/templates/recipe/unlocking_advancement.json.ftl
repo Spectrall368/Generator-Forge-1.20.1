@@ -13,9 +13,14 @@
       "conditions": {
         "items": [
           {
+            <#assign retval = mappedMCItemToRegistryName(item, true)>
+            <#if retval?contains("#")>
+            "tag": "${retval?replace("#", "")}"
+            <#else>
             "items": [
-              "${mappedMCItemToRegistryName(item, true)}"
+              "${retval}"
             ]
+            </#if>
           }
         ]
       },
