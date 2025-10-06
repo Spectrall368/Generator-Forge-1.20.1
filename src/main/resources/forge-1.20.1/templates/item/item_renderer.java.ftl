@@ -64,7 +64,8 @@ public class ${name}ItemRenderer extends BlockEntityWithoutLevelRenderer {
         poseStack.pushPose();
         Minecraft.getInstance().getItemRenderer().getModel(this.transformSource, null, null, 0).applyTransform(displayContext, poseStack, isLeftHand(displayContext));
         poseStack.translate(0.5, isInventory(displayContext) ? 1.5 : 2, 0.5);
-        poseStack.scale(1, -1, displayContext == ItemDisplayContext.GUI ? -1 : 1);
+		poseStack.mulPose(Axis.ZP.rotationDegrees(180.0F));
+        poseStack.scale(1, 1, displayContext == ItemDisplayContext.GUI ? -1 : 1);
         VertexConsumer vertexConsumer = ItemRenderer.getFoilBufferDirect(bufferSource, model.renderType(texture), false, itemstack.hasFoil());
         model.renderToBuffer(poseStack, vertexConsumer, packedLight, packedOverlay, 1, 1, 1, 1);
         poseStack.popPose();
