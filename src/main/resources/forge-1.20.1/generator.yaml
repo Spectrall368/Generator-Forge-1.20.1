@@ -1,4 +1,4 @@
-name: Minecraft Forge for @minecraft (@buildfileversion)
+name: Forge for @minecraft (@buildfileversion)
 status: deprecated
 buildfileversion: 47.4.10
 subversion: 1.4 # force setup re-run to update build script to downlaod Mixin Extras
@@ -8,7 +8,7 @@ import:
 
 java_models:
   key: mojmap-1.20.x
-  compatible: [mojmap-1.17.x, mojmap-1.18.x, mojmap-1.19.x]
+  compatible: [mojmap-1.17.x, mojmap-1.18.x, mojmap-1.19.x, mojmap-1.21.x]
   requested_key_words: [ModelPart, ~ModelRenderer, ~(ResourceLocation.]
 
 # gradle task definitions
