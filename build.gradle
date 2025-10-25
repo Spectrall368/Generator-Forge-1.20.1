@@ -4,12 +4,22 @@ plugins {
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(21)
 
+tasks.named('processResources') {
+    filesMatching('plugin.json') {
+        expand(
+                version: project.version,
+                mcreatorVersionShort: project.mcreatorVersionShort,
+                pluginVersion: project.pluginVersion
+        )
+    }
+}
+
 tasks.jar {
-    archiveFileName.set("generator-minecraft-forge-1.20.1-2025.2-2.0.2.zip")
+    archiveFileName.set("generator-${version}-${pluginVersion}-${mcreatorVersionShort}.zip")
 }
 
 tasks.register('runMCreatorWithPlugin', JavaExec) {
-    dependsOn jar
+    dependsOn(processResources, jar)
 
     environment("MCREATOR_PLUGINS_FOLDER", file("./build/libs"))
     environment("MCREATOR_PLUGINS_DEV", "")
@@ -18,7 +28,7 @@ tasks.register('runMCreatorWithPlugin', JavaExec) {
 
     classpath = project(':MCreator').sourceSets.main.runtimeClasspath
 
-    main = 'net.mcreator.Launcher'
+    mainClass = 'net.mcreator.Launcher'
 
     workingDir = mcreator_path
 }
@@ -29,11 +39,12 @@ subprojects { subproject ->
             useJUnitPlatform()
             include '**/GeneratorsTest.class'
 
+            dependsOn rootProject.processResources
             dependsOn rootProject.jar
 
             environment("MCREATOR_PLUGINS_FOLDER", new File(rootProject.projectDir, "/build/libs"))
             environment("MCREATOR_PLUGINS_DEV", "")
-            environment("MCREATOR_TEST_GENERATORS", "forge-1.20.1, datapack-1.20.1, resourcepack-1.20.1")
+            environment("MCREATOR_TEST_GENERATORS", "forge-${version}, datapack-${version}, resourcepack-${version}")
 
             workingDir = mcreator_path
         }

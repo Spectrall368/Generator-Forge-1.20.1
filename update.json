@@ -1,0 +1,8 @@
+{
+  "generator-1.20.1": {
+    "latest": "1.0",
+	"changes": [
+		"Plugin release"
+	]
+  }
+}

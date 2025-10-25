@@ -1,4 +1,6 @@
-rootProject.name = 'generator-1.20.1'
+rootProject.name = 'generator-' + version
 
-include ":MCreator"
-project(":MCreator").projectDir = file(mcreator_path)
+if(mcreator_path != "unassigned") {
+    include ":MCreator"
+    project(":MCreator").projectDir = file(mcreator_path)
+}

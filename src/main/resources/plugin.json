@@ -1,13 +1,12 @@
 {
-  "id": "generator-1.20.1",
-  "supportedversions": [
-    202500299999,
-    2025002
-  ],
+  "id": "generator-${version}",
+  "supportedversions": [2025002],
   "info": {
-    "name": "1.20.1 generator",
-    "version": "2.0.2",
-    "description": "Minecraft (Forge) generator for 1.20.1",
-    "author": "Pylo"
+    "name": "Forge ${version} Generator",
+    "version": "${pluginVersion}",
+    "description": "This plugin includes a mod, datapack and resourcepack generator for Forge ${version}",
+    "author": "_Spectrall",
+    "updateJSONURL": "https://raw.githubusercontent.com/Spectrall368/Generator-Forge-${version}/${mcreatorVersionShort}/update.json",
+    "pluginPageID": 118523
   }
 }
