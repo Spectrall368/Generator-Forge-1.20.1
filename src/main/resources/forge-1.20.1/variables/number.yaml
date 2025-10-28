@@ -30,7 +30,7 @@ scopes:
     write: nbt.putDouble("${var.getName()}", ${var.getName()});
     get: |
       ((${entity}.getCapability(${JavaModName}Variables.PLAYER_VARIABLES_CAPABILITY, null)
-        .orElse(new ${JavaModName}Variables.PlayerVariables())).${name})
+        .orElseGet(${JavaModName}Variables.PlayerVariables::new)).${name})
     set: |
       {
         double _setval = ${opt.removeParentheses(value)};
@@ -45,7 +45,7 @@ scopes:
     write: nbt.putDouble("${var.getName()}", ${var.getName()});
     get: |
       ((${entity}.getCapability(${JavaModName}Variables.PLAYER_VARIABLES_CAPABILITY, null)
-        .orElse(new ${JavaModName}Variables.PlayerVariables())).${name})
+        .orElseGet(${JavaModName}Variables.PlayerVariables::new)).${name})
     set: |
       {
         double _setval = ${opt.removeParentheses(value)};

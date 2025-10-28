@@ -114,7 +114,7 @@ package ${package}.world.teleporter;
 			}
 
 			return ${name}PortalShape.createPortalInfo(server, repositioner, direction$axis, vector3d, entity, entity.getDeltaMovement(), entity.getYRot(), entity.getXRot());
-		}).orElse(new PortalInfo(entity.position(), Vec3.ZERO, entity.getYRot(), entity.getXRot()));
+		}).orElseGet(() -> new PortalInfo(entity.position(), Vec3.ZERO, entity.getYRot(), entity.getXRot()));
 	}
 
 	protected Optional<BlockUtil.FoundRectangle> getExitPortal(Entity entity, BlockPos pos, WorldBorder worldBorder) {

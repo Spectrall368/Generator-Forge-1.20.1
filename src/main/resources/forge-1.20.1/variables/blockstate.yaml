@@ -32,7 +32,7 @@ scopes:
     write: nbt.put("${var.getName()}", NbtUtils.writeBlockState(${var.getName()}));
     get: |
       /*@BlockState*/((${entity}.getCapability(${JavaModName}Variables.PLAYER_VARIABLES_CAPABILITY, null)
-        .orElse(new ${JavaModName}Variables.PlayerVariables())).${name})
+        .orElseGet(${JavaModName}Variables.PlayerVariables::new)).${name})
     set: |
       <#include "mcitems.ftl">
       {
@@ -48,7 +48,7 @@ scopes:
     write: nbt.put("${var.getName()}", NbtUtils.writeBlockState(${var.getName()}));
     get: |
       /*@BlockState*/((${entity}.getCapability(${JavaModName}Variables.PLAYER_VARIABLES_CAPABILITY, null)
-        .orElse(new ${JavaModName}Variables.PlayerVariables())).${name})
+        .orElseGet(${JavaModName}Variables.PlayerVariables::new)).${name})
     set: |
       <#include "mcitems.ftl">
       {

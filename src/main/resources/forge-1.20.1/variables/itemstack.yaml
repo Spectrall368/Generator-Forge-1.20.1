@@ -32,7 +32,7 @@ scopes:
     write: nbt.put("${var.getName()}", ${var.getName()}.save(new CompoundTag()));
     get: |
       /*@ItemStack*/((${entity}.getCapability(${JavaModName}Variables.PLAYER_VARIABLES_CAPABILITY, null)
-        .orElse(new ${JavaModName}Variables.PlayerVariables())).${name})
+        .orElseGet(${JavaModName}Variables.PlayerVariables::new)).${name})
     set: |
       <#include "mcitems.ftl">
       {
@@ -48,7 +48,7 @@ scopes:
     write: nbt.put("${var.getName()}", ${var.getName()}.save(new CompoundTag()));
     get: |
       /*@ItemStack*/((${entity}.getCapability(${JavaModName}Variables.PLAYER_VARIABLES_CAPABILITY, null)
-        .orElse(new ${JavaModName}Variables.PlayerVariables())).${name})
+        .orElseGet(${JavaModName}Variables.PlayerVariables::new)).${name})
     set: |
       <#include "mcitems.ftl">
       {
