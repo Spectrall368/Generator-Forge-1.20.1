@@ -92,7 +92,7 @@ public class ${JavaModName}Items {
 			<#elseif item.getModElement().getTypeString() == "livingentity">
 				${item.getModElement().getRegistryNameUpper()}_SPAWN_EGG =
 					REGISTRY.register("${item.getModElement().getRegistryName()}_spawn_egg",
-						() -> new DeferredSpawnEggItem(${JavaModName}Entities.${item.getModElement().getRegistryNameUpper()},
+						() -> new ForgeSpawnEggItem(${JavaModName}Entities.${item.getModElement().getRegistryNameUpper()},
 						${item.spawnEggBaseColor.getRGB()}, ${item.spawnEggDotColor.getRGB()}, new Item.Properties()));
 			<#elseif item.getModElement().getTypeString() == "dimension" && item.hasIgniter()>
 				${item.getModElement().getRegistryNameUpper()} =
