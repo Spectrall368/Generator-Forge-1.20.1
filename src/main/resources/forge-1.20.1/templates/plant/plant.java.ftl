@@ -38,7 +38,7 @@ package ${package}.block;
 
 import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 
-<#compress>
+<@javacompress>
 <#assign interfaces = []>
 <#if data.hasTileEntity>
 	<#assign interfaces += ["EntityBlock"]>
@@ -191,6 +191,15 @@ public class ${name}Block extends ${getPlantClass(data.plantType)}Block
 	}
 	</#if>
 
+	<#if data.strippingResult?? && !data.strippingResult.isEmpty()>
+	@Override public BlockState getToolModifiedState(BlockState blockstate, UseOnContext context, ToolAction itemAbility, boolean simulate) {
+		if (ToolActions.AXE_STRIP == itemAbility && context.getItemInHand().canPerformAction(itemAbility)) {
+			return ${mappedBlockToBlock(data.strippingResult)}.withPropertiesOf(blockstate);
+		}
+		return super.getToolModifiedState(blockstate, context, itemAbility, simulate);
+	}
+	</#if>
+
 	<#if data.creativePickItem?? && !data.creativePickItem.isEmpty()>
 	@Override public ItemStack getCloneItemStack(BlockState state, HitResult target, BlockGetter world, BlockPos pos, Player player) {
 		return ${mappedMCItemToItemStackCode(data.creativePickItem, 1)};
@@ -198,6 +207,16 @@ public class ${name}Block extends ${getPlantClass(data.plantType)}Block
 	<#elseif !data.hasBlockItem>
 	@Override public ItemStack getCloneItemStack(BlockState state, HitResult target, BlockGetter world, BlockPos pos, Player player) {
 		return ItemStack.EMPTY;
+	}
+	</#if>
+
+	<#if data.xpAmountMax != 0>
+	@Override public int getExpDrop(BlockState state, LevelReader level, RandomSource randomSource, BlockPos pos, int fortuneLevel, int silkTouchLevel) {
+		<#if data.xpAmountMin == data.xpAmountMax>
+		return ${data.xpAmountMin};
+		<#else>
+		return Mth.randomBetweenInclusive(randomSource, ${data.xpAmountMin}, ${data.xpAmountMax});
+		</#if>
 	}
 	</#if>
 
@@ -319,6 +338,8 @@ public class ${name}Block extends ${getPlantClass(data.plantType)}Block
 
 	<@onEntityWalksOn data.onEntityWalksOn/>
 
+	<@onEntityFallsOn data.onEntityFallsOn/>
+
 	<@onHitByProjectile data.onHitByProjectile/>
 
 	<#if data.isBonemealable && data.plantType != "sapling">
@@ -390,7 +411,7 @@ public class ${name}Block extends ${getPlantClass(data.plantType)}Block
 		</#if>
 	</#if>
 }
-</#compress>
+</@javacompress>
 <#-- @formatter:on -->
 
 <#function getPlantClass plantType>

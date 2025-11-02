@@ -13,5 +13,10 @@ public net.minecraft.world.level.levelgen.feature.ScatteredOreFeature <init>(Lco
 public-f net.minecraft.world.level.levelgen.feature.TreeFeature m_142674_(Lnet/minecraft/world/level/levelgen/feature/FeaturePlaceContext;)Z #place
 </#if>
 
+<#if w.hasElementsOfType("procedure")>
+public net.minecraft.world.entity.ai.attributes.AttributeModifier name # name
+public net.minecraft.world.entity.ai.attributes.AttributeInstance removeModifier(Lnet/minecraft/world/entity/ai/attributes/AttributeModifier;)V # removeModifier
+</#if>
+
 # Start of user code block custom ATs
 # End of user code block custom ATs

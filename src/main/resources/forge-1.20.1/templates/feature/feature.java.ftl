@@ -36,7 +36,7 @@ package ${package}.world.features;
 
 <#assign configuration = generator.map(featuretype, "features", 1)>
 
-<#compress>
+<@javacompress>
 public class ${name}Feature extends ${generator.map(featuretype, "features")} {
 
 	public ${name}Feature() {
@@ -56,4 +56,4 @@ public class ${name}Feature extends ${generator.map(featuretype, "features")} {
 
 		return super.place(context);
 	}
-}</#compress>
+}</@javacompress>

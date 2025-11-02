@@ -33,7 +33,7 @@
 
 package ${package}.block.entity;
 
-<#compress>
+<@javacompress>
 public class ${name}BlockEntity extends RandomizableContainerBlockEntity implements WorldlyContainer
  		<#if data.sensitiveToVibration>, GameEventListener.Holder<VibrationSystem.Listener>, VibrationSystem</#if> {
 
@@ -360,5 +360,5 @@ public class ${name}BlockEntity extends RandomizableContainerBlockEntity impleme
 	}
     </#if>
 }
-</#compress>
+</@javacompress>
 <#-- @formatter:on -->

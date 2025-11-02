@@ -38,8 +38,8 @@ package ${package}.world.inventory;
 
 import ${package}.${JavaModName};
 
-<#compress>
-<#if hasProcedure(data.onTick)>
+<@javacompress>
+<#if hasProcedure(data.onTick) || hasProcedure(data.onOpen)>
 @Mod.EventBusSubscriber
 </#if>
 public class ${name}Menu extends AbstractContainerMenu implements ${JavaModName}Menus.MenuAccessor {
@@ -182,10 +182,6 @@ public class ${name}Menu extends AbstractContainerMenu implements ${JavaModName}
 			for (int si = 0; si < 9; ++si)
 				this.addSlot(new Slot(inv, si, ${coffx} + 8 + si * 18, ${coffy} + 142));
 		</#if>
-
-		<#if hasProcedure(data.onOpen)>
-			<@procedureOBJToCode data.onOpen/>
-		</#if>
 	}
 
 	@Override public boolean stillValid(Player player) {
@@ -307,18 +303,31 @@ public class ${name}Menu extends AbstractContainerMenu implements ${JavaModName}
 	}
 
 	<#if hasProcedure(data.onTick)>
-		@SubscribeEvent public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
-			Player entity = event.player;
-			if(event.phase == TickEvent.Phase.END && entity.containerMenu instanceof ${name}Menu menu) {
-				Level world = menu.world;
-				double x = menu.x;
-				double y = menu.y;
-				double z = menu.z;
-				<@procedureOBJToCode data.onTick/>
-			}
+	@SubscribeEvent public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
+		Player entity = event.player;
+		if(event.phase == TickEvent.Phase.END && entity.containerMenu instanceof ${name}Menu menu) {
+			Level world = menu.world;
+			double x = menu.x;
+			double y = menu.y;
+			double z = menu.z;
+			<@procedureOBJToCode data.onTick/>
 		}
+	}
+	</#if>
+
+	<#if hasProcedure(data.onOpen)>
+	@SubscribeEvent public static void onContainerOpen(PlayerContainerEvent.Open event) {
+		Player entity = event.getEntity();
+		if(event.getContainer() instanceof ${name}Menu menu) {
+			Level world = menu.world;
+			double x = menu.x;
+			double y = menu.y;
+			double z = menu.z;
+			<@procedureOBJToCode data.onOpen/>
+		}
+	}
 	</#if>
 
 }
-</#compress>
+</@javacompress>
 <#-- @formatter:on -->

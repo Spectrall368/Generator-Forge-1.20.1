@@ -33,7 +33,7 @@
 
 package ${package}.fluid;
 
-<#compress>
+<@javacompress>
 public abstract class ${name}Fluid extends ForgeFlowingFluid {
 
 	public static final ForgeFlowingFluid.Properties PROPERTIES = new ForgeFlowingFluid.Properties(
@@ -108,5 +108,5 @@ public abstract class ${name}Fluid extends ForgeFlowingFluid {
 		}
 	}
 
-}</#compress>
+}</@javacompress>
 <#-- @formatter:on -->

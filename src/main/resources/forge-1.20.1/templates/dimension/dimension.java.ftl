@@ -34,7 +34,7 @@
 
 package ${package}.world.dimension;
 
-<#compress>
+<@javacompress>
 @Mod.EventBusSubscriber public class ${name}Dimension {
 
 	<#if data.useCustomEffects>
@@ -92,4 +92,4 @@ package ${package}.world.dimension;
     </#if>
 
 }
-</#compress>
+</@javacompress>

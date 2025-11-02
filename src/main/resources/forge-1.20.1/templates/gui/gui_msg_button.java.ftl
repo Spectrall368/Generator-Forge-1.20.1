@@ -33,22 +33,10 @@
 
 package ${package}.network;
 
-@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public class ${name}ButtonMessage {
-
-	private final int buttonID, x, y, z;
+@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public record ${name}ButtonMessage(int buttonID, int x, int y, int z) {
 
 	public ${name}ButtonMessage(FriendlyByteBuf buffer) {
-		this.buttonID = buffer.readInt();
-		this.x = buffer.readInt();
-		this.y = buffer.readInt();
-		this.z = buffer.readInt();
-	}
-
-	public ${name}ButtonMessage(int buttonID, int x, int y, int z) {
-		this.buttonID = buttonID;
-		this.x = x;
-		this.y = y;
-		this.z = z;
+		this(buffer.readInt(), buffer.readInt(), buffer.readInt(), buffer.readInt());
 	}
 
 	public static void buffer(${name}ButtonMessage message, FriendlyByteBuf buffer) {
@@ -73,26 +61,25 @@ package ${package}.network;
 
 		<#assign btid = 0>
 		<#list data.getComponentsOfType("Button") as component>
-				<#if hasProcedure(component.onClick)>
-					if (buttonID == ${btid}) {
-						<@procedureOBJToCode component.onClick/>
-					}
-				</#if>
-				<#assign btid +=1>
+			<#if hasProcedure(component.onClick)>
+				if (buttonID == ${btid}) {
+					<@procedureOBJToCode component.onClick/>
+				}
+			</#if>
+			<#assign btid +=1>
 		</#list>
 		<#list data.getComponentsOfType("ImageButton") as component>
-				<#if hasProcedure(component.onClick)>
-					if (buttonID == ${btid}) {
-						<@procedureOBJToCode component.onClick/>
-					}
-				</#if>
-				<#assign btid +=1>
+			<#if hasProcedure(component.onClick)>
+				if (buttonID == ${btid}) {
+					<@procedureOBJToCode component.onClick/>
+				}
+			</#if>
+			<#assign btid +=1>
 		</#list>
 	}
 
 	@SubscribeEvent public static void registerMessage(FMLCommonSetupEvent event) {
 		${JavaModName}.addNetworkMessage(${name}ButtonMessage.class, ${name}ButtonMessage::buffer, ${name}ButtonMessage::new, ${name}ButtonMessage::handler);
 	}
-
 }
 <#-- @formatter:on -->

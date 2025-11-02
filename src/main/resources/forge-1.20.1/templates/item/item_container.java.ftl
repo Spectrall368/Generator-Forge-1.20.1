@@ -32,7 +32,7 @@
 
 package ${package}.item.inventory;
 
-<#compress>
+<@javacompress>
 @Mod.EventBusSubscriber public class ${name}InventoryCapability implements ICapabilitySerializable<CompoundTag> {
 
 	@SubscribeEvent public static void onItemDropped(ItemTossEvent event) {
@@ -81,6 +81,6 @@ package ${package}.item.inventory;
 	}
 
 }
-</#compress>
+</@javacompress>
 
 <#-- @formatter:on -->

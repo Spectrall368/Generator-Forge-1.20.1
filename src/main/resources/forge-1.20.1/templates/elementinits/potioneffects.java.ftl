@@ -49,7 +49,7 @@ package ${package}.init;
 
 	<#if mobHurt?size != 0>
 	@SubscribeEvent public static void onMobHurt(LivingHurtEvent event) {
-        <#compress>
+        <@javacompress>
         LivingEntity entity = event.getEntity();
 		<#list mobHurt as effect>
 		if (entity.hasEffect(${JavaModName}MobEffects.${effect.getModElement().getRegistryNameUpper()}.get())) {
@@ -65,13 +65,13 @@ package ${package}.init;
 			}/>
 		}<#sep>else
 		</#list>
-        </#compress>
+        </@javacompress>
     }
 	</#if>
 
 	<#if mobRemoved?size != 0>
 	@SubscribeEvent public static void onMobRemoved(LivingDeathEvent event) {
-        <#compress>
+        <@javacompress>
         LivingEntity entity = event.getEntity();
         Entity.RemovalReason reason = entity.getRemovalReason();
         if (reason != null && reason == Entity.RemovalReason.KILLED) {
@@ -88,7 +88,7 @@ package ${package}.init;
             }<#sep>else
             </#list>
         }
-        </#compress>
+        </@javacompress>
     }
 	</#if>
 }

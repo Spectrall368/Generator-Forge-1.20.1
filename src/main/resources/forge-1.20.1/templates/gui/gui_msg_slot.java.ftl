@@ -33,26 +33,10 @@
 
 package ${package}.network;
 
-@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public class ${name}SlotMessage {
-
-	private final int slotID, x, y, z, changeType, meta;
-
-	public ${name}SlotMessage(int slotID, int x, int y, int z, int changeType, int meta) {
-		this.slotID = slotID;
-		this.x = x;
-		this.y = y;
-		this.z = z;
-		this.changeType = changeType;
-		this.meta = meta;
-	}
+@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public record ${name}SlotMessage(int slotID, int x, int y, int z, int changeType, int meta) {
 
 	public ${name}SlotMessage(FriendlyByteBuf buffer) {
-		this.slotID = buffer.readInt();
-		this.x = buffer.readInt();
-		this.y = buffer.readInt();
-		this.z = buffer.readInt();
-		this.changeType = buffer.readInt();
-		this.meta = buffer.readInt();
+		this(buffer.readInt(), buffer.readInt(), buffer.readInt(), buffer.readInt(), buffer.readInt(), buffer.readInt());
 	}
 
 	public static void buffer(${name}SlotMessage message, FriendlyByteBuf buffer) {
@@ -103,6 +87,5 @@ package ${package}.network;
 	@SubscribeEvent public static void registerMessage(FMLCommonSetupEvent event) {
 		${JavaModName}.addNetworkMessage(${name}SlotMessage.class, ${name}SlotMessage::buffer, ${name}SlotMessage::new, ${name}SlotMessage::handler);
 	}
-
 }
 <#-- @formatter:on -->

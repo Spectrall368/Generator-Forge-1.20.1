@@ -1,0 +1,2 @@
+(${input$entity} instanceof LivingEntity _livingEntity${cbi} && _livingEntity${cbi}.getAttribute(${generator.map(field$attribute, "attributes")})
+	.getModifiers().stream().anyMatch((e) -> e.name.equals(${'"' + modid + ':' + field$name + '"'})))
