@@ -2,7 +2,7 @@
 @Mod.EventBusSubscriber public class ${name}Procedure {
 	@SubscribeEvent public static void whenEntityUsesTotem(LivingUseTotemEvent event) {
 		if (event!=null && event.getEntity()!=null) {
-			<#assign dependenciesCode><#compress>
+			<#assign dependenciesCode>
 			<@procedureDependenciesCode dependencies, {
 				"x": "event.getEntity().getX()",
 				"y": "event.getEntity().getY()",
@@ -15,7 +15,7 @@
 				"itemstack": "event.getTotem()",
 				"event": "event"
 				}/>
-			</#compress></#assign>
+			</#assign>
 			execute(event<#if dependenciesCode?has_content>,</#if>${dependenciesCode});
 		}
 	}
