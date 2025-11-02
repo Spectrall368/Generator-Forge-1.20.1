@@ -351,9 +351,6 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implemen
 	@Override protected void containerTick() {
 		super.containerTick();
 
-		int x = ${name}Screen.this.x; <#-- x and y provided by buttons are in-GUI, not in-world coordinates -->
-		int y = ${name}Screen.this.y;
-
 		<#list textFields as component>
 			${component.getName()}.tick();
 		</#list>
