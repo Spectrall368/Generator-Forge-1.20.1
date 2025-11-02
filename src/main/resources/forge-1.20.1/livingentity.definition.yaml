@@ -20,7 +20,7 @@ unmodifiable_ai_bases: [ Bat, MagmaCube, Slime ]
 
 tags:
   - tag: ENTITIES:minecraft:raiders
-    condition: "${data.mobBehaviourType == 'Raider'}"
+    condition: "mobBehaviourType %= Raider"
 
   - tag: GAME_EVENTS:minecraft:@registryname_can_listen
     condition:
