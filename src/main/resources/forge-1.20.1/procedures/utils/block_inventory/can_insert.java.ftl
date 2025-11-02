@@ -3,7 +3,7 @@ public static boolean canInsertInBlockInventory(LevelAccessor world, BlockPos po
     BlockEntity entity = level.getBlockEntity(pos);
     if (entity != null && slotId >= 0)
 		entity.getCapability(ForgeCapabilities.ITEM_HANDLER, null)
-		    .ifPresent(capability -> { if(slotId < capability.getSlots()) result.set(capability.isItemValid(slotId, itemstack))});
+		    .ifPresent(capability -> { if(slotId < capability.getSlots()) result.set(capability.isItemValid(slotId, itemstack));});
 
 	return result.get();
 }
