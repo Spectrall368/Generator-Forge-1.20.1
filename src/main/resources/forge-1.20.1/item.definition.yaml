@@ -66,6 +66,8 @@ list_templates:
 tags:
   - tag: ITEMS:minecraft:music_discs
     condition: isMusicDisc
+  - tag: ITEMS:minecraft:piglin_loved
+    condition: isPiglinCurrency
 
 localizationkeys:
   - key: item.@modid.@registryname

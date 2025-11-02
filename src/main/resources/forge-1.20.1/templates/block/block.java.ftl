@@ -36,12 +36,14 @@
 
 <#assign filteredCustomProperties = data.customProperties?filter(e ->
 	e.property().getName().startsWith("CUSTOM:") || generator.map(e.property().getName(), "blockstateproperties") != "")>
-
+<#if data.blockBase?has_content && data.blockBase == "Wall">
+	<#assign filteredCustomProperties = []>
+</#if>
 package ${package}.block;
 
 import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 
-<#compress>
+<@javacompress>
 public class ${name}Block extends
 	<#if data.hasGravity>
 		FallingBlock
@@ -58,7 +60,7 @@ public class ${name}Block extends
 	<#if data.hasInventory>
 		<#assign interfaces += ["EntityBlock"]>
 	</#if>
-	<#if data.isBonemealable>
+	<#if data.isBonemealable && !(data.blockBase?has_content && data.blockBase == "TrapDoor")>
 		<#assign interfaces += ["BonemealableBlock"]>
 	</#if>
 	<#if interfaces?size gt 0>
@@ -199,6 +201,9 @@ public class ${name}Block extends
 				super(<@blockProperties/>, BlockSetType.${data.blockSetType}, <#if data.blockSetType == "OAK">30, true<#else>20, false</#if>);
 			<#elseif data.blockBase == "FenceGate">
 				super(<@blockProperties/>, WoodType.OAK);
+			<#elseif data.blockBase == "FlowerPot">
+				super(() -> (FlowerPotBlock) Blocks.FLOWER_POT, () -> ${mappedBlockToBlock(data.pottedPlant)}, <@blockProperties/>);
+				((FlowerPotBlock) Blocks.FLOWER_POT).addPlant(new ResourceLocation("${mappedMCItemToRegistryName(data.pottedPlant)}"), () -> this);
 			<#else>
 				super(<@blockProperties/>);
 			</#if>
@@ -471,13 +476,32 @@ public class ${name}Block extends
 	}
 	</#if>
 
+	<#if data.strippingResult?? && !data.strippingResult.isEmpty()>
+	@Override public BlockState getToolModifiedState(BlockState blockstate, UseOnContext context, ToolAction itemAbility, boolean simulate) {
+		if (ToolActions.AXE_STRIP == itemAbility && context.getItemInHand().canPerformAction(itemAbility)) {
+			return ${mappedBlockToBlock(data.strippingResult)}.withPropertiesOf(blockstate);
+		}
+		return super.getToolModifiedState(blockstate, context, itemAbility, simulate);
+	}
+	</#if>
+
 	<#if data.creativePickItem?? && !data.creativePickItem.isEmpty()>
 	@Override public ItemStack getCloneItemStack(BlockState state, HitResult target, BlockGetter world, BlockPos pos, Player player) {
 		return ${mappedMCItemToItemStackCode(data.creativePickItem, 1)};
 	}
-	<#elseif !data.hasBlockItem>
+	<#elseif !data.hasBlockItem && (data.blockBase! != "FlowerPot")>
 	@Override public ItemStack getCloneItemStack(BlockState state, HitResult target, BlockGetter world, BlockPos pos, Player player) {
 		return ItemStack.EMPTY;
+	}
+	</#if>
+
+	<#if data.xpAmountMax != 0>
+	@Override public int getExpDrop(BlockState state, LevelReader level, RandomSource randomSource, BlockPos pos, int fortuneLevel, int silkTouchLevel) {
+		<#if data.xpAmountMin == data.xpAmountMax>
+		return ${data.xpAmountMin};
+		<#else>
+		return Mth.randomBetweenInclusive(randomSource, ${data.xpAmountMin}, ${data.xpAmountMax});
+		</#if>
 	}
 	</#if>
 
@@ -546,6 +570,8 @@ public class ${name}Block extends
 
 	<@onEntityWalksOn data.onEntityWalksOn/>
 
+	<@onEntityFallsOn data.onEntityFallsOn/>
+
 	<@onHitByProjectile data.onHitByProjectile/>
 
 	<@onBlockPlacedBy data.onBlockPlayedBy/>
@@ -590,7 +616,7 @@ public class ${name}Block extends
 	}
 	</#if>
 
-	<#if data.isBonemealable>
+	<#if data.isBonemealable && !(data.blockBase?has_content && data.blockBase == "TrapDoor")>
 	<@bonemealEvents data.isBonemealTargetCondition, data.bonemealSuccessCondition, data.onBonemealSuccess/>
 	</#if>
 
@@ -727,5 +753,5 @@ public class ${name}Block extends
 	</#list>
 
 }
-</#compress>
+</@javacompress>
 <#-- @formatter:on -->
