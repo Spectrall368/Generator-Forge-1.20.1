@@ -15,7 +15,7 @@ scopes:
     get: ${JavaModName}Variables.WorldVariables.get(world).${name}
     set: |
       ${JavaModName}Variables.WorldVariables.get(world).${name} = ${opt.removeParentheses(value)};
-      ${JavaModName}Variables.WorldVariables.get(world).syncData(world);
+      <@tail>${JavaModName}Variables.WorldVariables.get(world).markSyncDirty();</@tail>
   global_map:
     init: public String ${var.getName()} = "${JavaConventions.escapeStringForJava(var.getValue())}";
     read: ${var.getName()} = nbt.getString("${var.getName()}");
@@ -23,34 +23,26 @@ scopes:
     get: ${JavaModName}Variables.MapVariables.get(world).${name}
     set: |
       ${JavaModName}Variables.MapVariables.get(world).${name} = ${opt.removeParentheses(value)};
-      ${JavaModName}Variables.MapVariables.get(world).syncData(world);
+      <@tail>${JavaModName}Variables.MapVariables.get(world).markSyncDirty();</@tail>
   player_lifetime:
     init: public String ${var.getName()} = "${JavaConventions.escapeStringForJava(var.getValue())}";
     read: ${var.getName()} = nbt.getString("${var.getName()}");
     write: nbt.putString("${var.getName()}", ${var.getName()});
-    get: |
-      ((${entity}.getCapability(${JavaModName}Variables.PLAYER_VARIABLES_CAPABILITY, null)
-        .orElseGet(${JavaModName}Variables.PlayerVariables::new)).${name})
+    get: ${entity}.getCapability(${JavaModName}Variables.PLAYER_VARIABLES).orElseGet(${JavaModName}Variables.PlayerVariables::new).${name}
     set: |
-      {
-        String _setval = ${opt.removeParentheses(value)};
-        ${entity}.getCapability(${JavaModName}Variables.PLAYER_VARIABLES_CAPABILITY, null).ifPresent(capability -> {
-          capability.${name} = _setval;
-          capability.syncPlayerVariables(${entity});
+      <@head>{${entity}.getCapability(${JavaModName}Variables.PLAYER_VARIABLES);</@head>
+          capability.${name} = ${opt.removeParentheses(value)};
+          <@tail>capability.markSyncDirty();
         });
-      }
+      }</@tail>
   player_persistent:
     init: public String ${var.getName()} = "${JavaConventions.escapeStringForJava(var.getValue())}";
     read: ${var.getName()} = nbt.getString("${var.getName()}");
     write: nbt.putString("${var.getName()}", ${var.getName()});
-    get: |
-      ((${entity}.getCapability(${JavaModName}Variables.PLAYER_VARIABLES_CAPABILITY, null)
-        .orElseGet(${JavaModName}Variables.PlayerVariables::new)).${name})
+    get: ${entity}.getCapability(${JavaModName}Variables.PLAYER_VARIABLES).orElseGet(${JavaModName}Variables.PlayerVariables::new).${name}
     set: |
-      {
-        String _setval = ${opt.removeParentheses(value)};
-        ${entity}.getCapability(${JavaModName}Variables.PLAYER_VARIABLES_CAPABILITY, null).ifPresent(capability -> {
-          capability.${name} = _setval;
-          capability.syncPlayerVariables(${entity});
+      <@head>{${entity}.getCapability(${JavaModName}Variables.PLAYER_VARIABLES);</@head>
+          capability.${name} = ${opt.removeParentheses(value)};
+          <@tail>capability.markSyncDirty();
         });
-      }
+      }</@tail>
