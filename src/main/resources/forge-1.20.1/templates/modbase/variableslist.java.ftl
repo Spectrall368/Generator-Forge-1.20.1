@@ -3,8 +3,6 @@ package ${package}.network;
 
 import ${package}.${JavaModName};
 
-import net.minecraft.nbt.Tag;
-
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public class ${JavaModName}Variables {
 
 	<#if w.hasVariablesOfScope("GLOBAL_SESSION")>
