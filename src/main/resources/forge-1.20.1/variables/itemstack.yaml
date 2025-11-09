@@ -45,7 +45,7 @@ scopes:
     get: /*@ItemStack*/${entity}.getCapability(${JavaModName}Variables.PLAYER_VARIABLES).orElseGet(${JavaModName}Variables.PlayerVariables::new).${name}
     set: |
       <#include "mcitems.ftl">
-      <@head>{${entity}.getCapability(${JavaModName}Variables.PLAYER_VARIABLES.ifPresent(capability -> {</@head>
+      <@head>{${entity}.getCapability(${JavaModName}Variables.PLAYER_VARIABLES).ifPresent(capability -> {</@head>
           capability.${name} = ${mappedMCItemToItemStackCode(value, 1)}.copy();
           <@tail>capability.markSyncDirty();
         });
