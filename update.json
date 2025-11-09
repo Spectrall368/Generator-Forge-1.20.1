@@ -1,8 +1,8 @@
 {
   "generator-1.20.1": {
-    "latest": "1.1",
+    "latest": "1.2",
 	"changes": [
-		"MCreator 2025.3 update!"
+		"Better variable networking"
 	]
   }
 }
