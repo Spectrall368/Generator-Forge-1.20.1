@@ -85,8 +85,8 @@ import net.minecraft.nbt.Tag;
         <#if w.hasVariablesOfScope("GLOBAL_WORLD") || w.hasVariablesOfScope("GLOBAL_MAP")>
         @SubscribeEvent public static void onPlayerLoggedIn(PlayerEvent.PlayerLoggedInEvent event) {
             if (event.getEntity() instanceof ServerPlayer player) {
-                SavedData mapdata = MapVariables.get(event.getEntity().level());
-                SavedData worlddata = WorldVariables.get(event.getEntity().level());
+                SavedData mapdata = MapVariables.get(player.level());
+                SavedData worlddata = WorldVariables.get(player.level());
                 if(mapdata != null)
                     ${JavaModName}.PACKET_HANDLER.send(PacketDistributor.PLAYER.with(() -> player), new SavedDataSyncMessage(0, mapdata));
                 if(worlddata != null)
