@@ -36,43 +36,49 @@ import net.minecraft.nbt.Tag;
 		<#if w.hasVariablesOfScope("PLAYER_LIFETIME") || w.hasVariablesOfScope("PLAYER_PERSISTENT")>
         @SubscribeEvent public static void onPlayerLoggedInSyncPlayerVariables(PlayerEvent.PlayerLoggedInEvent event) {
             if (event.getEntity() instanceof ServerPlayer player)
-                ${JavaModName}.PACKET_HANDLER.send(PacketDistributor.PLAYER.with(() -> player), new PlayerVariablesSyncMessage(player.getCapability(PLAYER_VARIABLES).orElseGet(() -> null)));
+                player.getCapability(PLAYER_VARIABLES).ifPresent(capability -> ${JavaModName}.PACKET_HANDLER.send(PacketDistributor.PLAYER.with(() -> player), new PlayerVariablesSyncMessage(capability)));
         }
 
         @SubscribeEvent public static void onPlayerRespawnedSyncPlayerVariables(PlayerEvent.PlayerRespawnEvent event) {
             if (event.getEntity() instanceof ServerPlayer player)
-                ${JavaModName}.PACKET_HANDLER.send(PacketDistributor.PLAYER.with(() -> player), new PlayerVariablesSyncMessage(player.getCapability(PLAYER_VARIABLES).orElseGet(() -> null)));
+                player.getCapability(PLAYER_VARIABLES).ifPresent(capability -> ${JavaModName}.PACKET_HANDLER.send(PacketDistributor.PLAYER.with(() -> player), new PlayerVariablesSyncMessage(capability)));
         }
 
         @SubscribeEvent public static void onPlayerChangedDimensionSyncPlayerVariables(PlayerEvent.PlayerChangedDimensionEvent event) {
             if (event.getEntity() instanceof ServerPlayer player)
-                ${JavaModName}.PACKET_HANDLER.send(PacketDistributor.PLAYER.with(() -> player), new PlayerVariablesSyncMessage(player.getCapability(PLAYER_VARIABLES).orElseGet(() -> null)));
+                player.getCapability(PLAYER_VARIABLES).ifPresent(capability -> ${JavaModName}.PACKET_HANDLER.send(PacketDistributor.PLAYER.with(() -> player), new PlayerVariablesSyncMessage(capability)));
         }
 
         @SubscribeEvent public static void onPlayerTickUpdateSyncPlayerVariables(TickEvent.PlayerTickEvent event) {
-            if (event.phase == TickEvent.Phase.END && event.player instanceof ServerPlayer player && player.getCapability(PLAYER_VARIABLES).orElseGet(PlayerVariables::new)._syncDirty) {
-                ${JavaModName}.PACKET_HANDLER.send(PacketDistributor.PLAYER.with(() -> player), new PlayerVariablesSyncMessage(player.getCapability(PLAYER_VARIABLES).orElseGet(() -> null)));
-                player.getCapability(PLAYER_VARIABLES).ifPresent(capability -> capability._syncDirty = false);
+            if (event.phase == TickEvent.Phase.END && event.player instanceof ServerPlayer player) {
+                player.getCapability(PLAYER_VARIABLES).ifPresent(capability -> {
+                    if (capability._syncDirty) {
+                        ${JavaModName}.PACKET_HANDLER.send(PacketDistributor.PLAYER.with(() -> player), new PlayerVariablesSyncMessage(capability));
+                        capability._syncDirty = false;
+                    }
+                });
             }
         }
 
         @SubscribeEvent public static void clonePlayer(PlayerEvent.Clone event) {
-			event.getOriginal().revive();
+		    event.getOriginal().revive();
 
-            PlayerVariables original = event.getOriginal().getCapability(PLAYER_VARIABLES).orElseGet(PlayerVariables::new);
-            PlayerVariables clone = event.getEntity().getCapability(PLAYER_VARIABLES).orElseGet(PlayerVariables::new);
-            <#list variables as var>
-                <#if var.getScope().name() == "PLAYER_PERSISTENT">
-                clone.${var.getName()} = original.${var.getName()};
-                </#if>
-            </#list>
-            if(!event.isWasDeath()) {
-                <#list variables as var>
-                    <#if var.getScope().name() == "PLAYER_LIFETIME">
-                    clone.${var.getName()} = original.${var.getName()};
-                    </#if>
-                </#list>
-            }
+		    event.getOriginal().getCapability(PLAYER_VARIABLES).ifPresent(original -> {
+		        event.getEntity().getCapability(PLAYER_VARIABLES).ifPresent(clone -> {
+                    <#list variables as var>
+                        <#if var.getScope().name() == "PLAYER_PERSISTENT">
+                        clone.${var.getName()} = original.${var.getName()};
+                        </#if>
+                    </#list>
+                    if(!event.isWasDeath()) {
+                        <#list variables as var>
+                            <#if var.getScope().name() == "PLAYER_LIFETIME">
+                            clone.${var.getName()} = original.${var.getName()};
+                            </#if>
+                        </#list>
+                    }
+		        });
+		    });
         }
         </#if>
 
@@ -90,7 +96,7 @@ import net.minecraft.nbt.Tag;
 
         @SubscribeEvent public static void onPlayerChangedDimension(PlayerEvent.PlayerChangedDimensionEvent event) {
             if (event.getEntity() instanceof ServerPlayer player) {
-                SavedData worlddata = WorldVariables.get(event.getEntity().level());
+                SavedData worlddata = WorldVariables.get(player.level());
                 if(worlddata != null)
                     ${JavaModName}.PACKET_HANDLER.send(PacketDistributor.PLAYER.with(() -> player), new SavedDataSyncMessage(1, worlddata));
             }
