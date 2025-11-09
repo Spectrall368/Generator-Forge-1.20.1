@@ -17,7 +17,7 @@ import net.minecraft.nbt.Tag;
 
 	@SubscribeEvent public static void init(FMLCommonSetupEvent event) {
 		<#if w.hasVariablesOfScope("GLOBAL_WORLD") || w.hasVariablesOfScope("GLOBAL_MAP")>
-			${JavaModName}.addNetworkMessage(SavedDataSyncMessage.class, SavedDataSyncMessage::buffer, SavedDataSyncMessage::new, SavedDataSyncMessage::handler);
+			${JavaModName}.addNetworkMessage(SavedDataSyncMessage.class, SavedDataSyncMessage::buffer, SavedDataSyncMessage::new, SavedDataSyncMessage::handleData);
 		</#if>
 
 		<#if w.hasVariablesOfScope("PLAYER_LIFETIME") || w.hasVariablesOfScope("PLAYER_PERSISTENT")>
@@ -196,51 +196,51 @@ import net.minecraft.nbt.Tag;
 				return clientSide;
 			}
 		}
-
 	}
 
 	public static class SavedDataSyncMessage {
+		private final int dataType;
+		private final SavedData data;
 
-		private final int type;
-		private SavedData data;
-
-		public SavedDataSyncMessage(FriendlyByteBuf buffer) {
-			this.type = buffer.readInt();
-
-			CompoundTag nbt = buffer.readNbt();
-			if (nbt != null) {
-				this.data = this.type == 0 ? new MapVariables() : new WorldVariables();
-				if(this.data instanceof MapVariables mapVariables)
-					mapVariables.read(nbt);
-				else if(this.data instanceof WorldVariables worldVariables)
-					worldVariables.read(nbt);
-			}
-		}
-
-		public SavedDataSyncMessage(int type, SavedData data) {
-			this.type = type;
+		public SavedDataSyncMessage(int dataType, SavedData data) {
+			this.dataType = dataType;
 			this.data = data;
 		}
 
-		public static void buffer(SavedDataSyncMessage message, FriendlyByteBuf buffer) {
-			buffer.writeInt(message.type);
-			if (message.data != null)
-				buffer.writeNbt(message.data.save(new CompoundTag()));
+		public SavedDataSyncMessage(FriendlyByteBuf buffer) {
+		    int dataType = buffer.readInt();
+		    CompoundTag nbt = buffer.readNbt();
+		    SavedData data = null;
+		    if (nbt != null) {
+		        data = dataType == 0 ? new MapVariables() : new WorldVariables();
+		        if(data instanceof MapVariables mapVariables)
+		            mapVariables.read(nbt);
+		        else if(data instanceof WorldVariables worldVariables)
+		            worldVariables.read(nbt);
+		    }
+
+		    this.dataType = dataType;
+		    this.data = data;
 		}
 
-		public static void handler(SavedDataSyncMessage message, Supplier<NetworkEvent.Context> contextSupplier) {
+		public static void buffer(SavedDataSyncMessage message, FriendlyByteBuf buffer) {
+		    buffer.writeInt(message.dataType);
+		    if (message.data != null)
+		        buffer.writeNbt(message.data.save(new CompoundTag()));
+		}
+
+		public static void handleData(final SavedDataSyncMessage message, final Supplier<NetworkEvent.Context> contextSupplier) {
 			NetworkEvent.Context context = contextSupplier.get();
 			context.enqueueWork(() -> {
-				if (!context.getDirection().getReceptionSide().isServer() && message.data != null) {
-					if (message.type == 0)
-						MapVariables.clientSide = (MapVariables) message.data;
+			    if (!context.getDirection().getReceptionSide().isServer() && message.data != null) {
+					if (message.dataType == 0)
+						MapVariables.clientSide.read(message.data.save(new CompoundTag()));
 					else
-						WorldVariables.clientSide = (WorldVariables) message.data;
+						WorldVariables.clientSide.read(message.data.save(new CompoundTag()));
 				}
 			});
 			context.setPacketHandled(true);
 		}
-
 	}
 	</#if>
 
