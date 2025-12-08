@@ -261,32 +261,32 @@ public class ${name}Entity extends ${extendsClass} <#if interfaces?size gt 0>imp
 
    	<#if data.livingSound?has_content && data.livingSound.getMappedValue()?has_content>
 	@Override public SoundEvent getAmbientSound() {
-		return ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.parse("${data.livingSound}"));
+		return ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.livingSound}"));
 	}
 	</#if>
 
    	<#if data.stepSound?has_content && data.stepSound.getMappedValue()?has_content>
 	@Override public void playStepSound(BlockPos pos, BlockState blockIn) {
-		this.playSound(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.parse("${data.stepSound}")), 0.15f, 1);
+		this.playSound(ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.stepSound}")), 0.15f, 1);
 	}
 	</#if>
 
 	<#if data.hurtSound?has_content && data.hurtSound.getMappedValue()?has_content>
 	@Override public SoundEvent getHurtSound(DamageSource ds) {
-		return ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.parse("${data.hurtSound}"));
+		return ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.hurtSound}"));
 	}
 	</#if>
 
 	<#if data.deathSound?has_content && data.deathSound.getMappedValue()?has_content>
 	@Override public SoundEvent getDeathSound() {
-		return ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.parse("${data.deathSound}"));
+		return ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.deathSound}"));
 	}
 	</#if>
 
 	<#if data.mobBehaviourType == "Raider">
 	@Override public SoundEvent getCelebrateSound() {
 		<#if data.raidCelebrationSound?has_content && data.raidCelebrationSound.getMappedValue()?has_content>
-		return ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.parse("${data.raidCelebrationSound}"));
+		return ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.raidCelebrationSound}"));
 		<#else>
 		return SoundEvents.EMPTY;
 		</#if>
@@ -1040,7 +1040,7 @@ public class ${name}Entity extends ${extendsClass} <#if interfaces?size gt 0>imp
 
 		<#if data.vibrationalEvents?has_content>
 		@Override public TagKey<GameEvent> getListenableEvents() {
-			return TagKey.create(Registries.GAME_EVENT, ResourceLocation.parse("${registryname}_can_listen"));
+			return TagKey.create(Registries.GAME_EVENT, new ResourceLocation("${registryname}_can_listen"));
 		}
 		</#if>
 

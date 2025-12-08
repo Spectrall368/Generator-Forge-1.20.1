@@ -50,7 +50,7 @@ import org.apache.logging.log4j.Logger;
 
 	private static final String PROTOCOL_VERSION = "1";
 	public static final SimpleChannel PACKET_HANDLER = NetworkRegistry.newSimpleChannel(
-			ResourceLocation.fromNamespaceAndPath(MODID, MODID),
+			new ResourceLocation(MODID, MODID),
 			() -> PROTOCOL_VERSION,
 			PROTOCOL_VERSION::equals,
 			<#if settings.isServerSideOnly()>clientVersion -> true<#else>PROTOCOL_VERSION::equals</#if>

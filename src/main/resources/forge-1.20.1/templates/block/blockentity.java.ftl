@@ -301,7 +301,7 @@ public class ${name}BlockEntity extends RandomizableContainerBlockEntity impleme
 
 		<#if data.vibrationalEvents?has_content>
 		@Override public TagKey<GameEvent> getListenableEvents() {
-			return TagKey.create(Registries.GAME_EVENT, ResourceLocation.parse("${registryname}_can_listen"));
+			return TagKey.create(Registries.GAME_EVENT, new ResourceLocation("${registryname}_can_listen"));
 		}
 		</#if>
 

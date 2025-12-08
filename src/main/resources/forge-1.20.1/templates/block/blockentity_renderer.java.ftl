@@ -40,7 +40,7 @@ package ${package}.client.renderer.block;
 
 	${name}Renderer(BlockEntityRendererProvider.Context context) {
 		this.model = new CustomHierarchicalModel(context.bakeLayer(${data.customModelName.split(":")[0]}.LAYER_LOCATION));
-		this.texture = ResourceLocation.parse("${data.texture.format("%s:textures/block/%s")}.png");
+		this.texture = new ResourceLocation("${data.texture.format("%s:textures/block/%s")}.png");
 	}
 
 	<#if data.animations?has_content>

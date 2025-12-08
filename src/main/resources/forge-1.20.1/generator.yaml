@@ -1,7 +1,7 @@
 name: Forge for @minecraft (@buildfileversion)
 status: deprecated
-buildfileversion: 47.4.10
-subversion: 1.5 # force setup re-run to update build script to downlaod Mixin Extras
+buildfileversion: 47.4.13
+subversion: 1.6 # force setup re-run to update build script to downlaod Mixin Extras
 
 import:
   - datapack-1.20.1

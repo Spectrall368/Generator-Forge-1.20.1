@@ -157,7 +157,7 @@ public class ${JavaModName}Items {
 			<#if item.getModElement().getTypeString() == "item">
 				<#list item.customProperties.entrySet() as property>
 				ItemProperties.register(${item.getModElement().getRegistryNameUpper()}.get(),
-					ResourceLocation.parse("${modid}:${item.getModElement().getRegistryName()}_${property.getKey()}"),
+					new ResourceLocation("${modid}:${item.getModElement().getRegistryName()}_${property.getKey()}"),
 					(itemStackToRender, clientWorld, entity, itemEntityId) ->
 						<#if hasProcedure(property.getValue())>
 							(float) <@procedureCode property.getValue(), {
@@ -172,8 +172,8 @@ public class ${JavaModName}Items {
 				);
 				</#list>
 			<#elseif item.getModElement().getTypeString() == "tool" && item.toolType == "Shield">
-				ItemProperties.register(${item.getModElement().getRegistryNameUpper()}.get(), ResourceLocation.parse("blocking"),
-					ItemProperties.getProperty(Items.SHIELD, ResourceLocation.parse("blocking")));
+				ItemProperties.register(${item.getModElement().getRegistryNameUpper()}.get(), new ResourceLocation("blocking"),
+					ItemProperties.getProperty(Items.SHIELD, new ResourceLocation("blocking")));
 			</#if>
 		</#list>
 		</@javacompress>

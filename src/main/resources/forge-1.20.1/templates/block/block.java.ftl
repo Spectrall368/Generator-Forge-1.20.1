@@ -110,11 +110,11 @@ public class ${name}Block extends
 		</#if>
 		<#if data.isCustomSoundType>
 			.sound(new ForgeSoundType(1.0f, 1.0f,
-				() -> ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.parse("${data.breakSound}")),
-				() -> ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.parse("${data.stepSound}")),
-				() -> ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.parse("${data.placeSound}")),
-				() -> ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.parse("${data.hitSound}")),
-				() -> ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.parse("${data.fallSound}"))
+				() -> ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.breakSound}")),
+				() -> ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.stepSound}")),
+				() -> ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.placeSound}")),
+				() -> ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.hitSound}")),
+				() -> ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.fallSound}"))
 			))
 		<#elseif data.soundOnStep != "STONE">
 			.sound(SoundType.${data.soundOnStep})
@@ -203,7 +203,7 @@ public class ${name}Block extends
 				super(<@blockProperties/>, WoodType.OAK);
 			<#elseif data.blockBase == "FlowerPot">
 				super(() -> (FlowerPotBlock) Blocks.FLOWER_POT, () -> ${mappedBlockToBlock(data.pottedPlant)}, <@blockProperties/>);
-				((FlowerPotBlock) Blocks.FLOWER_POT).addPlant(ResourceLocation.parse("${mappedMCItemToRegistryName(data.pottedPlant)}"), () -> this);
+				((FlowerPotBlock) Blocks.FLOWER_POT).addPlant(new ResourceLocation("${mappedMCItemToRegistryName(data.pottedPlant)}"), () -> this);
 			<#else>
 				super(<@blockProperties/>);
 			</#if>

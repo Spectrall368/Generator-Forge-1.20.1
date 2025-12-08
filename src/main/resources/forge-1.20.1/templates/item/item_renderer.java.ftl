@@ -69,15 +69,15 @@ package ${package}.client.renderer.item;
 		</#if>
 
 		EntityModel<?> model = this.models.get(0);
-		ResourceLocation texture = ResourceLocation.parse("${data.texture.format("%s:textures/item/%s")}.png");
+		ResourceLocation texture = new ResourceLocation("${data.texture.format("%s:textures/item/%s")}.png");
 		<#list data.getModels() as model>
 			<#if model.hasCustomJAVAModel()>
 			if (<#list model.stateMap.entrySet() as entry>
-					ItemProperties.getProperty(itemstack, ResourceLocation.parse("${generator.map(entry.getKey().getPrefixedName(registryname + "_"), "itemproperties")}"))
+					ItemProperties.getProperty(itemstack, new ResourceLocation("${generator.map(entry.getKey().getPrefixedName(registryname + "_"), "itemproperties")}"))
 						.call(itemstack, Minecraft.getInstance().level, Minecraft.getInstance().player, 0) >= ${entry.getValue()?is_boolean?then(entry.getValue()?then("1", "0"), entry.getValue())}
 				<#sep> && </#list>) {
 				model = models.get(${model?index + 1});
-				texture = ResourceLocation.parse("${model.texture.format("%s:textures/item/%s")}.png");
+				texture = new ResourceLocation("${model.texture.format("%s:textures/item/%s")}.png");
 			}
 			</#if>
 		</#list>

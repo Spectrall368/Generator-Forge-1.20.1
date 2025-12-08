@@ -38,13 +38,13 @@ package ${package}.item;
 <@javacompress>
 public class ${name}Item extends <#if data.hasBannerPatterns()>BannerPattern<#elseif data.isMusicDisc>Record</#if>Item {
 	<#if data.hasBannerPatterns()>
-	public static final TagKey<BannerPattern> PROVIDED_PATTERNS = TagKey.create(Registries.BANNER_PATTERN, ResourceLocation.fromNamespaceAndPath(${JavaModName}.MODID, "pattern_item/${registryname}"));
+	public static final TagKey<BannerPattern> PROVIDED_PATTERNS = TagKey.create(Registries.BANNER_PATTERN, new ResourceLocation(${JavaModName}.MODID, "pattern_item/${registryname}"));
 	</#if>
 
 	public ${name}Item() {
     super(<#if data.hasBannerPatterns()>PROVIDED_PATTERNS,
                 <#elseif data.isMusicDisc>
-                ${data.musicDiscAnalogOutput}, () -> ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.parse("${data.musicDiscMusic}")),
+                ${data.musicDiscAnalogOutput}, () -> ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.musicDiscMusic}")),
                 </#if>new Item.Properties()
 				<#if data.hasInventory()>
 				.stacksTo(1)
@@ -391,7 +391,7 @@ public class ${name}Item extends <#if data.hasBannerPatterns()>BannerPattern<#el
 			projectile.shootFromRotation(entity, entity.getXRot(), entity.getYRot(), 0, <#if data.rangedItemChargesPower>pullingPower * </#if>3.15f, 1.0F);
 			world.addFreshEntity(projectile);
 			world.playSound(null, entity.getX(), entity.getY(), entity.getZ(), ForgeRegistries.SOUND_EVENTS
-				.getValue(ResourceLocation.parse("entity.arrow.shoot")), SoundSource.PLAYERS, 1, 1f / (world.getRandom().nextFloat() * 0.5f + 1));
+				.getValue(new ResourceLocation("entity.arrow.shoot")), SoundSource.PLAYERS, 1, 1f / (world.getRandom().nextFloat() * 0.5f + 1));
 		</#if>
 
 		<#if data.damageCount != 0>

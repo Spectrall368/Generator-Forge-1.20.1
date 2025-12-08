@@ -275,7 +275,7 @@ import ${package}.${JavaModName};
 	@Mod.EventBusSubscriber private static class PlayerVariablesProvider implements ICapabilitySerializable<CompoundTag> {
 		@SubscribeEvent public static void onAttachCapabilities(AttachCapabilitiesEvent<Entity> event) {
 			if (event.getObject() instanceof Player && !(event.getObject() instanceof FakePlayer))
-				event.addCapability(ResourceLocation.fromNamespaceAndPath("${modid}", "player_variables"), new PlayerVariablesProvider());
+				event.addCapability(new ResourceLocation("${modid}", "player_variables"), new PlayerVariablesProvider());
 		}
 
 		private final PlayerVariables playerVariables = new PlayerVariables();
