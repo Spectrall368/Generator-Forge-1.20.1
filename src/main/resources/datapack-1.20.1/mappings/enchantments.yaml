@@ -1,41 +1,123 @@
-_default: Enchantments.BLOCK_EFFICIENCY
-_mcreator_map_template: "@JavaModNameEnchantments.@REGISTRYNAME.get()"
-PROTECTION: Enchantments.ALL_DAMAGE_PROTECTION
-FIRE_PROTECTION: Enchantments.FIRE_PROTECTION
-FEATHER_FALLING: Enchantments.FALL_PROTECTION
-BLAST_PROTECTION: Enchantments.BLAST_PROTECTION
-PROJECTILE_PROTECTION: Enchantments.PROJECTILE_PROTECTION
-RESPIRATION: Enchantments.RESPIRATION
-AQUA_AFFINITY: Enchantments.AQUA_AFFINITY
-THORNS: Enchantments.THORNS
-DEPTH_STRIDER: Enchantments.DEPTH_STRIDER
-FROST_WALKER: Enchantments.FROST_WALKER
-BINDING_CURSE: Enchantments.BINDING_CURSE
-SOUL_SPEED: Enchantments.SOUL_SPEED
-SWIFT_SNEAK: Enchantments.SWIFT_SNEAK
-SHARPNESS: Enchantments.SHARPNESS
-SMITE: Enchantments.SMITE
-BANE_OF_ARTHROPODS: Enchantments.BANE_OF_ARTHROPODS
-KNOCKBACK: Enchantments.KNOCKBACK
-FIRE_ASPECT: Enchantments.FIRE_ASPECT
-LOOTING: Enchantments.MOB_LOOTING
-SWEEPING: Enchantments.SWEEPING_EDGE
-EFFICIENCY: Enchantments.BLOCK_EFFICIENCY
-SILK_TOUCH: Enchantments.SILK_TOUCH
-UNBREAKING: Enchantments.UNBREAKING
-FORTUNE: Enchantments.BLOCK_FORTUNE
-POWER: Enchantments.POWER_ARROWS
-PUNCH: Enchantments.PUNCH_ARROWS
-FLAME: Enchantments.FLAMING_ARROWS
-INFINITY: Enchantments.INFINITY_ARROWS
-LUCK_OF_THE_SEA: Enchantments.FISHING_LUCK
-LURE: Enchantments.FISHING_SPEED
-LOYALTY: Enchantments.LOYALTY
-IMPALING: Enchantments.IMPALING
-RIPTIDE: Enchantments.RIPTIDE
-CHANNELING: Enchantments.CHANNELING
-MULTISHOT: Enchantments.MULTISHOT
-QUICK_CHARGE: Enchantments.QUICK_CHARGE
-PIERCING: Enchantments.PIERCING
-MENDING: Enchantments.MENDING
-VANISHING_CURSE: Enchantments.VANISHING_CURSE
+_default:
+  - Enchantments.BLOCK_EFFICIENCY
+  - efficiency
+_mcreator_map_template:
+  - "@JavaModNameEnchantments.@REGISTRYNAME.get()"
+  - "@modid:@registryname"
+PROTECTION:
+  - Enchantments.ALL_DAMAGE_PROTECTION
+  - protection
+FIRE_PROTECTION:
+  - Enchantments.FIRE_PROTECTION
+  - fire_protection
+FEATHER_FALLING:
+  - Enchantments.FALL_PROTECTION
+  - feather_falling
+BLAST_PROTECTION:
+  - Enchantments.BLAST_PROTECTION
+  - blast_protection
+PROJECTILE_PROTECTION:
+  - Enchantments.PROJECTILE_PROTECTION
+  - projectile_protection
+RESPIRATION:
+  - Enchantments.RESPIRATION
+  - respiration
+AQUA_AFFINITY:
+  - Enchantments.AQUA_AFFINITY
+  - aqua_affinity
+THORNS:
+  - Enchantments.THORNS
+  - thorns
+DEPTH_STRIDER:
+  - Enchantments.DEPTH_STRIDER
+  - depth_strider
+FROST_WALKER:
+  - Enchantments.FROST_WALKER
+  - frost_walker
+BINDING_CURSE:
+  - Enchantments.BINDING_CURSE
+  - binding_curse
+SOUL_SPEED:
+  - Enchantments.SOUL_SPEED
+  - soul_speed
+SWIFT_SNEAK:
+  - Enchantments.SWIFT_SNEAK
+  - swift_sneak
+SHARPNESS:
+  - Enchantments.SHARPNESS
+  - sharpness
+SMITE:
+  - Enchantments.SMITE
+  - smite
+BANE_OF_ARTHROPODS:
+  - Enchantments.BANE_OF_ARTHROPODS
+  - bane_of_arthropods
+KNOCKBACK:
+  - Enchantments.KNOCKBACK
+  - knockback
+FIRE_ASPECT:
+  - Enchantments.FIRE_ASPECT
+  - fire_aspect
+LOOTING:
+  - Enchantments.MOB_LOOTING
+  - looting
+SWEEPING:
+  - Enchantments.SWEEPING_EDGE
+  - sweeping_edge
+EFFICIENCY:
+  - Enchantments.BLOCK_EFFICIENCY
+  - efficiency
+SILK_TOUCH:
+  - Enchantments.SILK_TOUCH
+  - silk_touch
+UNBREAKING:
+  - Enchantments.UNBREAKING
+  - unbreaking
+FORTUNE:
+  - Enchantments.BLOCK_FORTUNE
+  - fortune
+POWER:
+  - Enchantments.POWER_ARROWS
+  - power
+PUNCH:
+  - Enchantments.PUNCH_ARROWS
+  - punch
+FLAME:
+  - Enchantments.FLAMING_ARROWS
+  - flame
+INFINITY:
+  - Enchantments.INFINITY_ARROWS
+  - infinity
+LUCK_OF_THE_SEA:
+  - Enchantments.FISHING_LUCK
+  - luck_of_the_sea
+LURE:
+  - Enchantments.FISHING_SPEED
+  - lure
+LOYALTY:
+  - Enchantments.LOYALTY
+  - loyalty
+IMPALING:
+  - Enchantments.IMPALING
+  - impaling
+RIPTIDE:
+  - Enchantments.RIPTIDE
+  - riptide
+CHANNELING:
+  - Enchantments.CHANNELING
+  - channeling
+MULTISHOT:
+  - Enchantments.MULTISHOT
+  - multishot
+QUICK_CHARGE:
+  - Enchantments.QUICK_CHARGE
+  - quick_charge
+PIERCING:
+  - Enchantments.PIERCING
+  - piercing
+MENDING:
+  - Enchantments.MENDING
+  - mending
+VANISHING_CURSE:
+  - Enchantments.VANISHING_CURSE
+  - vanishing_curse
