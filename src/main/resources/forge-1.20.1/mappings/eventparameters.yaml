@@ -16,6 +16,10 @@ DROPPED_EXPERIENCE:
   - LivingExperienceDropEvent
   - setDroppedExperience #int
   - entity_dropxp
+INCOMING_DAMAGE_AMOUNT_1201:
+  - LivingHurtEvent
+  - setAmount #float
+  - entity_pre_hurt
 # logic parameters
 SHIELD_BLOCKED:
   - ShieldBlockEvent

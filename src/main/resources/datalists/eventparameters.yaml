@@ -1,0 +1,4 @@
+# number
+- INCOMING_DAMAGE_AMOUNT_1201:
+  readable_name: "Entity pre hurt - Incoming damage amount"
+  type: number

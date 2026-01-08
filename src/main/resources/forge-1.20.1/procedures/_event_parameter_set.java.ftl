@@ -1,4 +1,4 @@
-<#assign floatParameters = ["FALL_DISTANCE", "FALL_DAMAGE_MULTIPLIER", "CRITICAL_DAMAGE_MULTIPLIER"]>
+<#assign floatParameters = ["FALL_DISTANCE", "FALL_DAMAGE_MULTIPLIER", "CRITICAL_DAMAGE_MULTIPLIER", "INCOMING_DAMAGE_AMOUNT_1201"]>
 <#assign intParameters = ["DROPPED_EXPERIENCE"]>
 if (event instanceof ${eventClass} _event) {
 	<#if floatParameters?seq_contains(fieldParameterName)>
