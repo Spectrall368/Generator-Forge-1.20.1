@@ -1,7 +1,7 @@
 name: Forge for @minecraft (@buildfileversion)
 status: deprecated
-buildfileversion: 47.4.13
-subversion: 1.6 # force setup re-run to update build script to downlaod Mixin Extras
+buildfileversion: 47.4.18
+subversion: 1.7 # used to force project base regeneration
 
 import:
   - datapack-1.20.1
@@ -29,6 +29,7 @@ import_formatter:
     Items: net.minecraft.world.item
     Multimap: com.google.common.collect
     ImmutableSet: com.google.common.collect
+    ImmutableMap: com.google.common.collect
     Iterables: com.google.common.collect
     Attributes: net.minecraft.world.entity.ai.attributes
     Keyframe: net.minecraft.client.animation
@@ -94,7 +95,13 @@ base_templates:
     writer: json
     condition_any:
       - "${w.getGElementsOfType('biome')?filter(e -> e.spawnBiome || e.spawnInCaves || e.spawnBiomeNether)?size != 0}"
+      - "${w.getGElementsOfType('block')?filter(e -> e.isSign())?size != 0}"
     name: "@RESROOT/@modid.mixins.json"
+  - template: elementinits/dispensebehaviors.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameDispenseBehaviors.java"
+    condition_any:
+      - "${w.getGElementsOfType('itemextension')?filter(e -> e.hasDispenseBehavior)?size != 0}"
+      - "${w.hasElementsOfType('specialentity')}"
 
 sources_setup_tasks:
   - task: copy_models

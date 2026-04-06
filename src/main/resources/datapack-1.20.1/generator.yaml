@@ -1,6 +1,7 @@
 name: Data Pack for Java Edition @minecraft
 status: deprecated
-buildfileversion: 47.4.13
+buildfileversion: 47.4.18
+subversion: 1.0 # used to force project base regeneration
 
 # gradle task definitions
 gradle:
@@ -14,7 +15,7 @@ mod_assets_root: "@RESROOT/assets/@modid"
 mod_data_root: "@RESROOT/data/@modid"
 
 # specific resource folders
-structures_dir: "@MODDATAROOT/structure"
+structures_dir: "@MODDATAROOT/structures"
 
 base_templates:
   - template: pack.mcmeta.ftl

@@ -1,0 +1,44 @@
+_default:
+  - EquipmentSlotGroup.ANY
+  - any
+  - EquipmentSlot.values()
+any:
+  - EquipmentSlotGroup.ANY
+  - any
+  - EquipmentSlot.values()
+mainhand:
+  - EquipmentSlotGroup.MAINHAND
+  - mainhand
+  - EquipmentSlot.MAINHAND
+offhand:
+  - EquipmentSlotGroup.OFFHAND
+  - offhand
+  - EquipmentSlot.OFFHAND
+hand:
+  - EquipmentSlotGroup.HAND
+  - hand
+  - "EquipmentSlot.MAINHAND, EquipmentSlot.OFFHAND"
+feet:
+  - EquipmentSlotGroup.FEET
+  - feet
+  - EquipmentSlot.FEET
+legs:
+  - EquipmentSlotGroup.LEGS
+  - legs
+  - EquipmentSlot.LEGS
+chest:
+  - EquipmentSlotGroup.CHEST
+  - chest
+  - EquipmentSlot.CHEST
+head:
+  - EquipmentSlotGroup.HEAD
+  - head
+  - EquipmentSlot.HEAD
+armor:
+  - EquipmentSlotGroup.ARMOR
+  - armor
+  - "EquipmentSlot.HEAD, EquipmentSlot.CHEST, EquipmentSlot.LEGS, EquipmentSlot.FEET"
+body:
+  - EquipmentSlotGroup.BODY
+  - body
+  - EquipmentSlot.CHEST

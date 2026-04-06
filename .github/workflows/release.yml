@@ -1,0 +1,67 @@
+name: Release
+
+permissions:
+  checks: write
+  contents: write
+
+on:
+  workflow_dispatch:
+
+  workflow_run:
+    workflows: ["Build and test"]
+    types:
+      - completed
+
+jobs:
+  release:
+    if: github.event_name == 'workflow_dispatch' || (github.event.workflow_run.conclusion == 'success' && contains(github.event.workflow_run.head_commit.message, 'Release'))
+
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      - name: Set up JDK 21
+        uses: actions/setup-java@v5
+        with:
+          java-version: '21.0.10'
+          distribution: 'jetbrains'
+          java-package: 'jdk+jcef'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v5
+      - name: Read properties
+        id: props
+        run: |
+          echo "PLUGIN_VERSION=$(grep '^pluginVersion=' gradle.properties | cut -d'=' -f2)" >> $GITHUB_OUTPUT
+          echo "MC_VERSION=$(grep '^mcVersion=' gradle.properties | cut -d'=' -f2)" >> $GITHUB_OUTPUT
+          echo "MCREATOR_VERSION=$(grep '^mcreatorVersion=' gradle.properties | cut -d'=' -f2)" >> $GITHUB_OUTPUT
+      - name: Build release
+        run: gradle build
+      - name: Make tag
+        id: tag
+        run: |
+          TAG="V${{ steps.props.outputs.PLUGIN_VERSION }}"
+          echo "tag=$TAG" >> $GITHUB_OUTPUT
+
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+
+          git tag $TAG
+          git push origin $TAG
+      - name: Find zip
+        id: zip
+        run: |
+          FILE=$(ls build/libs/*.zip | head -n 1)
+          echo "file=$FILE" >> $GITHUB_OUTPUT
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.tag.outputs.tag }}
+          name: "${{ steps.tag.outputs.tag }} - ${{ steps.props.outputs.MC_VERSION }} (${{ steps.props.outputs.MCREATOR_VERSION }})"
+          generate_release_notes: true
+          files: ${{ steps.zip.outputs.file }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
