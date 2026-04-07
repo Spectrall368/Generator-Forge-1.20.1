@@ -42,15 +42,6 @@
 	</#if>
 </#macro>
 
-<#macro slotsCode slots>
-	<#if slots == "any">EquipmentSlot.values()
-	<#elseif slots == "hand">new EquipmentSlot[] { EquipmentSlot.MAINHAND, EquipmentSlot.OFFHAND }
-	<#elseif slots == "armor">new EquipmentSlot[] { EquipmentSlot.HEAD, EquipmentSlot.CHEST, EquipmentSlot.LEGS, EquipmentSlot.FEET }
-	<#elseif slots == "body">new EquipmentSlot[] { EquipmentSlot.CHEST }
-	<#else>new EquipmentSlot[] { EquipmentSlot.${slots?upper_case} }
-	</#if>
-</#macro>
-
 package ${package}.enchantment;
 
 public class ${name}Enchantment extends Enchantment {
@@ -74,7 +65,11 @@ public class ${name}Enchantment extends Enchantment {
 		</#if>
 
 	public ${name}Enchantment() {
-		super(Enchantment.Rarity.<@weightToRarity data.weight/>, ENCHANTMENT_CATEGORY, <@slotsCode data.supportedSlots/>);
+		this(${generator.map(data.supportedSlots, "equipmentslots", 2)});
+	}
+
+	private ${name}Enchantment(EquipmentSlot... slots) {
+		super(Enchantment.Rarity.<@weightToRarity data.weight/>, ENCHANTMENT_CATEGORY, slots);
 	}
 
 	@Override public int getMinCost(int level) {

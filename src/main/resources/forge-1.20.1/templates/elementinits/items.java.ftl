@@ -39,6 +39,8 @@ package ${package}.init;
 
 <#assign hasBlocks = false>
 <#assign hasDoubleBlocks = false>
+<#assign hasSigns = false>
+<#assign hasHangingSigns = false>
 <#assign hasItemsWithProperties = w.getGElementsOfType("item")?filter(e -> e.customProperties?has_content)?size != 0
 	|| w.getGElementsOfType("tool")?filter(e -> e.toolType == "Shield")?size != 0>
 
@@ -94,6 +96,12 @@ public class ${JavaModName}Items {
 					REGISTRY.register("${item.getModElement().getRegistryName()}_spawn_egg",
 						() -> new ForgeSpawnEggItem(${JavaModName}Entities.${item.getModElement().getRegistryNameUpper()},
 						${item.spawnEggBaseColor.getRGB()}, ${item.spawnEggDotColor.getRGB()}, new Item.Properties()));
+			<#elseif item.getModElement().getTypeString() == "specialentity">
+				${item.getModElement().getRegistryNameUpper()} =
+					REGISTRY.register("${item.getModElement().getRegistryName()}",
+						() -> new BoatItem(<#if item.entityType == "Boat">false<#else>true</#if>,
+						Boat.Type.OAK,
+						new Item.Properties().stacksTo(1)));
 			<#elseif item.getModElement().getTypeString() == "dimension" && item.hasIgniter()>
 				${item.getModElement().getRegistryNameUpper()} =
 					REGISTRY.register("${item.getModElement().getRegistryName()}", ${item.getModElement().getName()}Item::new);
@@ -105,6 +113,16 @@ public class ${JavaModName}Items {
 					<#assign hasDoubleBlocks = true>
 					${item.getModElement().getRegistryNameUpper()} =
 					doubleBlock(${JavaModName}Blocks.${item.getModElement().getRegistryNameUpper()}
+					<#if item.hasCustomItemProperties()>, <@blockItemProperties item/></#if>);
+				<#elseif (item.getModElement().getTypeString() == "block") && (item.blockBase! == "Sign")>
+					<#assign hasSigns = true>
+					${item.getModElement().getRegistryNameUpper()} =
+					signBlock(${JavaModName}Blocks.${item.getModElement().getRegistryNameUpper()}, ${JavaModName}Blocks.${item.getWallRegistryNameUpper()}
+					<#if item.hasCustomItemProperties()>, <@blockItemProperties item/></#if>);
+				<#elseif (item.getModElement().getTypeString() == "block") && (item.blockBase! == "HangingSign")>
+					<#assign hasHangingSigns = true>
+					${item.getModElement().getRegistryNameUpper()} =
+					hangingSignBlock(${JavaModName}Blocks.${item.getModElement().getRegistryNameUpper()}, ${JavaModName}Blocks.${item.getWallRegistryNameUpper()}
 					<#if item.hasCustomItemProperties()>, <@blockItemProperties item/></#if>);
 				<#else>
 					<#assign hasBlocks = true>
@@ -146,6 +164,26 @@ public class ${JavaModName}Items {
 
 	private static RegistryObject<Item> doubleBlock(RegistryObject<Block> block, Item.Properties properties) {
 		return REGISTRY.register(block.getId().getPath(), () -> new DoubleHighBlockItem(block.get(), properties));
+	}
+	</#if>
+
+	<#if hasSigns>
+	private static RegistryObject<Item> signBlock(RegistryObject<Block> block, RegistryObject<Block> wallBlock) {
+		return signBlock(block, wallBlock, new Item.Properties());
+	}
+
+	private static RegistryObject<Item> signBlock(RegistryObject<Block> block, RegistryObject<Block> wallBlock, Item.Properties properties) {
+		return REGISTRY.register(block.getId().getPath(), () -> new SignItem(properties, block.get(), wallBlock.get()));
+	}
+	</#if>
+
+	<#if hasHangingSigns>
+	private static RegistryObject<Item> hangingSignBlock(RegistryObject<Block> block, RegistryObject<Block> wallBlock) {
+		return hangingSignBlock(block, wallBlock, new Item.Properties());
+	}
+
+	private static RegistryObject<Item> hangingSignBlock(RegistryObject<Block> block, RegistryObject<Block> wallBlock, Item.Properties properties) {
+		return REGISTRY.register(block.getId().getPath(), () -> new HangingSignItem(block.get(), wallBlock.get(), properties));
 	}
 	</#if>
 

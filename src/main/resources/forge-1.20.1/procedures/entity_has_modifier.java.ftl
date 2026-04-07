@@ -1,2 +1,2 @@
 (${input$entity} instanceof LivingEntity _livingEntity${cbi} && _livingEntity${cbi}.getAttribute(${generator.map(field$attribute, "attributes")})
-	.getModifiers().stream().anyMatch((e) -> e.getName().equals(${'"' + modid + ':' + field$name + '"'})))
+	.getModifiers().stream().anyMatch((e) -> e.getId().equals(UUID.fromString("${w.getUUID(field$name)}"))))

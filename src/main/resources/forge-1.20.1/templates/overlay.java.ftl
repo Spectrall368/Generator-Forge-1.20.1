@@ -34,6 +34,17 @@
 package ${package}.client.screens;
 
 @Mod.EventBusSubscriber(Dist.CLIENT) public class ${name}Overlay {
+	<#if data.baseTexture?has_content>
+		private static final ResourceLocation BACKGROUND = new ResourceLocation("${modid}:textures/screens/${data.baseTexture}");
+	</#if>
+
+	<#list data.getComponentsOfType("Image") as component>
+		private static final ResourceLocation IMAGE_${component?index} = new ResourceLocation("${modid}:textures/screens/${component.image}");
+	</#list>
+
+	<#list data.getComponentsOfType("Sprite") as component>
+		private static final ResourceLocation SPRITE_${component?index} = new ResourceLocation("${modid}:textures/screens/${component.sprite}");
+	</#list>
 
 	@SubscribeEvent(priority = EventPriority.${data.priority})
 	<#if generator.map(data.overlayTarget, "screens") == "Ingame">
@@ -72,14 +83,14 @@ package ${package}.client.screens;
 
         if (<@procedureOBJToConditionCode data.displayCondition/>) {
             <#if data.baseTexture?has_content>
-                event.getGuiGraphics().blit(new ResourceLocation("${modid}:textures/screens/${data.baseTexture}"), 0, 0, 0, 0, w, h, w, h);
+                event.getGuiGraphics().blit(BACKGROUND, 0, 0, 0, 0, w, h, w, h);
             </#if>
 
             <#list data.getComponentsOfType("Image") as component>
                 <#if hasProcedure(component.displayCondition)>
                         if (<@procedureOBJToConditionCode component.displayCondition/>) {
                 </#if>
-                    event.getGuiGraphics().blit(new ResourceLocation("${modid}:textures/screens/${component.image}"), <@calculatePosition component/>, 0, 0,
+                    event.getGuiGraphics().blit(IMAGE_${component?index}, <@calculatePosition component/>, 0, 0,
                         ${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())},
                         ${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())});
                 <#if hasProcedure(component.displayCondition)>}</#if>
@@ -87,7 +98,7 @@ package ${package}.client.screens;
 
 			<#list data.getComponentsOfType("Sprite") as component>
 				<#if hasProcedure(component.displayCondition)>if (<@procedureOBJToConditionCode component.displayCondition/>) {</#if>
-					event.getGuiGraphics().blit(new ResourceLocation("${modid}:textures/screens/${component.sprite}"), <@calculatePosition component/>,
+					event.getGuiGraphics().blit(SPRITE_${component?index}, <@calculatePosition component/>,
 						<#if (component.getTextureWidth(w.getWorkspace()) > component.getTextureHeight(w.getWorkspace()))>
 							<@getSpriteByIndex component "width"/>, 0
 						<#else>
@@ -104,7 +115,7 @@ package ${package}.client.screens;
                 </#if>
                 event.getGuiGraphics().drawString(Minecraft.getInstance().font,
                     <#if hasProcedure(component.text)><@procedureOBJToStringCode component.text/><#else>Component.translatable("gui.${modid}.${registryname}.${component.getName()}")</#if>,
-                    <@calculatePosition component/>, ${component.color.getRGB()}, false);
+                    <@calculatePosition component/>, ${component.color.getRGB()}, ${component.hasShadow});
             </#list>
 
 			<#list data.getComponentsOfType("EntityModel") as component>

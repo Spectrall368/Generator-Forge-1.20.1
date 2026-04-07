@@ -93,6 +93,8 @@ package ${package}.client.renderer;
 <@javacompress>
 public class ${name}Renderer extends <#if humanoid>Humanoid</#if>MobRenderer<${name}Entity, ${model}> {
 
+	private final ResourceLocation entityTexture = new ResourceLocation("${modid}:textures/entities/${data.mobModelTexture}");
+
 	public ${name}Renderer(EntityRendererProvider.Context context) {
 		super(context, new <#if data.animations?has_content>AnimatedModel<#else>${model}</#if>(${rootPart}), ${data.modelShadowSize}f);
 
@@ -160,7 +162,7 @@ public class ${name}Renderer extends <#if humanoid>Humanoid</#if>MobRenderer<${n
 	</#if>
 
 	@Override public ResourceLocation getTextureLocation(${name}Entity entity) {
-		return new ResourceLocation("${modid}:textures/entities/${data.mobModelTexture}");
+		return entityTexture;
 	}
 
 	<#if data.transparentModelCondition?? && (hasProcedure(data.transparentModelCondition) || data.transparentModelCondition.getFixedValue())>

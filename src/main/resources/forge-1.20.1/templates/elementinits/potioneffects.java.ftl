@@ -44,7 +44,7 @@ package ${package}.init;
 
 	<#list potioneffects as effect>
 	public static final RegistryObject<MobEffect> ${effect.getModElement().getRegistryNameUpper()} =
-			REGISTRY.register("${effect.getModElement().getRegistryName()}", () -> new ${effect.getModElement().getName()}MobEffect());
+			REGISTRY.register("${effect.getModElement().getRegistryName()}", ${effect.getModElement().getName()}MobEffect::new);
 	</#list>
 
 	<#if mobHurt?size != 0>
