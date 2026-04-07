@@ -52,11 +52,11 @@ package ${package}.init;
 			new OptionalDispenseItemBehavior() {
 				public ItemStack execute(BlockSource blockSource, ItemStack stack) {
 					ItemStack itemstack = stack.copy();
-					Level world = blockSource.level();
-					Direction direction = blockSource.state().getValue(DispenserBlock.FACING);
-					int x = blockSource.pos().getX();
-					int y = blockSource.pos().getY();
-					int z = blockSource.pos().getZ();
+					Level world = blockSource.getLevel();
+					Direction direction = blockSource.getBlockState().getValue(DispenserBlock.FACING);
+					int x = blockSource.getPos().getX();
+					int y = blockSource.getPos().getY();
+					int z = blockSource.getPos().getZ();
 
 					this.setSuccess(<@procedureOBJToConditionCode extension.dispenseSuccessCondition/>);
 
@@ -85,22 +85,22 @@ package ${package}.init;
 					<#if hasProcedure(extension.dispenseResultItemstack)>
 						<#if hasReturnValueOf(extension.dispenseResultItemstack, "itemstack")>
 							return <@procedureCode extension.dispenseResultItemstack, {
-								"x": "blockSource.pos().getX()",
-								"y": "blockSource.pos().getY()",
-								"z": "blockSource.pos().getZ()",
+								"x": "blockSource.getPos().getX()",
+								"y": "blockSource.getPos().getY()",
+								"z": "blockSource.getPos().getZ()",
 								"itemstack": "itemstack.copy()",
-								"world": "blockSource.level()",
-								"direction": "blockSource.state().getValue(DispenserBlock.FACING)",
+								"world": "blockSource.getLevel()",
+								"direction": "blockSource.getBlockState().getValue(DispenserBlock.FACING)",
 								"success": "true" <#-- Dispense success condition defaults to true if not specified -->
 							}, false/>;
 						<#else>
 							<@procedureCode extension.dispenseResultItemstack, {
-								"x": "blockSource.pos().getX()",
-								"y": "blockSource.pos().getY()",
-								"z": "blockSource.pos().getZ()",
+								"x": "blockSource.getPos().getX()",
+								"y": "blockSource.getPos().getY()",
+								"z": "blockSource.getPos().getZ()",
 								"itemstack": "itemstack.copy()",
-								"world": "blockSource.level()",
-								"direction": "blockSource.state().getValue(DispenserBlock.FACING)",
+								"world": "blockSource.getLevel()",
+								"direction": "blockSource.getBlockState().getValue(DispenserBlock.FACING)",
 								"success": "true" <#-- Dispense success condition defaults to true if not specified -->
 							}/>
 							itemstack.shrink(1);
