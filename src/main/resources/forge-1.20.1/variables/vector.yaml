@@ -28,17 +28,21 @@ scopes:
     init: public Vec3 ${var.getName()} = Vec3.ZERO;
     read: ${var.getName()} = Vec3.CODEC.parse(NbtOps.INSTANCE, nbt.get("${var.getName()}")).result().orElse(Vec3.ZERO);
     write: nbt.put("${var.getName()}", Vec3.CODEC.encodeStart(NbtOps.INSTANCE, ${var.getName()}).result().orElseGet(CompoundTag::new));
-    get: ${entity}.getCapability(${JavaModName}Variables.PLAYER_VARIABLES).${name}
+    get: ${entity}.getCapability(${JavaModName}Variables.PLAYER_VARIABLES).orElseGet(${JavaModName}Variables.PlayerVariables::new).${name}
     set: |
-      <@head>{${JavaModName}Variables.PlayerVariables _vars = ${entity}.getCapability(${JavaModName}Variables.PLAYER_VARIABLES);</@head>
-      _vars.${name} = ${opt.removeParentheses(value)};
-      <@tail>_vars.markSyncDirty();}</@tail>
+      <@head>{${entity}.getCapability(${JavaModName}Variables.PLAYER_VARIABLES).ifPresent(capability -> {</@head>
+          capability.${name} = ${opt.removeParentheses(value)};
+          <@tail>capability.markSyncDirty();
+        });
+      }</@tail>
   player_persistent:
     init: public Vec3 ${var.getName()} = Vec3.ZERO;
     read: ${var.getName()} = Vec3.CODEC.parse(NbtOps.INSTANCE, nbt.get("${var.getName()}")).result().orElse(Vec3.ZERO);
     write: nbt.put("${var.getName()}", Vec3.CODEC.encodeStart(NbtOps.INSTANCE, ${var.getName()}).result().orElseGet(CompoundTag::new));
-    get: ${entity}.getCapability(${JavaModName}Variables.PLAYER_VARIABLES).${name}
+    get: ${entity}.getCapability(${JavaModName}Variables.PLAYER_VARIABLES).orElseGet(${JavaModName}Variables.PlayerVariables::new).${name}
     set: |
-      <@head>{${JavaModName}Variables.PlayerVariables _vars = ${entity}.getCapability(${JavaModName}Variables.PLAYER_VARIABLES);</@head>
-      _vars.${name} = ${opt.removeParentheses(value)};
-      <@tail>_vars.markSyncDirty();}</@tail>
+      <@head>{${entity}.getCapability(${JavaModName}Variables.PLAYER_VARIABLES).ifPresent(capability -> {</@head>
+          capability.${name} = ${opt.removeParentheses(value)};
+          <@tail>capability.markSyncDirty();
+        });
+      }</@tail>

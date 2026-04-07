@@ -111,7 +111,7 @@ package ${package}.client.renderer.block;
 	}
 
 	@SubscribeEvent public static void registerBlockEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
-		event.registerBlockEntityRenderer((BlockEntityType<${name}BlockEntity>)${JavaModName}BlockEntities.${REGISTRYNAME}.get(), ${name}Renderer::new);
+		event.registerBlockEntityRenderer(${JavaModName}BlockEntities.${REGISTRYNAME}.get(), ${name}Renderer::new);
 	}
 
 	private static final class CustomHierarchicalModel extends ${data.customModelName.split(":")[0]} {
