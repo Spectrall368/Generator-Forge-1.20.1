@@ -347,7 +347,13 @@ import ${package}.${JavaModName};
 			NetworkEvent.Context context = contextSupplier.get();
 			context.enqueueWork(() -> {
 				if (!context.getDirection().getReceptionSide().isServer() && message.data != null)
-					Minecraft.getInstance().player.getCapability(PLAYER_VARIABLES).ifPresent(cap -> cap.deserializeNBT(message.data.serializeNBT()));
+					Minecraft.getInstance().player.getCapability(PLAYER_VARIABLES).ifPresent(cap -> {
+					<#list variables as var>
+						<#if var.getScope().name() == "PLAYER_LIFETIME" || var.getScope().name() == "PLAYER_PERSISTENT">
+						cap.${var.getName()} = message.data().${var.getName()};
+						</#if>
+					</#list>
+					});
 			});
 			context.setPacketHandled(true);
 		}
