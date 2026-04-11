@@ -1,0 +1,26 @@
+templates:
+  - template: json/special_entity_item.json.ftl
+    writer: json
+    name: "@MODASSETSROOT/models/item/@registryname.json"
+
+global_templates:
+  - template: specialentity/boat_item.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/item/@JavaModNameBoatItem.java"
+  - template: specialentity/boat.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/entity/@JavaModNameBoat.java"
+  - template: specialentity/chest_boat.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/entity/@JavaModNameChestBoat.java"
+    condition: "${w.getGElementsOfType('specialentity')?filter(e -> e.entityType == 'ChestBoat')?size != 0}"
+  - template: specialentity/boat_renderer.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/client/renderer/@JavaModNameBoatRenderer.java"
+  # Dispense behaviors are controlled by generator.yaml
+
+localizationkeys:
+  - key: entity.@modid.boat
+    mapto: entityType
+    condition: "${w.getGElementsOfType('specialentity')?filter(e -> e.entityType == 'Boat')?size != 0}"
+  - key: entity.@modid.chest_boat
+    mapto: entityType
+    condition: "${w.getGElementsOfType('specialentity')?filter(e -> e.entityType == 'ChestBoat')?size != 0}"
+  - key: item.@modid.@registryname
+    mapto: name

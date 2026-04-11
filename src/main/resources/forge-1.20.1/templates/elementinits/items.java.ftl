@@ -99,9 +99,7 @@ public class ${JavaModName}Items {
 			<#elseif item.getModElement().getTypeString() == "specialentity">
 				${item.getModElement().getRegistryNameUpper()} =
 					REGISTRY.register("${item.getModElement().getRegistryName()}",
-						() -> new BoatItem(<#if item.entityType == "Boat">false<#else>true</#if>,
-						Boat.Type.OAK,
-						new Item.Properties().stacksTo(1)));
+						() -> new ${JavaModName}BoatItem(${JavaModName}Boat.Type.${item.getModElement().getRegistryNameUpper()}));
 			<#elseif item.getModElement().getTypeString() == "dimension" && item.hasIgniter()>
 				${item.getModElement().getRegistryNameUpper()} =
 					REGISTRY.register("${item.getModElement().getRegistryName()}", ${item.getModElement().getName()}Item::new);

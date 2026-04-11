@@ -41,8 +41,27 @@ package ${package}.init;
 
 <#assign itemextensions = w.getGElementsOfType("itemextension")?filter(e -> e.hasDispenseBehavior)>
 <#assign specialentities = w.getGElementsOfType("specialentity")>
+<#assign hasBoat = specialentities?filter(e -> e.entityType == "Boat")?size != 0>
+<#assign hasChestBoat = specialentities?filter(e -> e.entityType == "ChestBoat")?size != 0>
+
+<#assign variantSetterCode>
+<#if hasChestBoat && hasBoat>
+if(boat instanceof ${JavaModName}ChestBoat chestBoat) {
+    chestBoat.setVariant(this.type);
+} else if(boat instanceof ${JavaModName}Boat boatt) {
+    boatt.setVariant(this.type);
+}
+<#elseif hasChestBoat>
+if(boat instanceof ${JavaModName}ChestBoat chestBoat)
+    chestBoat.setVariant(this.type);
+<#else>
+if(boat instanceof ${JavaModName}Boat boatt)
+    boatt.setVariant(this.type);
+</#if>
+</#assign>
+
 <@javacompress>
-@Mod.EventBusSubscriber public class ${JavaModName}DispenseBehaviors {
+@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public class ${JavaModName}DispenseBehaviors {
 
 	@SubscribeEvent public static void init(FMLCommonSetupEvent event) {
 		event.enqueueWork(() -> {
@@ -115,7 +134,35 @@ package ${package}.init;
 			</#if>
 			);
 			</#list>
+			<#list specialentities as entity>
+			DispenserBlock.registerBehavior(${JavaModName}Items.${entity.getModElement().getRegistryNameUpper()}.get(),
+					new ${JavaModName}BoatDispenseItemBehavior(${JavaModName}Boat.Type.${entity.getModElement().getRegistryNameUpper()}));
+			</#list>
 		});
 	}
 
+	<#if specialentities?size != 0>
+	public static class ${JavaModName}BoatDispenseItemBehavior extends DefaultDispenseItemBehavior {
+	    private final DefaultDispenseItemBehavior defaultDispenseItemBehavior = new DefaultDispenseItemBehavior();
+	    private final ${JavaModName}Boat.Type type;
+	    private final boolean isChestBoat;
+
+	    public ${JavaModName}BoatDispenseItemBehavior(${JavaModName}Boat.Type type) {
+	        this.type = type;
+	        this.isChestBoat = type.hasChest();
+	    }
+
+	    <#assign executeMethod = mcc.getMethod("net.minecraft.core.dispenser.BoatDispenseItemBehavior", "execute", "BlockSource", "ItemStack")>
+	    <#if hasChestBoat>
+	    	<#assign executeMethod = executeMethod.replace("new ChestBoat", "new " + JavaModName + "ChestBoat")>
+	    </#if>
+	    <#if hasBoat>
+	    	<#assign executeMethod = executeMethod.replace("new Boat", "new " + JavaModName + "Boat")>
+	    </#if>
+	    <#assign executeMethod = executeMethod.replace("boat.setVariant(this.type);", variantSetterCode)>
+	    @Override ${executeMethod}
+
+	    @Override ${mcc.getMethod("net.minecraft.core.dispenser.BoatDispenseItemBehavior", "playSound", "BlockSource")}
+	}
+	</#if>
 }</@javacompress>
