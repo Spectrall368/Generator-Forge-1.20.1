@@ -52,6 +52,10 @@ public class ${JavaModName}Boat extends Boat {
     }
     </#if>
 
+	@Override protected Component getTypeName() {
+		return Component.translatable("entity.minecraft.boat");
+	}
+
 	@Override public Item getDropItem() {
 		return switch (getModVariant()) {
 		<#list boatEntities as entity>

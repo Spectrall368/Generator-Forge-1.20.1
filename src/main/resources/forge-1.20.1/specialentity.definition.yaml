@@ -16,11 +16,5 @@ global_templates:
   # Dispense behaviors are controlled by generator.yaml
 
 localizationkeys:
-  - key: entity.@modid.boat
-    mapto: entityType
-    condition: "${w.getGElementsOfType('specialentity')?filter(e -> e.entityType == 'Boat')?size != 0}"
-  - key: entity.@modid.chest_boat
-    mapto: entityType
-    condition: "${w.getGElementsOfType('specialentity')?filter(e -> e.entityType == 'ChestBoat')?size != 0}"
   - key: item.@modid.@registryname
     mapto: name

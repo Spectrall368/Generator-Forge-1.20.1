@@ -49,6 +49,10 @@ public class ${JavaModName}ChestBoat extends ChestBoat {
 		this.zo = z;
 	}
 
+	@Override protected Component getTypeName() {
+		return Component.translatable("entity.minecraft.chest_boat");
+	}
+
 	@Override public Item getDropItem() {
 		return switch (getModVariant()) {
 		<#list chestBoatEntities as entity>
