@@ -22,7 +22,7 @@ import org.apache.logging.log4j.Logger;
 		<#if types["base:blocks"]??>${JavaModName}Blocks.REGISTRY.register(bus);</#if>
 		<#if types["base:blockentities"]??>${JavaModName}BlockEntities.REGISTRY.register(bus);</#if>
 		<#if types["base:items"]??>${JavaModName}Items.REGISTRY.register(bus);</#if>
-		<#if types["base:entities"]?? || w.hasElementsOfType('specialentity')>${JavaModName}Entities.REGISTRY.register(bus);</#if>
+		<#if types["base:entities"]??>${JavaModName}Entities.REGISTRY.register(bus);</#if>
 		<#if w.hasItemsInTabs()>${JavaModName}Tabs.REGISTRY.register(bus);</#if>
 		<#if types["base:features"]??>${JavaModName}Features.REGISTRY.register(bus);</#if>
 		<#if w.getElementsOfType("feature")?filter(e -> e.getMetadata("has_nbt_structure")??)?size != 0>StructureFeature.REGISTRY.register(bus);</#if>
