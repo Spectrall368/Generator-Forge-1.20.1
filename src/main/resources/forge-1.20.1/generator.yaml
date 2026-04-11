@@ -104,6 +104,16 @@ base_templates:
     condition_any:
       - "${w.getGElementsOfType('itemextension')?filter(e -> e.hasDispenseBehavior)?size != 0}"
       - "${w.hasElementsOfType('specialentity')}"
+  - template: elementinits/entities.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameEntities.java"
+    condition_any:
+      - "${w.hasElementsOfBaseType('entity')}"
+      - "${w.hasElementsOfType('specialentity')}"
+  - template: elementinits/entityrenderers.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameEntityRenderers.java"
+    condition_any:
+      - "${w.hasElementsOfBaseType('entity')}"
+      - "${w.hasElementsOfType('specialentity')}"
 
 sources_setup_tasks:
   - task: copy_models
