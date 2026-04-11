@@ -15,6 +15,12 @@ global_templates:
     name: "@SRCROOT/@BASEPACKAGEPATH/client/renderer/@JavaModNameBoatRenderer.java"
   # Dispense behaviors are controlled by generator.yaml
 
+tags:
+  - tag: ITEMS:minecraft:boats
+    condition: "entityType %= Boat"
+  - tag: ITEMS:minecraft:chest_boats
+    condition: "entityType %= ChestBoat"
+
 localizationkeys:
   - key: item.@modid.@registryname
     mapto: name

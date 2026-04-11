@@ -61,7 +61,7 @@ package ${package}.init;
 				"entity": "entity",
 				"amplifier": "entity.getEffect(" + JavaModName + "MobEffects." + effect.getModElement().getRegistryNameUpper() + ".get()).getAmplifier()",
 				"damagesource": "event.getSource()",
-				"damage": "event.getAmount()"
+				"amount": "event.getAmount()"
 			}/>
 		}<#sep>else
 		</#list>
