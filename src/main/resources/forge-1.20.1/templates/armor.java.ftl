@@ -128,13 +128,9 @@ public abstract class ${name}Item extends ArmorItem {
 		}
 		</#if>
 
-		<#if data.helmetModelTexture?has_content && data.helmetModelTexture != "From armor">
-		private static final String armorTexture = "${modid}:textures/entities/${data.helmetModelTexture}";
-
 		@Override public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String type) {
-			return armorTexture;
+			return "${modid}:textures/<#if data.helmetModelTexture?has_content && data.helmetModelTexture != "From armor">entities/${data.helmetModelTexture}<#else>models/armor/${data.armorTextureFile}_layer_1.png</#if>";
 		}
-		</#if>
 
 		<@addSpecialInformation data.helmetSpecialInformation, "item." + modid + "." + registryname + "_helmet"/>
 
@@ -195,13 +191,9 @@ public abstract class ${name}Item extends ArmorItem {
 		}
 		</#if>
 
-		<#if data.bodyModelTexture?has_content && data.bodyModelTexture != "From armor">
-		private static final String armorTexture = "${modid}:textures/entities/${data.bodyModelTexture}";
-
 		@Override public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String type) {
-			return armorTexture;
+			return "${modid}:textures/<#if data.bodyModelTexture?has_content && data.bodyModelTexture != "From armor">entities/${data.bodyModelTexture}<#else>models/armor/${data.armorTextureFile}_layer_1.png</#if>";
 		}
-		</#if>
 
 		<@addSpecialInformation data.bodySpecialInformation, "item." + modid + "." + registryname + "_chestplate"/>
 
@@ -262,13 +254,9 @@ public abstract class ${name}Item extends ArmorItem {
 		}
 		</#if>
 
-		<#if data.leggingsModelTexture?has_content && data.leggingsModelTexture != "From armor">
-		private static final String armorTexture = "${modid}:textures/entities/${data.leggingsModelTexture}";
-
 		@Override public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String type) {
-			return armorTexture;
+			return "${modid}:textures/<#if data.leggingsModelTexture?has_content && data.leggingsModelTexture != "From armor">entities/${data.leggingsModelTexture}<#else>models/armor/${data.armorTextureFile}_layer_2.png</#if>";
 		}
-		</#if>
 
 		<@addSpecialInformation data.leggingsSpecialInformation, "item." + modid + "." + registryname + "_leggings"/>
 
@@ -329,13 +317,9 @@ public abstract class ${name}Item extends ArmorItem {
 		}
 		</#if>
 
-		<#if data.bootsModelTexture?has_content && data.bootsModelTexture != "From armor">
-		private static final String armorTexture = "${modid}:textures/entities/${data.bootsModelTexture}";
-
 		@Override public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String type) {
-			return armorTexture;
+			return "${modid}:textures/<#if data.bootsModelTexture?has_content && data.bootsModelTexture != "From armor">entities/${data.bootsModelTexture}<#else>models/armor/${data.armorTextureFile}_layer_1.png</#if>";
 		}
-		</#if>
 
 		<@addSpecialInformation data.bootsSpecialInformation, "item." + modid + "." + registryname + "_boots"/>
 

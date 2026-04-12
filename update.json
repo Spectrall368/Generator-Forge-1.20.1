@@ -1,8 +1,8 @@
 {
   "generator-1.20.1": {
-    "latest": "1.4",
+    "latest": "1.5",
 	"changes": [
-      "MCreator 2026.1 update!"
+      "Added boats!"
 	]
   }
 }
