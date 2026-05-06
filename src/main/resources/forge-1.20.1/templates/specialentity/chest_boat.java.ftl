@@ -35,7 +35,7 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 
 <#assign chestBoatEntities = specialentities?filter(e -> e.entityType == "ChestBoat")>
 public class ${JavaModName}ChestBoat extends ChestBoat {
-	private static final EntityDataAccessor<Integer> DATA_ID_TYPE = SynchedEntityData.defineId(${JavaModName}Boat.class, EntityDataSerializers.INT);
+	private static final EntityDataAccessor<Integer> DATA_ID_TYPE = SynchedEntityData.defineId(${JavaModName}ChestBoat.class, EntityDataSerializers.INT);
 
 	public ${JavaModName}ChestBoat(EntityType<? extends Boat> entityType, Level level) {
 		super(entityType, level);
