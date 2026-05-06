@@ -61,8 +61,6 @@ public class ${name}MobEffect extends MobEffect {
 	}
 	</#if>
 
-
-
 	<#if hasProcedure(data.onStarted) || (data.onAddedSound?has_content && data.onAddedSound.getMappedValue()?has_content)>
 		<#if data.isInstant>
 			@Override public void applyInstantenousEffect(Entity source, Entity indirectSource, LivingEntity entity, int amplifier, double health) {
