@@ -22,7 +22,7 @@ jobs:
         uses: actions/checkout@v6
         with:
           repository: MCreator/MCreator
-          ref: master
+          ref: 2026.1.14619
           path: mcreator
       - name: Set up JDK 21
         uses: actions/setup-java@v5
