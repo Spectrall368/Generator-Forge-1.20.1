@@ -31,6 +31,7 @@
 <#-- @formatter:off -->
 package ${package}.client.model;
 
+@OnlyIn(Dist.CLIENT)
 ${model
     ?replace("private final ModelPart", "public final ModelPart")
     ?replace("new ResourceLocation\\(\"modid\", \"(.*?)\"\\)", "new ResourceLocation(\"" + modid + "\", \"" + modelregistryname + "\")", "r")
