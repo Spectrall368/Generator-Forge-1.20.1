@@ -35,18 +35,10 @@ package ${package}.network;
 
 import ${package}.${JavaModName};
 
-@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public class ${name}Message {
-
-	int type, pressedms;
-
-	public ${name}Message(int type, int pressedms) {
-		this.type = type;
-		this.pressedms = pressedms;
-	}
+@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public record ${name}Message(int type, int pressedms) {
 
 	public ${name}Message(FriendlyByteBuf buffer) {
-		this.type = buffer.readInt();
-		this.pressedms = buffer.readInt();
+		this(buffer.readInt(), buffer.readInt());
 	}
 
 	public static void buffer(${name}Message message, FriendlyByteBuf buffer) {

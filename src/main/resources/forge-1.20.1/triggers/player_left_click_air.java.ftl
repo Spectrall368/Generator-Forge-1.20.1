@@ -16,7 +16,6 @@
 
 	@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
 	public static class ${name}Message {
-		public ${name}Message() {}
 
 		public ${name}Message(FriendlyByteBuf buffer) {}
 
