@@ -160,7 +160,7 @@ public class ${name}Item extends ${data.toolType?replace("Spade", "Shovel")?repl
 	</#if>
 
 	<#if data.toolType == "MultiTool" || data.attributeModifiers?size gt 0>
-	<@itemAttributeModifiers (data.toolType != "Shield" && data.toolType != "Shears")/>
+	<@itemAttributeModifiers (data.toolType == "MultiTool")/>
 	</#if>
 
 	<#if data.toolType=="MultiTool">
