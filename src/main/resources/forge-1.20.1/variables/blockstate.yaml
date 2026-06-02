@@ -33,10 +33,11 @@ scopes:
     get: /*@BlockState*/${entity}.getCapability(${JavaModName}Variables.PLAYER_VARIABLES).orElseGet(${JavaModName}Variables.PlayerVariables::new).${name}
     set: |
       <#include "mcitems.ftl">
-      <@head>{${entity}.getCapability(${JavaModName}Variables.PLAYER_VARIABLES).ifPresent(capability -> {</@head>
-          capability.${name} = ${mappedBlockToBlockStateCode(value)};
-          <@tail>capability.markSyncDirty();
-        });
+      <@head>{var _playerVars = ${entity}.getCapability(${JavaModName}Variables.PLAYER_VARIABLES).orElse(null);
+        if (_playerVars != null) {</@head>
+            _playerVars.${name} = ${mappedBlockToBlockStateCode(value)};
+            <@tail>_playerVars.markSyncDirty();
+        }
       }</@tail>
   player_persistent:
     init: public BlockState ${var.getName()} = ${generator.map(var.getValue(), "blocksitems")}.defaultBlockState();
@@ -45,8 +46,9 @@ scopes:
     get: /*@BlockState*/${entity}.getCapability(${JavaModName}Variables.PLAYER_VARIABLES).orElseGet(${JavaModName}Variables.PlayerVariables::new).${name}
     set: |
       <#include "mcitems.ftl">
-      <@head>{${entity}.getCapability(${JavaModName}Variables.PLAYER_VARIABLES).ifPresent(capability -> {</@head>
-          capability.${name} = ${mappedBlockToBlockStateCode(value)};
-          <@tail>capability.markSyncDirty();
-        });
+      <@head>{var _playerVars = ${entity}.getCapability(${JavaModName}Variables.PLAYER_VARIABLES).orElse(null);
+        if (_playerVars != null) {</@head>
+            _playerVars.${name} = ${mappedBlockToBlockStateCode(value)};
+            <@tail>_playerVars.markSyncDirty();
+        }
       }</@tail>

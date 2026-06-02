@@ -30,10 +30,11 @@ scopes:
     write: nbt.putDouble("${var.getName()}", ${var.getName()});
     get: ${entity}.getCapability(${JavaModName}Variables.PLAYER_VARIABLES).orElseGet(${JavaModName}Variables.PlayerVariables::new).${name}
     set: |
-      <@head>{${entity}.getCapability(${JavaModName}Variables.PLAYER_VARIABLES).ifPresent(capability -> {</@head>
-          capability.${name} = ${opt.removeParentheses(value)};
-          <@tail>capability.markSyncDirty();
-        });
+      <@head>{var _playerVars = ${entity}.getCapability(${JavaModName}Variables.PLAYER_VARIABLES).orElse(null);
+        if (_playerVars != null) {</@head>
+            _playerVars.${name} = ${opt.removeParentheses(value)};
+            <@tail>_playerVars.markSyncDirty();
+        }
       }</@tail>
   player_persistent:
     init: public double ${var.getName()} = ${var.getValue()};
@@ -41,8 +42,9 @@ scopes:
     write: nbt.putDouble("${var.getName()}", ${var.getName()});
     get: ${entity}.getCapability(${JavaModName}Variables.PLAYER_VARIABLES).orElseGet(${JavaModName}Variables.PlayerVariables::new).${name}
     set: |
-      <@head>{${entity}.getCapability(${JavaModName}Variables.PLAYER_VARIABLES).ifPresent(capability -> {</@head>
-          capability.${name} = ${opt.removeParentheses(value)};
-          <@tail>capability.markSyncDirty();
-        });
+      <@head>{var _playerVars = ${entity}.getCapability(${JavaModName}Variables.PLAYER_VARIABLES).orElse(null);
+        if (_playerVars != null) {</@head>
+            _playerVars.${name} = ${opt.removeParentheses(value)};
+            <@tail>_playerVars.markSyncDirty();
+        }
       }</@tail>
