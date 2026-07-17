@@ -31,6 +31,7 @@
 <#-- @formatter:off -->
 <#include "mcitems.ftl">
 <#include "procedures.java.ftl">
+<#include "triggers.java.ftl">
 
 package ${package}.potion;
 
@@ -135,16 +136,6 @@ public class ${name}MobEffect extends MobEffect {
 }
 </@javacompress>
 <#-- @formatter:on -->
-
-<#function getAttributeOperation operation>
-	<#if operation == "ADD_VALUE">
-		<#return "ADDITION">
-	<#elseif operation == "ADD_MULTIPLIED_BASE">
-		<#return "MULTIPLY_BASE">
-	<#else>
-		<#return "MULTIPLY_TOTAL">
-	</#if>
-</#function>
 
 <#macro startedContext>
 <#if data.onAddedSound?has_content && data.onAddedSound.getMappedValue()?has_content>

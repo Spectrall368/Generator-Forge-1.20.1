@@ -61,13 +61,13 @@ public class ${name}Block extends ${getPlantClass(data.plantType)}Block <#if int
 
 	public ${name}Block() {
 		super(<#if data.plantType == "normal">
-		() -> ${generator.map(data.suspiciousStewEffect, "effects")}, ${data.suspiciousStewDuration},
+		() -> ${data.suspiciousStewEffect!"MobEffects.SATURATION"}, ${data.suspiciousStewDuration},
 		<#elseif data.plantType == "sapling">
 		new ${name}TreeGrower(),
 		</#if>
 		BlockBehaviour.Properties.of()
-		<#if generator.map(data.colorOnMap, "mapcolors") != "DEFAULT">
-		.mapColor(MapColor.${generator.map(data.colorOnMap, "mapcolors")})
+		<#if (data.colorOnMap!"DEFAULT") != "DEFAULT">
+		.mapColor(MapColor.${data.colorOnMap})
 		<#else>
 		.mapColor(MapColor.PLANT)
 		</#if>
@@ -102,7 +102,7 @@ public class ${name}Block extends ${getPlantClass(data.plantType)}Block <#if int
 		.jumpFactor(${data.jumpFactor}f)
 		</#if>
 		<#if data.luminance != 0>
-		.lightLevel(s -> ${data.luminance})
+		.lightLevel(state -> ${data.luminance})
 		</#if>
 		<#if data.isSolid>
 			.noOcclusion()
@@ -171,9 +171,9 @@ public class ${name}Block extends ${getPlantClass(data.plantType)}Block <#if int
 	}
 	</#if>
 
-	<#if generator.map(data.aiPathNodeType, "pathnodetypes") != "DEFAULT">
+	<#if data.aiPathNodeType != "DEFAULT">
 	@Override public BlockPathTypes getBlockPathType(BlockState state, BlockGetter world, BlockPos pos, Mob entity) {
-		return BlockPathTypes.${generator.map(data.aiPathNodeType, "pathnodetypes")};
+		return BlockPathTypes.${data.aiPathNodeType};
 	}
 	</#if>
 
@@ -269,9 +269,9 @@ public class ${name}Block extends ${getPlantClass(data.plantType)}Block <#if int
 		}
 	</#if>
 
-	<#if !(data.growapableSpawnType == "Plains" && (data.plantType == "normal" || data.plantType == "sapling"))>
+	<#elseif !(data.growapableSpawnType.getUnmappedValue() == "Plains" && (data.plantType == "normal" || data.plantType == "sapling"))><#-- If no placingCondition or canBePlacedOn block list is specified, we emulate plant type placement logic -->
 	@Override public PlantType getPlantType(BlockGetter world, BlockPos pos) {
-		return PlantType.${generator.map(data.growapableSpawnType, "planttypes")};
+		return PlantType.${data.growapableSpawnType};
 	}
 	</#if>
 
@@ -420,7 +420,7 @@ public class ${name}Block extends ${getPlantClass(data.plantType)}Block <#if int
 	<#if (blockList?size > 1) && condition>(</#if>
 	<#list blockList as canBePlacedOn>
 	<#if canBePlacedOn.getUnmappedValue().startsWith("TAG:")>
-	groundState.is(BlockTags.create(new ResourceLocation("${canBePlacedOn.getUnmappedValue().replace("TAG:", "").replace("mod:", modid + ":")}")))
+	groundState.is(BlockTags.create(new ResourceLocation("${canBePlacedOn.asTagEntry()}")))
 	<#elseif canBePlacedOn.getMappedValue(1).startsWith("#")>
 	groundState.is(BlockTags.create(new ResourceLocation("${canBePlacedOn.getMappedValue(1)?remove_beginning("#")}")))
 	<#else>

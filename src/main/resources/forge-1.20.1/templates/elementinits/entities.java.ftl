@@ -53,7 +53,7 @@ package ${package}.init;
 			<#assign hasLivingEntities = true>
 			public static final RegistryObject<EntityType<${entity.getModElement().getName()}Entity>> ${entity.getModElement().getRegistryNameUpper()} =
 				register("${entity.getModElement().getRegistryName()}", EntityType.Builder.<${entity.getModElement().getName()}Entity>
-						of(${entity.getModElement().getName()}Entity::new, ${generator.map(entity.mobSpawningType, "mobspawntypes")})
+						of(${entity.getModElement().getName()}Entity::new, ${entity.mobSpawningType})
 							.setShouldReceiveVelocityUpdates(true).setTrackingRange(${entity.trackingRange}).setUpdateInterval(3)
 							.setCustomClientFactory(${entity.getModElement().getName()}Entity::new)
 							<#if entity.immuneToFire>.fireImmune()</#if>
@@ -69,12 +69,12 @@ package ${package}.init;
 	</#list>
 
 	<#if specialentities?size != 0>
-		<#if specialentities?filter(e -> e.entityType == "Boat")?size != 0>
+		<#if specialentities?filter(e -> !e.entityType?contains("Chest"))?size != 0>
 			public static final RegistryObject<EntityType<${JavaModName}Boat>> ${JavaModName?upper_case}_BOAT =
 				register("boat", EntityType.Builder.<${JavaModName}Boat>
 					of(${JavaModName}Boat::new, MobCategory.MISC).sized(1.375f, 0.5625f).clientTrackingRange(10));
 		</#if>
-		<#if specialentities?filter(e -> e.entityType == "ChestBoat")?size != 0>
+		<#if specialentities?filter(e -> e.entityType?contains("Chest"))?size != 0>
 			public static final RegistryObject<EntityType<${JavaModName}ChestBoat>> ${JavaModName?upper_case}_CHEST_BOAT =
 				register("chest_boat", EntityType.Builder.<${JavaModName}ChestBoat>
 					of(${JavaModName}ChestBoat::new, MobCategory.MISC).sized(1.375f, 0.5625f).clientTrackingRange(10));

@@ -87,6 +87,8 @@ public abstract class ${name}Item extends ArmorItem {
 			super(ArmorItem.Type.HELMET, new Item.Properties()<#if data.helmetImmuneToFire>.fireResistant()</#if><#if data.rarity != "COMMON">.rarity(Rarity.${data.rarity})</#if>);
 		}
 
+		<@itemAttributeModifiers data.attributeModifiers?filter(e -> e.armorPieces[0]) "helmet" "ArmorItem.Type.HELMET" "EquipmentSlot.HEAD" data.damageValueHelmet/>
+
 		<#if data.helmetModelName != "Default" && data.getHelmetModel()??>
 		@Override public void initializeClient(Consumer<IClientItemExtensions> consumer) {
 			consumer.accept(new IClientItemExtensions() {
@@ -148,6 +150,8 @@ public abstract class ${name}Item extends ArmorItem {
 		public Chestplate() {
 			super(ArmorItem.Type.CHESTPLATE, new Item.Properties()<#if data.bodyImmuneToFire>.fireResistant()</#if><#if data.rarity != "COMMON">.rarity(Rarity.${data.rarity})</#if>);
 		}
+
+		<@itemAttributeModifiers data.attributeModifiers?filter(e -> e.armorPieces[1]) "chestplate" "ArmorItem.Type.CHESTPLATE" "EquipmentSlot.CHEST" data.damageValueBody/>
 
 		<#if data.bodyModelName != "Default" && data.getBodyModel()??>
 		@Override public void initializeClient(Consumer<IClientItemExtensions> consumer) {
@@ -212,6 +216,8 @@ public abstract class ${name}Item extends ArmorItem {
 			super(ArmorItem.Type.LEGGINGS, new Item.Properties()<#if data.leggingsImmuneToFire>.fireResistant()</#if><#if data.rarity != "COMMON">.rarity(Rarity.${data.rarity})</#if>);
 		}
 
+		<@itemAttributeModifiers data.attributeModifiers?filter(e -> e.armorPieces[2]) "leggings" "ArmorItem.Type.LEGGINGS" "EquipmentSlot.LEGS" data.damageValueLeggings/>
+
 		<#if data.leggingsModelName != "Default" && data.getLeggingsModel()??>
 		@Override public void initializeClient(Consumer<IClientItemExtensions> consumer) {
 			consumer.accept(new IClientItemExtensions() {
@@ -275,6 +281,8 @@ public abstract class ${name}Item extends ArmorItem {
 			super(ArmorItem.Type.BOOTS, new Item.Properties()<#if data.bootsImmuneToFire>.fireResistant()</#if><#if data.rarity != "COMMON">.rarity(Rarity.${data.rarity})</#if>);
 		}
 
+		<@itemAttributeModifiers data.attributeModifiers?filter(e -> e.armorPieces[3]) "boots" "ArmorItem.Type.BOOTS" "EquipmentSlot.FEET" data.damageValueBoots/>
+
 		<#if data.bootsModelName != "Default" && data.getBootsModel()??>
 		@Override public void initializeClient(Consumer<IClientItemExtensions> consumer) {
 			consumer.accept(new IClientItemExtensions() {
@@ -333,3 +341,133 @@ public abstract class ${name}Item extends ArmorItem {
 }
 </@javacompress>
 <#-- @formatter:on -->
+<#macro itemAttributeModifiers modifiers armorPart armorType defaultEquipSlot defense>
+<#if modifiers?size != 0>
+    <#assign hasToughness = data.toughness != 0>
+    <#assign hasKnockbackResistance = data.knockbackResistance != 0>
+
+    <#assign slots = [defaultEquipSlot]>
+    <#assign hasGlobal = false>
+    <#assign defaultModifiers = []>
+    <#assign otherModifiers = []>
+    <#list modifiers as modifier>
+            private static final UUID UUID_${modifier?index} = UUID.fromString("${w.getUUID(registryname + "_" + modifier?index + "." + armorPart)}");
+
+            <#if modifier.equipmentSlot.getUnmappedValue() == "default">
+                <#assign eq = defaultEquipSlot>
+                <#assign defaultModifiers += [modifier]>
+            <#else>
+                <#assign eq = modifier.equipmentSlot.getMappedValue(2)>
+                <#assign otherModifiers += [modifier]>
+            </#if>
+
+            <#if eq?contains("()")>
+                <#assign hasGlobal = true>
+            <#else>
+                <#if !slots?seq_contains(eq)>
+                    <#assign slots += [eq]>
+                </#if>
+            </#if>
+    </#list>
+
+    @Override public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlot equipmentSlot, ItemStack stack) {
+    <#if slots?size == 1 && !hasGlobal>
+        if (equipmentSlot == ${defaultEquipSlot}) {
+            ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
+            builder.putAll(super.getAttributeModifiers(equipmentSlot, stack));
+            builder.put(Attributes.ARMOR, new AttributeModifier(ARMOR_MODIFIER_UUID_PER_TYPE.get(${armorType}), "Armor modifier", ${defense}, AttributeModifier.Operation.ADDITION));
+
+            <#if hasToughness>
+            builder.put(Attributes.ARMOR_TOUGHNESS, new AttributeModifier(ARMOR_MODIFIER_UUID_PER_TYPE.get(${armorType}), "Armor toughness", ${data.toughness}, AttributeModifier.Operation.ADDITION));
+            </#if>
+            <#if hasKnockbackResistance>
+            builder.put(Attributes.KNOCKBACK_RESISTANCE, new AttributeModifier(ARMOR_MODIFIER_UUID_PER_TYPE.get(${armorType}), "Armor knockback resistance", ${data.knockbackResistance}, AttributeModifier.Operation.ADDITION));
+            </#if>
+
+            <#list modifiers as modifier>
+            builder.put(${modifier.attribute}, new AttributeModifier(UUID_${modifier?index}, "Armor modifier", ${modifier.amount}, AttributeModifier.Operation.${getAttributeOperation(modifier.operation)}));
+            </#list>
+
+            return builder.build();
+        }
+
+        return super.getAttributeModifiers(equipmentSlot, stack);
+    }
+    <#else>
+        <#assign sortedModifiers = defaultModifiers + (otherModifiers?sort_by("equipmentSlot"))>
+
+        <#if hasGlobal>
+            ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
+            builder.putAll(super.getAttributeModifiers(equipmentSlot, stack));
+        <#else>
+            Multimap<Attribute, AttributeModifier> defaultModifiers = super.getAttributeModifiers(equipmentSlot, stack);
+            ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = null;
+        </#if>
+
+            if (equipmentSlot == ${defaultEquipSlot}) {
+                <#if !hasGlobal>
+                builder = initializeBuilder(builder, defaultModifiers);
+                </#if>
+                builder.put(Attributes.ARMOR, new AttributeModifier(ARMOR_MODIFIER_UUID_PER_TYPE.get(${armorType}), "Armor modifier", ${defense}, AttributeModifier.Operation.ADDITION));
+
+                <#if hasToughness>
+                builder.put(Attributes.ARMOR_TOUGHNESS, new AttributeModifier(ARMOR_MODIFIER_UUID_PER_TYPE.get(${armorType}), "Armor toughness", ${data.toughness}, AttributeModifier.Operation.ADDITION));
+                </#if>
+                <#if hasKnockbackResistance>
+                builder.put(Attributes.KNOCKBACK_RESISTANCE, new AttributeModifier(ARMOR_MODIFIER_UUID_PER_TYPE.get(${armorType}), "Armor knockback resistance", ${data.knockbackResistance}, AttributeModifier.Operation.ADDITION));
+                </#if>
+
+                <#assign currentSlot = defaultEquipSlot>
+                <#assign prevIsGlobal = false>
+
+            <#list sortedModifiers as modifier>
+                <#if modifier.equipmentSlot.getUnmappedValue() == "default">
+                    <#assign eq = defaultEquipSlot>
+                <#else>
+                    <#assign eq = modifier.equipmentSlot.getMappedValue(2)>
+                </#if>
+
+                <#if currentSlot != eq>
+                    <#if !prevIsGlobal>
+                    }
+                    </#if>
+
+                    <#assign prevIsGlobal = eq?contains("()")>
+                    <#assign currentSlot = eq>
+
+                    <#if !prevIsGlobal>
+                    if (<#if eq?contains(",")>List.of(${eq}).contains(equipmentSlot)<#else>equipmentSlot == ${eq}</#if>) {
+                    </#if>
+
+                    <#if !hasGlobal>
+                    builder = initializeBuilder(builder, defaultModifiers);
+                    </#if>
+
+                </#if>
+                builder.put(${modifier.attribute}, new AttributeModifier(UUID_${modifiers?seq_index_of(modifier)}, "Armor modifier", ${modifier.amount}, AttributeModifier.Operation.${getAttributeOperation(modifier.operation)}));
+            </#list>
+
+            <#if !prevIsGlobal>
+            }
+            </#if>
+
+            <#if hasGlobal>
+            return builder.build();
+            <#else>
+            return builder != null ? builder.build() : defaultModifiers;
+            </#if>
+        }
+
+            <#if !hasGlobal>
+            private static ImmutableMultimap.Builder<Attribute, AttributeModifier> initializeBuilder(ImmutableMultimap.Builder<Attribute, AttributeModifier> builder,Multimap<Attribute, AttributeModifier> defaults) {
+                if (builder == null) {
+                    builder = ImmutableMultimap.builder();
+                    builder.putAll(defaults);
+                }
+
+                return builder;
+            }
+            </#if>
+    </#if>
+</#if>
+</#macro>

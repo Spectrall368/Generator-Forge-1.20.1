@@ -33,8 +33,8 @@ package ${package}.item;
 
 import net.minecraft.world.entity.EntitySelector;
 
-<#assign hasBoat = specialentities?filter(e -> e.entityType == "Boat")?size != 0>
-<#assign hasChestBoat = specialentities?filter(e -> e.entityType == "ChestBoat")?size != 0>
+<#assign hasBoat = specialentities?filter(e -> !e.entityType?contains("Chest"))?size != 0>
+<#assign hasChestBoat = specialentities?filter(e -> e.entityType?contains("Chest"))?size != 0>
 
 <#assign variantSetterCode>
 <#if hasChestBoat && hasBoat>
@@ -63,9 +63,7 @@ public class ${JavaModName}BoatItem extends Item {
 		this.type = type;
 	}
 
-	<#assign useMethod = mcc.getMethod("net.minecraft.world.item.BoatItem", "use", "Level", "Player", "InteractionHand")>
-	<#assign useMethod = useMethod.replace("boat.setVariant(this.type);", variantSetterCode)>
-	@Override ${useMethod}
+	@Override ${mcc.getMethod("net.minecraft.world.item.BoatItem", "use", "Level", "Player", "InteractionHand").replace("boat.setVariant(this.type);", variantSetterCode)}
 
 	private Boat getBoat(Level level, HitResult hitResult) {
 		<#if hasBoat && hasChestBoat>

@@ -1,5 +1,15 @@
 <#include "procedures.java.ftl">
 
+<#function getAttributeOperation operation>
+ 	<#if operation == "ADD_VALUE">
+ 		<#return "ADDITION">
+ 	<#elseif operation == "ADD_MULTIPLIED_BASE">
+ 		<#return "MULTIPLY_BASE">
+ 	<#else>
+ 		<#return "MULTIPLY_TOTAL">
+ 	</#if>
+</#function>
+
 <#-- Item-related triggers -->
 <#macro addSpecialInformation procedure="" translationKeyHeader="" isBlock=false>
 	<#if procedure?has_content && (hasProcedure(procedure) || !procedure.getFixedValue().isEmpty())>

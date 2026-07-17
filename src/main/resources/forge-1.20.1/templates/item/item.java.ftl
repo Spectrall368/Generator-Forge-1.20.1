@@ -105,15 +105,15 @@ public class ${name}Item extends <#if data.hasBannerPatterns()>BannerPattern<#el
 
 	<#if data.hasNonDefaultAnimation()>
 	@Override public UseAnim getUseAnimation(ItemStack itemstack) {
-		return UseAnim.${data.animation?upper_case};
+		return ${data.animation};
 	}
 	</#if>
 
-	<#if !data.isFood && data.animation == "eat">
+	<#if !data.isFood && data.animation.getUnmappedValue() == "eat">
 	@Override public SoundEvent getEatingSound() {
 		return SoundEvents.EMPTY;
 	}
-	<#elseif !data.isFood && data.animation == "drink">
+	<#elseif !data.isFood && data.animation.getUnmappedValue() == "drink">
 	@Override public SoundEvent getDrinkingSound() {
 		return SoundEvents.EMPTY;
 	}
@@ -437,16 +437,28 @@ public class ${name}Item extends <#if data.hasBannerPatterns()>BannerPattern<#el
 	}
 </#macro>
 </@javacompress>
+<#-- @formatter:on -->
 <#macro itemAttributeModifiers includeMeleeAttributes=false>
     <#assign slots = []>
     <#assign hasGlobal = false>
-    <#assign validModifiers = []>
-    <#list data.attributeModifiers as modifier>
-        <#if modifier.amount != 0>
-            <#assign validModifiers += [modifier]>
-            private static final UUID UUID_${validModifiers?size-1} = UUID.fromString("${w.getUUID(registryname + "_" + (validModifiers?size-1))}");
+    <#assign defaultModifiers = []>
+    <#assign otherModifiers = []>
 
-            <#assign eq = generator.map(modifier.equipmentSlot, "equipmentslots", 2)>
+    <#if includeMeleeAttributes>
+        <#assign slots += ["EquipmentSlot.MAINHAND"]>
+    </#if>
+
+    <#list data.attributeModifiers as modifier>
+            private static final UUID UUID_${modifier?index} = UUID.fromString("${w.getUUID(registryname + "_" + modifier?index)}");
+
+            <#if modifier.equipmentSlot.getUnmappedValue() == "default">
+                <#assign eq = defaultEquipSlot>
+                <#assign defaultModifiers += [modifier]>
+            <#else>
+                <#assign eq = modifier.equipmentSlot.getMappedValue(2)>
+                <#assign otherModifiers += [modifier]>
+            </#if>
+
             <#if eq?contains("()")>
                 <#assign hasGlobal = true>
             <#else>
@@ -454,25 +466,12 @@ public class ${name}Item extends <#if data.hasBannerPatterns()>BannerPattern<#el
                     <#assign slots += [eq]>
                 </#if>
             </#if>
-        </#if>
     </#list>
 
-    <#assign validDamage = (data.damageVsEntity - 1) != 0 && (data.damageVsEntity - 1)?string != "-0">
-    <#assign validAtkSpeed = (data.attackSpeed - 4) != 0 && (data.attackSpeed - 4)?string != "-0">
-    <#assign hasMelee = includeMeleeAttributes && (validDamage || validAtkSpeed)>
-
-    <#if hasMelee>
-        <#if !slots?seq_contains("EquipmentSlot.MAINHAND")>
-            <#assign slots += ["EquipmentSlot.MAINHAND"]>
-        </#if>
-    </#if>
-
-    <#assign isSingleSlot = (slots?size == 1) && !hasGlobal>
-
-    <#if isSingleSlot>
-    <#assign singleEq = slots[0]>
-
     @Override public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlot equipmentSlot, ItemStack stack) {
+    <#if slots?size == 1 && !hasGlobal>
+       <#assign singleEq = slots[0]>
+
         <#if !singleEq?contains("()")>
         if (<#if singleEq?contains(",")>List.of(${singleEq}).contains(equipmentSlot)<#else>equipmentSlot == ${singleEq}</#if>) {
         </#if>
@@ -480,17 +479,12 @@ public class ${name}Item extends <#if data.hasBannerPatterns()>BannerPattern<#el
         ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
         builder.putAll(super.getAttributeModifiers(equipmentSlot, stack));
 
-        <#if hasMelee>
-            <#if validDamage>
+        <#if includeMeleeAttributes>
             builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Item modifier", ${data.damageVsEntity - 1}, AttributeModifier.Operation.ADDITION));
-            </#if>
-
-            <#if validAtkSpeed>
             builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Item modifier", ${data.attackSpeed - 4}, AttributeModifier.Operation.ADDITION));
-            </#if>
         </#if>
 
-        <#list validModifiers as modifier>
+        <#list data.attributeModifiers as modifier>
         builder.put(${modifier.attribute}, new AttributeModifier(UUID_${modifier?index}, "Item modifier", ${modifier.amount}, AttributeModifier.Operation.${getAttributeOperation(modifier.operation)}));
         </#list>
 
@@ -498,54 +492,53 @@ public class ${name}Item extends <#if data.hasBannerPatterns()>BannerPattern<#el
 
         <#if !singleEq?contains("()")>
         }
+
         return super.getAttributeModifiers(equipmentSlot, stack);
         </#if>
     }
     <#else>
-        <#assign hasAnyModifier = (validModifiers?size > 0)>
-        <#if hasAnyModifier || hasMelee>
-        @Override public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlot equipmentSlot, ItemStack stack) {
-            <#if hasGlobal>
+        <#assign sortedModifiers = defaultModifiers + (otherModifiers?sort_by("equipmentSlot"))>
+
+        <#if hasGlobal>
             ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
             builder.putAll(super.getAttributeModifiers(equipmentSlot, stack));
-            <#else>
+        <#else>
             Multimap<Attribute, AttributeModifier> defaultModifiers = super.getAttributeModifiers(equipmentSlot, stack);
             ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = null;
-            </#if>
+        </#if>
 
-            <#if hasMelee>
-            if (equipmentSlot == EquipmentSlot.MAINHAND) {
+        <#assign currentSlot = "">
+
+        <#if includeMeleeAttributes>
+        if (equipmentSlot == EquipmentSlot.MAINHAND) {
                 <#if !hasGlobal>
                 builder = initializeBuilder(builder, defaultModifiers);
                 </#if>
 
-                <#if validDamage>
                 builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Item modifier", ${data.damageVsEntity - 1}, AttributeModifier.Operation.ADDITION));
-                </#if>
-
-                <#if validAtkSpeed>
                 builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Item modifier", ${data.attackSpeed - 4}, AttributeModifier.Operation.ADDITION));
-                </#if>
-            }
-            </#if>
 
-            <#assign sortedModifiers = validModifiers?sort_by("equipmentSlot")>
-            <#assign currentSlot = "">
+                <#assign currentSlot = "EquipmentSlot.MAINHAND">
+                <#assign prevIsGlobal = false>
+        </#if>
 
             <#list sortedModifiers as modifier>
-                <#assign eq = generator.map(modifier.equipmentSlot, "equipmentslots", 2)>
+                <#if modifier.equipmentSlot.getUnmappedValue() == "default">
+                    <#assign eq = "EquipmentSlot.MAINHAND">
+                <#else>
+                    <#assign eq = modifier.equipmentSlot.getMappedValue(2)>
+                </#if>
 
-                <#if modifier.equipmentSlot != currentSlot>
-
-                    <#if currentSlot != "" && !prevGlobal>
-                }
+                <#if currentSlot != eq>
+                    <#if currentSlot != "" && prevIsGlobal?? && !prevIsGlobal>
+                    }
                     </#if>
 
-                    <#assign currentSlot = modifier.equipmentSlot>
-                    <#assign prevGlobal = eq?contains("()")>
+                    <#assign prevIsGlobal = eq?contains("()")>
+                    <#assign currentSlot = eq>
 
-                    <#if !prevGlobal>
-                if (<#if eq?contains(",")>List.of(${eq}).contains(equipmentSlot)<#else>equipmentSlot == ${eq}</#if>) {
+                    <#if !prevIsGlobal>
+                    if (<#if eq?contains(",")>List.of(${eq}).contains(equipmentSlot)<#else>equipmentSlot == ${eq}</#if>) {
                     </#if>
 
                     <#if !hasGlobal>
@@ -553,11 +546,10 @@ public class ${name}Item extends <#if data.hasBannerPatterns()>BannerPattern<#el
                     </#if>
 
                 </#if>
-
-                builder.put(${modifier.attribute}, new AttributeModifier(UUID_${validModifiers?seq_index_of(modifier)}, "Item modifier", ${modifier.amount}, AttributeModifier.Operation.${getAttributeOperation(modifier.operation)}));
+                builder.put(${modifier.attribute}, new AttributeModifier(UUID_${data.attributeModifiers?seq_index_of(modifier)}, "Item modifier", ${modifier.amount}, AttributeModifier.Operation.${getAttributeOperation(modifier.operation)}));
             </#list>
 
-            <#if currentSlot != "" && !prevGlobal>
+            <#if currentSlot != "" && !prevIsGlobal>
             }
             </#if>
 
@@ -578,16 +570,5 @@ public class ${name}Item extends <#if data.hasBannerPatterns()>BannerPattern<#el
                 return builder;
             }
             </#if>
-        </#if>
     </#if>
 </#macro>
-<#-- @formatter:on -->
-<#function getAttributeOperation operation>
- 	<#if operation == "ADD_VALUE">
- 		<#return "ADDITION">
- 	<#elseif operation == "ADD_MULTIPLIED_BASE">
- 		<#return "MULTIPLY_BASE">
- 	<#else>
- 		<#return "MULTIPLY_TOTAL">
- 	</#if>
-</#function>

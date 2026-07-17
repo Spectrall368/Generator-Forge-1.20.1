@@ -108,8 +108,8 @@ public class ${getClassName()}Block extends ${getBlockClass(data.blockBase)}
 
 	<#macro blockProperties>
 		BlockBehaviour.Properties.of()
-		<#if generator.map(data.colorOnMap, "mapcolors") != "DEFAULT">
-			.mapColor(MapColor.${generator.map(data.colorOnMap, "mapcolors")})
+		<#if (data.colorOnMap!"DEFAULT") != "DEFAULT">
+			.mapColor(MapColor.${data.colorOnMap})
 		</#if>
 		<#if data.isCustomSoundType>
 			.sound(new ForgeSoundType(1.0f, 1.0f,
@@ -177,8 +177,8 @@ public class ${getClassName()}Block extends ${getBlockClass(data.blockBase)}
 		<#if data.ignitedByLava>
 			.ignitedByLava()
 		</#if>
-		<#if data.noteBlockInstrument != "harp">
-			.instrument(${generator.map(data.noteBlockInstrument, "noteblockinstruments")})
+		<#if data.noteBlockInstrument.getUnmappedValue() != "harp">
+			.instrument(${data.noteBlockInstrument})
 		</#if>
 		<#if data.blockBase?has_content && (
 				data.blockBase == "FenceGate" ||
@@ -358,13 +358,15 @@ public class ${getClassName()}Block extends ${getBlockClass(data.blockBase)}
 		builder.add(${props?join(", ")});
 	}
 
-	@Override
-	public BlockState getStateForPlacement(BlockPlaceContext context) {
+	@Override public BlockState getStateForPlacement(BlockPlaceContext context) {
+		BlockState state = super.getStateForPlacement(context);
+		if (state == null) return null;
+
 		<#if data.isWaterloggable>
 		boolean flag = context.getLevel().getFluidState(context.getClickedPos()).getType() == Fluids.WATER;
 		</#if>
 		<#if data.rotationMode != 3>
-		return super.getStateForPlacement(context)
+		return state
 			<#if data.rotationMode == 1>
 			    <#if data.enablePitch>
 			    .setValue(FACE, faceForDirection(context.getNearestLookingDirection()))
@@ -383,7 +385,7 @@ public class ${getClassName()}Block extends ${getBlockClass(data.blockBase)}
 			</#if>;
 		<#elseif data.rotationMode == 3>
 	    if (context.getClickedFace().getAxis() == Direction.Axis.Y)
-	        return super.getStateForPlacement(context)
+	        return state
 	    		<#if data.enablePitch>
 	    		    .setValue(FACE, context.getClickedFace().getOpposite() == Direction.UP ? AttachFace.CEILING : AttachFace.FLOOR)
 	    		    .setValue(FACING, context.getHorizontalDirection())
@@ -395,7 +397,7 @@ public class ${getClassName()}Block extends ${getBlockClass(data.blockBase)}
 	    		.setValue(WATERLOGGED, flag)
 	    		</#if>;
 
-	    return super.getStateForPlacement(context)
+	    return state
 	    	<#if data.enablePitch>
 	    	    .setValue(FACE, AttachFace.WALL)
 	    	</#if>
@@ -546,9 +548,9 @@ public class ${getClassName()}Block extends ${getBlockClass(data.blockBase)}
 	}
 	</#if>
 
-	<#if generator.map(data.aiPathNodeType, "pathnodetypes") != "DEFAULT">
+	<#if data.aiPathNodeType != "DEFAULT">
 	@Override public BlockPathTypes getBlockPathType(BlockState state, BlockGetter world, BlockPos pos, Mob entity) {
-		return BlockPathTypes.${generator.map(data.aiPathNodeType, "pathnodetypes")};
+		return BlockPathTypes.${data.aiPathNodeType};
 	}
 	</#if>
 

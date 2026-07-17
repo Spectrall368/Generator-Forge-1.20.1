@@ -41,8 +41,8 @@ package ${package}.init;
 
 <#assign itemextensions = w.getGElementsOfType("itemextension")?filter(e -> e.hasDispenseBehavior)>
 <#assign specialentities = w.getGElementsOfType("specialentity")>
-<#assign hasBoat = specialentities?filter(e -> e.entityType == "Boat")?size != 0>
-<#assign hasChestBoat = specialentities?filter(e -> e.entityType == "ChestBoat")?size != 0>
+<#assign hasBoat = specialentities?filter(e -> !e.entityType?contains("Chest"))?size != 0>
+<#assign hasChestBoat = specialentities?filter(e -> e.entityType?contains("Chest"))?size != 0>
 
 <#assign variantSetterCode>
 <#if hasChestBoat && hasBoat>

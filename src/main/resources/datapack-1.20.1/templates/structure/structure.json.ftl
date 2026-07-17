@@ -3,9 +3,9 @@
   "type": "minecraft:jigsaw",
   "start_pool": "${modid}:${registryname}",
   "size": ${[data.size, 7]?min},
-  "max_distance_from_center": ${data.maxDistanceFromCenter},
+  "max_distance_from_center": ${(data.terrainAdaptation != "none")?then([data.maxDistanceFromCenter, 116]?min, data.maxDistanceFromCenter)},
   "spawn_overrides": {},
-  "step": "${generator.map(data.generationStep, "generationsteps")}",
+  "step": "${data.generationStep}",
   "terrain_adaptation": "${data.terrainAdaptation?replace("encapsulate", "none")}",
   "start_height": {
     <#if data.useStartHeight>

@@ -922,7 +922,7 @@ public class ${name}Entity extends ${extendsClass} <#if interfaces?size gt 0>imp
 
 	public static void init() {
 		<#if data.spawnThisMob>
-			<#if data.mobSpawningType == "creature">
+			<#if data.mobSpawningType.getUnmappedValue() == "creature">
 			SpawnPlacements.register(${JavaModName}Entities.${REGISTRYNAME}.get(),
 					SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
 				<#if hasProcedure(data.spawningCondition)>
@@ -937,7 +937,7 @@ public class ${name}Entity extends ${extendsClass} <#if interfaces?size gt 0>imp
 							(world.getBlockState(pos.below()).is(BlockTags.ANIMALS_SPAWNABLE_ON) && world.getRawBrightness(pos, 0) > 8)
 				</#if>
 			);
-			<#elseif data.mobSpawningType == "ambient" || data.mobSpawningType == "misc">
+			<#elseif data.mobSpawningType.getUnmappedValue() == "ambient" || data.mobSpawningType.getUnmappedValue() == "misc">
 			SpawnPlacements.register(${JavaModName}Entities.${REGISTRYNAME}.get(),
 					SpawnPlacements.Type.NO_RESTRICTIONS, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
 					<#if hasProcedure(data.spawningCondition)>
@@ -951,7 +951,7 @@ public class ${name}Entity extends ${extendsClass} <#if interfaces?size gt 0>imp
 					Mob::checkMobSpawnRules
 					</#if>
 			);
-			<#elseif data.mobSpawningType == "waterCreature" || data.mobSpawningType == "waterAmbient">
+			<#elseif data.mobSpawningType.getUnmappedValue() == "waterCreature" || data.mobSpawningType.getUnmappedValue() == "waterAmbient">
 			SpawnPlacements.register(${JavaModName}Entities.${REGISTRYNAME}.get(),
 					SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
 					<#if hasProcedure(data.spawningCondition)>
@@ -966,7 +966,7 @@ public class ${name}Entity extends ${extendsClass} <#if interfaces?size gt 0>imp
 							(world.getBlockState(pos).is(Blocks.WATER) && world.getBlockState(pos.above()).is(Blocks.WATER))
 					</#if>
 			);
-			<#elseif data.mobSpawningType == "undergroundWaterCreature">
+			<#elseif data.mobSpawningType.getUnmappedValue() == "undergroundWaterCreature">
 			SpawnPlacements.register(${JavaModName}Entities.${REGISTRYNAME}.get(),
 					SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
 					<#if hasProcedure(data.spawningCondition)>

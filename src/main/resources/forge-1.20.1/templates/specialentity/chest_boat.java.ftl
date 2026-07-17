@@ -33,7 +33,7 @@ package ${package}.entity;
 
 import net.minecraft.network.syncher.EntityDataAccessor;
 
-<#assign chestBoatEntities = specialentities?filter(e -> e.entityType == "ChestBoat")>
+<#assign chestBoatEntities = specialentities?filter(e -> e.entityType?contains("Chest"))>
 public class ${JavaModName}ChestBoat extends ChestBoat {
 	private static final EntityDataAccessor<Integer> DATA_ID_TYPE = SynchedEntityData.defineId(${JavaModName}ChestBoat.class, EntityDataSerializers.INT);
 
@@ -53,6 +53,15 @@ public class ${JavaModName}ChestBoat extends ChestBoat {
 		return Component.translatable("entity.minecraft.chest_boat");
 	}
 
+	@Override protected void defineSynchedData() {
+		super.defineSynchedData();
+		this.entityData.define(DATA_ID_TYPE, ${JavaModName}Boat.Type.${chestBoatEntities[0].getModElement().getRegistryNameUpper()}.ordinal());
+	}
+
+	@Override public double getPassengersRidingOffset() {
+		return getModVariant().isRaft() ? 0.25D : -0.1D;
+	}
+
 	@Override public Item getDropItem() {
 		return switch (getModVariant()) {
 		<#list chestBoatEntities as entity>
@@ -60,11 +69,6 @@ public class ${JavaModName}ChestBoat extends ChestBoat {
 		</#list>
 		    default -> Items.AIR;
 		};
-	}
-
-	@Override protected void defineSynchedData() {
-		super.defineSynchedData();
-		this.entityData.define(DATA_ID_TYPE, ${JavaModName}Boat.Type.${chestBoatEntities[0].getModElement().getRegistryNameUpper()}.ordinal());
 	}
 
 	@Override protected void addAdditionalSaveData(CompoundTag compound) {

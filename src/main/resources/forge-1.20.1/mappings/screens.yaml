@@ -22,10 +22,8 @@ CreateWorld: CreateWorldScreen
 CustomizeSkin: SkinCustomizationScreen
 DatapackFailure: DatapackLoadFailureScreen
 Death: DeathScreen
-Demo: DemoIntroScreen
 DirtMessage: GenericDirtMessageScreen
 Disconnected: DisconnectedScreen
-DownloadTerrain: ReceivingLevelScreen
 EditBook: BookEditScreen
 EditGamerules: EditGameRulesScreen
 EditMinecartCommandBlock: MinecartCommandBlockEditScreen

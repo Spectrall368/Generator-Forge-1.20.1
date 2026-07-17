@@ -65,7 +65,7 @@ public class ${name}Enchantment extends Enchantment {
 		</#if>
 
 	public ${name}Enchantment() {
-		this(${generator.map(data.supportedSlots, "equipmentslots", 2)});
+		this(${data.supportedSlots.getMappedValue(2)});
 	}
 
 	private ${name}Enchantment(EquipmentSlot... slots) {

@@ -29,8 +29,8 @@
 -->
 
 <#-- @formatter:off -->
-<#assign hasBoat = specialentities?filter(e -> e.entityType == "Boat")?size != 0>
-<#assign hasChestBoat = specialentities?filter(e -> e.entityType == "ChestBoat")?size != 0>
+<#assign hasBoat = specialentities?filter(e -> !e.entityType?contains("Chest"))?size != 0>
+<#assign hasChestBoat = specialentities?filter(e -> e.entityType?contains("Chest"))?size != 0>
 package ${package}.client.renderer;
 
 import com.mojang.datafixers.util.Pair;
@@ -45,14 +45,14 @@ public class ${JavaModName}BoatRenderer extends BoatRenderer {
 		    type -> Pair.of(new ResourceLocation("${modid}", getTextureLocation(type, hasChest)), createBoatModel(context, type, hasChest))));
 	}
 
-	private static String getTextureLocation(${JavaModName}Boat.Type type, boolean hasChest) {
-		return hasChest ? "textures/entity/chest_boat/" + type.getName() + ".png" : "textures/entity/boat/" + type.getName() + ".png";
-	}
-
 	private ListModel<Boat> createBoatModel(EntityRendererProvider.Context context, ${JavaModName}Boat.Type type, boolean hasChest) {
 		ModelLayerLocation modellayerlocation = hasChest ? createChestBoatModelName(type) : createBoatModelName(type);
 		ModelPart modelpart = context.bakeLayer(modellayerlocation);
-		return hasChest ? new ChestBoatModel(modelpart) : new BoatModel(modelpart);
+		return type.isRaft() ? (hasChest ? new ChestRaftModel(modelpart) : new RaftModel(modelpart)) : (hasChest ? new ChestBoatModel(modelpart) : new BoatModel(modelpart));
+	}
+
+	private static String getTextureLocation(${JavaModName}Boat.Type type, boolean hasChest) {
+		return hasChest ? "textures/entity/chest_boat/" + type.getName() + ".png" : "textures/entity/boat/" + type.getName() + ".png";
 	}
 
 	private static ModelLayerLocation createBoatModelName(${JavaModName}Boat.Type type) {
