@@ -1,6 +1,4 @@
-"minecraft:damage": {
-  "damage": {
+"durability": {
     "min": ${field$min},
     "max": ${field$max}
-  }
 }

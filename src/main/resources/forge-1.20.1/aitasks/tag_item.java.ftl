@@ -1,1 +1,1 @@
-(itemstack -> itemstack.is(ItemTags.create(new ResourceLocation("${field$tag?lower_case}"))))
+(Ingredient.of(ItemTags.create(new ResourceLocation("${field$tag?lower_case}"))))
