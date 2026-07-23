@@ -10,16 +10,16 @@ global_templates:
     name: "@SRCROOT/@BASEPACKAGEPATH/entity/@JavaModNameBoat.java"
   - template: specialentity/chest_boat.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/entity/@JavaModNameChestBoat.java"
-    condition: "${w.getGElementsOfType('specialentity')?filter(e -> e.entityType == 'ChestBoat')?size != 0}"
+    condition: "${w.getGElementsOfType('specialentity')?filter(e -> e.isBoatChestVariant())?size != 0}"
   - template: specialentity/boat_renderer.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/client/renderer/@JavaModNameBoatRenderer.java"
   # Dispense behaviors are controlled by generator.yaml
 
 tags:
   - tag: ITEMS:minecraft:boats
-    condition: "entityType %= Boat"
+    condition: "!isBoatChestVariant()"
   - tag: ITEMS:minecraft:chest_boats
-    condition: "entityType %= ChestBoat"
+    condition: "isBoatChestVariant()"
 
 localizationkeys:
   - key: item.@modid.@registryname

@@ -30,10 +30,13 @@
 
 <#-- @formatter:off -->
 package ${package}.entity;
+<#include "../procedures.java.ftl">
 
 import net.minecraft.network.syncher.EntityDataAccessor;
 
-<#assign boatEntities = specialentities?filter(e -> !e.entityType?contains("Chest"))>
+<#assign boatEntities = specialentities?filter(e -> !e.isBoatChestVariant())>
+<#assign boatsWithTickEvent = specialentities?filter(e -> hasProcedure(e.onTickUpdate))>
+<#assign boatsWithCollidesEvent = specialentities?filter(e -> hasProcedure(e.onPlayerCollidesWith))>
 
 public class ${JavaModName}Boat extends Boat {
 	private static final EntityDataAccessor<Integer> DATA_ID_TYPE = SynchedEntityData.defineId(${JavaModName}Boat.class, EntityDataSerializers.INT);
@@ -51,6 +54,41 @@ public class ${JavaModName}Boat extends Boat {
         this.zo = z;
     }
     </#if>
+
+	<#if boatsWithTickEvent?size gt 0>
+	@Override public void baseTick() {
+		super.baseTick();
+			<#list boatsWithTickEvent as entity>
+			if (getModVariant() == Type.${entity.getModElement().getRegistryNameUpper()}) {
+			<@procedureCode entity.onTickUpdate, {
+				"x": "this.getX()",
+				"y": "this.getY()",
+				"z": "this.getZ()",
+				"entity": "this",
+				"world": "this.level()"
+			}/>
+			}<#sep>else
+			</#list>
+	}
+	</#if>
+
+	<#if boatsWithCollidesEvent?size gt 0>
+	@Override public void playerTouch(Player sourceentity) {
+		super.playerTouch(sourceentity);
+			<#list boatsWithCollidesEvent as entity>
+			if (getModVariant() == Type.${entity.getModElement().getRegistryNameUpper()}) {
+            <@procedureCode entity.onPlayerCollidesWith, {
+                "x": "this.getX()",
+                "y": "this.getY()",
+                "z": "this.getZ()",
+                "entity": "this",
+                "sourceentity": "sourceentity",
+                "world": "this.level()"
+            }/>
+			}<#sep>else
+			</#list>
+	}
+	</#if>
 
 	@Override protected Component getTypeName() {
 		return Component.translatable("entity.minecraft.boat");
@@ -95,7 +133,7 @@ public class ${JavaModName}Boat extends Boat {
 	public static enum Type implements StringRepresentable {
         <@javacompress>
             <#list specialentities as entity>
-                ${entity.getModElement().getRegistryNameUpper()}("${entity.getModElement().getRegistryName()}", ${entity.entityType == "ChestBoat"}, ${entity.entityType?contains("Raft")})<#sep>,
+                ${entity.getModElement().getRegistryNameUpper()}("${entity.getModElement().getRegistryName()}", ${entity.isBoatChestVariant()}, ${entity.isAnyRaft()})<#sep>,
             </#list>;
         </@javacompress>
 

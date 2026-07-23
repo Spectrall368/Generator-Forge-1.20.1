@@ -269,7 +269,7 @@ public class ${name}Block extends ${getPlantClass(data.plantType)}Block <#if int
 		}
 	</#if>
 
-	<#elseif !(data.growapableSpawnType.getUnmappedValue() == "Plains" && (data.plantType == "normal" || data.plantType == "sapling"))><#-- If no placingCondition or canBePlacedOn block list is specified, we emulate plant type placement logic -->
+	<#if !(data.growapableSpawnType.getUnmappedValue() == "Plains" && (data.plantType == "normal" || data.plantType == "sapling"))><#-- If no placingCondition or canBePlacedOn block list is specified, we emulate plant type placement logic -->
 	@Override public PlantType getPlantType(BlockGetter world, BlockPos pos) {
 		return PlantType.${data.growapableSpawnType};
 	}

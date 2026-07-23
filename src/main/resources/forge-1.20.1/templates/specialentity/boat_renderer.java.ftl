@@ -29,8 +29,8 @@
 -->
 
 <#-- @formatter:off -->
-<#assign hasBoat = specialentities?filter(e -> !e.entityType?contains("Chest"))?size != 0>
-<#assign hasChestBoat = specialentities?filter(e -> e.entityType?contains("Chest"))?size != 0>
+<#assign hasBoat = specialentities?filter(e -> !e.isBoatChestVariant())?size != 0>
+<#assign hasChestBoat = specialentities?filter(e -> e.isBoatChestVariant())?size != 0>
 package ${package}.client.renderer;
 
 import com.mojang.datafixers.util.Pair;

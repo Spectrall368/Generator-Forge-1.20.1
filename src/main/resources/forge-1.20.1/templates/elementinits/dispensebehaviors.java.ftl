@@ -41,8 +41,8 @@ package ${package}.init;
 
 <#assign itemextensions = w.getGElementsOfType("itemextension")?filter(e -> e.hasDispenseBehavior)>
 <#assign specialentities = w.getGElementsOfType("specialentity")>
-<#assign hasBoat = specialentities?filter(e -> !e.entityType?contains("Chest"))?size != 0>
-<#assign hasChestBoat = specialentities?filter(e -> e.entityType?contains("Chest"))?size != 0>
+<#assign hasBoat = specialentities?filter(e -> !e.isBoatChestVariant())?size != 0>
+<#assign hasChestBoat = specialentities?filter(e -> e.isBoatChestVariant())?size != 0>
 
 <#assign variantSetterCode>
 <#if hasChestBoat && hasBoat>
@@ -159,8 +159,8 @@ if(boat instanceof ${JavaModName}Boat boatt)
 	    <#if hasBoat>
 	    	<#assign executeMethod = executeMethod.replace("new Boat", "new " + JavaModName + "Boat")>
 	    </#if>
-	    <#assign executeMethod = executeMethod.replace("boat.setVariant(this.type);", variantSetterCode)>
-	    @Override ${executeMethod}
+
+	    @Override ${executeMethod.replace("boat.setVariant(this.type);", variantSetterCode)}
 
 	    @Override ${mcc.getMethod("net.minecraft.core.dispenser.BoatDispenseItemBehavior", "playSound", "BlockSource")}
 	}

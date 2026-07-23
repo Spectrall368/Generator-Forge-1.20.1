@@ -296,7 +296,7 @@ public class ${name}Item extends FishingRodItem {
             private static final UUID UUID_${modifier?index} = UUID.fromString("${w.getUUID(registryname + "_" + modifier?index)}");
 
             <#if modifier.equipmentSlot.getUnmappedValue() == "default">
-                <#assign eq = defaultEquipSlot>
+                <#assign eq = "EquipmentSlot.MAINHAND">
                 <#assign defaultModifiers += [modifier]>
             <#else>
                 <#assign eq = modifier.equipmentSlot.getMappedValue(2)>
