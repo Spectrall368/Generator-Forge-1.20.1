@@ -1,0 +1,1 @@
+event.setExpToDrop(${statement$conditionalEffect?replace("getDroppedExperience", "getExpToDrop")});

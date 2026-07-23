@@ -3,7 +3,7 @@ private static int getBlockInventorySlotStackLimit(LevelAccessor world, BlockPos
     BlockEntity entity = world.getBlockEntity(pos);
     if (entity != null && slotId >= 0)
 		entity.getCapability(ForgeCapabilities.ITEM_HANDLER, null)
-		    .ifPresent(capability -> { if(slotId < capability.getSlots()) result.set(capability.getSlotLimit(slotId));});
+		    .ifPresent(capability -> { if(slotId < capability.getSlots()) result.set(capability.getSlotLimit(slotId)); });
 
 	return result.get();
 }
