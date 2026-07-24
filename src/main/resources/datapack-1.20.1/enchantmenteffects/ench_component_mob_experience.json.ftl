@@ -1,1 +1,1 @@
-event.setDroppedExperience(${statement$conditionalEffect});
+${statement$conditionalEffect}

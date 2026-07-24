@@ -99,6 +99,7 @@ base_templates:
     condition_any:
       - "${w.getGElementsOfType('biome')?filter(e -> e.spawnBiome || e.spawnInCaves || e.spawnBiomeNether)?size != 0}"
       - "${w.getGElementsOfType('block')?filter(e -> e.isSign())?size != 0}"
+      - "${w.getGElementsOfType('enchantment')?filter(e -> e.effectsxml?contains('ench_component_prevent_armor_change') || e.effectsxml?contains('ench_component_prevent_equipment_drop'))?size != 0}"
     name: "@RESROOT/@modid.mixins.json"
   - template: elementinits/dispensebehaviors.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameDispenseBehaviors.java"

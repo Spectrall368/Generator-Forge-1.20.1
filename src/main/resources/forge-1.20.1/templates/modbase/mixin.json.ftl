@@ -5,6 +5,9 @@
 <#if w.getGElementsOfType("block")?filter(e -> e.isSign())?size != 0>
 	<#assign mixins = mixins + ['BlockEntityTypeAccessor']>
 </#if>
+<#if w.getGElementsOfType('enchantment')?filter(e -> e.effectsxml?contains('ench_component_prevent_armor_change') || e.effectsxml?contains('ench_component_prevent_equipment_drop'))?size != 0>
+	<#assign mixins = mixins + ['EnchantmentHelperMixin']>
+</#if>
 {
   "required": true,
   "package": "${package}.mixin",

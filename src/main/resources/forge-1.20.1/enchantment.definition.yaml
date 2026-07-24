@@ -1,10 +1,13 @@
 templates:
-  - template: enchantment.java.ftl
+  - template: enchantment/enchantment.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/enchantment/@NAMEEnchantment.java"
 
 global_templates:
   - template: elementinits/enchantments.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameEnchantments.java"
+  - template: enchantment/ench_component_mixin.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/mixin/EnchantmentHelperMixin.java"
+    condition: "${w.getGElementsOfType('enchantment')?filter(e -> e.effectsxml?contains('ench_component_prevent_armor_change') || e.effectsxml?contains('ench_component_prevent_equipment_drop'))?size != 0}"
 
 localizationkeys:
   - key: enchantment.@modid.@registryname

@@ -1,1 +1,1 @@
-prevent_equipment_drop
+<#-- Dummy block -->

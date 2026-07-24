@@ -1,1 +1,1 @@
-prevent_armor_change
+<#-- Dummy block -->
