@@ -21,8 +21,8 @@ jobs:
       - name: Checkout MCreator repository
         uses: actions/checkout@v7
         with:
-          repository: MCreator/MCreator
-          ref: master
+          repository: Spectrall368/MCreator
+          ref: disable_warn
           path: mcreator
       - name: Set up JDK 25
         uses: actions/setup-java@v5

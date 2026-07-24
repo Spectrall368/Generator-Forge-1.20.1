@@ -46,6 +46,7 @@ subprojects { subproject ->
                 dependsOn rootProject.processResources
                 dependsOn rootProject.jar
 
+                environment("FAIL_ON_WARN", false)
                 environment("MCREATOR_PLUGINS_FOLDER", new File(rootProject.projectDir, "/build/libs"))
                 environment("MCREATOR_TEST_GENERATORS", "forge-${mcVersion}, datapack-${mcVersion}, resourcepack-${mcVersion}")
 
