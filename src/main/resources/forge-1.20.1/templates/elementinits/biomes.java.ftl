@@ -50,9 +50,12 @@ import com.mojang.datafixers.util.Pair;
 
 	private static boolean BOOTSTRAP_VALIDATION_PASSED = false;
 
-	@SubscribeEvent public static void onCommonSetup(FMLCommonSetupEvent event) {
-		<#-- At FMLCommonSetupEvent, bootstrap validation is already done -->
-		BOOTSTRAP_VALIDATION_PASSED = true;
+	@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
+	public static class BiomesValidation {
+        @SubscribeEvent public static void onCommonSetup(FMLCommonSetupEvent event) {
+            <#-- At FMLCommonSetupEvent, bootstrap validation is already done -->
+            BOOTSTRAP_VALIDATION_PASSED = true;
+        }
 	}
 
 	@SubscribeEvent public static void onServerAboutToStart(ServerAboutToStartEvent event) {

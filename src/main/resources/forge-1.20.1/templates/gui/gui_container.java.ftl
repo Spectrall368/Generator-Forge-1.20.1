@@ -85,7 +85,7 @@ public class ${name}Menu extends AbstractContainerMenu implements ${JavaModName}
 
 		<#if data.type == 1>
 			if (pos != null) {
-				if (extraData.readableBytes() == 1) { // bound to item
+				if (extraData.readableBytes() == 1) { <#-- bound to item, GUI opened by item ME internal logic -->
 					byte hand = extraData.readByte();
 					ItemStack itemstack = hand == 0 ? this.entity.getMainHandItem() : this.entity.getOffhandItem();
 					this.boundItemMatcher = () -> itemstack == (hand == 0 ? this.entity.getMainHandItem() : this.entity.getOffhandItem());
@@ -93,15 +93,15 @@ public class ${name}Menu extends AbstractContainerMenu implements ${JavaModName}
 						this.internal = capability;
 						this.bound = true;
 					});
-				} else if (extraData.readableBytes() > 1) { // bound to entity
-					extraData.readByte(); // drop padding
+				} else if (extraData.readableBytes() > 1) { <#-- bound to entity, GUI opened by entity ME internal logic -->
+					extraData.readByte(); <#-- drop padding byte -->
 					boundEntity = world.getEntity(extraData.readVarInt());
 					if(boundEntity != null)
 						boundEntity.getCapability(ForgeCapabilities.ITEM_HANDLER, null).ifPresent(capability -> {
 							this.internal = capability;
 							this.bound = true;
 						});
-				} else { // might be bound to block
+				} else { <#-- if we find container block at pos, we bind to it in all cases -->
 					boundBlockEntity = this.world.getBlockEntity(pos);
 					if (boundBlockEntity != null)
 						boundBlockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER, null).ifPresent(capability -> {

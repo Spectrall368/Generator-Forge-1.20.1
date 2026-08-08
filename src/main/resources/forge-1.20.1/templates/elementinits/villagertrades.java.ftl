@@ -39,7 +39,7 @@ package ${package}.init;
 
 import net.minecraft.world.entity.npc.VillagerTrades;
 
-@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.FORGE) public class ${JavaModName}Trades {
+@Mod.EventBusSubscriber public class ${JavaModName}Trades {
 
 	<#if w.getGElementsOfType("villagertrade")?filter(e -> e.isWanderingTrader())?size != 0>
 	@SubscribeEvent public static void registerWanderingTrades(WandererTradesEvent event) {
