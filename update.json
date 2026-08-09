@@ -1,8 +1,8 @@
 {
   "generator-1.20.1": {
-    "latest": "1.6",
+    "latest": "1.7",
 	"changes": [
-      "MCreator 2026.2 update!"
+      "Bug fixes!"
 	]
   }
 }
