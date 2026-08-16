@@ -32,6 +32,10 @@
 <#include "mcitems.ftl">
 <#include "procedures.java.ftl">
 <#include "triggers.java.ftl">
+<#assign helmetCustomModel = data.helmetModelName != "Default" && data.getHelmetModel()?? && data.helmetModelPart?has_content>
+<#assign bodyCustomModel = data.bodyModelName != "Default" && data.getBodyModel()?? && data.bodyModelPart?has_content && data.armsModelPartL?has_content && data.armsModelPartR?has_content>
+<#assign leggingsCustomModel = data.leggingsModelName != "Default" && data.getLeggingsModel()?? && (data.leggingsModelPartL?has_content || data.leggingsModelPartR?has_content)>
+<#assign bootsCustomModel = data.bootsModelName != "Default" && data.getBootsModel()?? && data.bootsModelPartL?has_content && data.bootsModelPartR?has_content>
 package ${package}.item;
 
 import java.util.function.Consumer;
@@ -89,7 +93,7 @@ public abstract class ${name}Item extends ArmorItem {
 
 		<@itemAttributeModifiers data.attributeModifiers?filter(e -> e.armorPieces[0]) "helmet" "ArmorItem.Type.HELMET" "EquipmentSlot.HEAD" data.damageValueHelmet/>
 
-		<#if data.helmetModelName != "Default" && data.getHelmetModel()??>
+		<#if helmetCustomModel>
 		@Override public void initializeClient(Consumer<IClientItemExtensions> consumer) {
 			consumer.accept(new IClientItemExtensions() {
                 private HumanoidModel armorModel = null;
@@ -153,7 +157,7 @@ public abstract class ${name}Item extends ArmorItem {
 
 		<@itemAttributeModifiers data.attributeModifiers?filter(e -> e.armorPieces[1]) "chestplate" "ArmorItem.Type.CHESTPLATE" "EquipmentSlot.CHEST" data.damageValueBody/>
 
-		<#if data.bodyModelName != "Default" && data.getBodyModel()??>
+		<#if bodyCustomModel>
 		@Override public void initializeClient(Consumer<IClientItemExtensions> consumer) {
 			consumer.accept(new IClientItemExtensions() {
                 private HumanoidModel armorModel = null;
@@ -218,7 +222,7 @@ public abstract class ${name}Item extends ArmorItem {
 
 		<@itemAttributeModifiers data.attributeModifiers?filter(e -> e.armorPieces[2]) "leggings" "ArmorItem.Type.LEGGINGS" "EquipmentSlot.LEGS" data.damageValueLeggings/>
 
-		<#if data.leggingsModelName != "Default" && data.getLeggingsModel()??>
+		<#if leggingsCustomModel>
 		@Override public void initializeClient(Consumer<IClientItemExtensions> consumer) {
 			consumer.accept(new IClientItemExtensions() {
                 private HumanoidModel armorModel = null;
@@ -226,8 +230,8 @@ public abstract class ${name}Item extends ArmorItem {
                     if (armorModel == null) {
                         ${data.leggingsModelName} model = new ${data.leggingsModelName}(Minecraft.getInstance().getEntityModels().bakeLayer(${data.leggingsModelName}.LAYER_LOCATION));
                         armorModel = new HumanoidModel(new ModelPart(Collections.emptyList(), Map.of(
-                            "left_leg", model.${data.leggingsModelPartL},
-                            "right_leg", model.${data.leggingsModelPartR},
+                            "left_leg", <#if data.leggingsModelPartL?has_content>model.${data.leggingsModelPartL}<#else>new ModelPart(Collections.emptyList(), Collections.emptyMap())</#if>,
+                            "right_leg", <#if data.leggingsModelPartR?has_content>model.${data.leggingsModelPartR}<#else>new ModelPart(Collections.emptyList(), Collections.emptyMap())</#if>,
                             "head", new ModelPart(Collections.emptyList(), Collections.emptyMap()),
                             "hat", new ModelPart(Collections.emptyList(), Collections.emptyMap()),
                             "body", new ModelPart(Collections.emptyList(), Collections.emptyMap()),
@@ -283,7 +287,7 @@ public abstract class ${name}Item extends ArmorItem {
 
 		<@itemAttributeModifiers data.attributeModifiers?filter(e -> e.armorPieces[3]) "boots" "ArmorItem.Type.BOOTS" "EquipmentSlot.FEET" data.damageValueBoots/>
 
-		<#if data.bootsModelName != "Default" && data.getBootsModel()??>
+		<#if bootsCustomModel>
 		@Override public void initializeClient(Consumer<IClientItemExtensions> consumer) {
 			consumer.accept(new IClientItemExtensions() {
                 private HumanoidModel armorModel = null;
