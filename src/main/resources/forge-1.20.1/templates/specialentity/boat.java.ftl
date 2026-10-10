@@ -35,8 +35,8 @@ package ${package}.entity;
 import net.minecraft.network.syncher.EntityDataAccessor;
 
 <#assign boatEntities = specialentities?filter(e -> !e.isBoatChestVariant())>
-<#assign boatsWithTickEvent = specialentities?filter(e -> hasProcedure(e.onTickUpdate))>
-<#assign boatsWithCollidesEvent = specialentities?filter(e -> hasProcedure(e.onPlayerCollidesWith))>
+<#assign boatsWithTickEvent = boatEntities?filter(e -> hasProcedure(e.onTickUpdate))>
+<#assign boatsWithCollidesEvent = boatEntities?filter(e -> hasProcedure(e.onPlayerCollidesWith))>
 
 public class ${JavaModName}Boat extends Boat {
 	private static final EntityDataAccessor<Integer> DATA_ID_TYPE = SynchedEntityData.defineId(${JavaModName}Boat.class, EntityDataSerializers.INT);
@@ -138,7 +138,6 @@ public class ${JavaModName}Boat extends Boat {
         </@javacompress>
 
         private final String name;
-        private final Block planks = Blocks.OAK_PLANKS;
         private final boolean hasChest;
         private final boolean isRaft;
         public static final StringRepresentable.EnumCodec<${JavaModName}Boat.Type> CODEC = StringRepresentable.fromEnum(${JavaModName}Boat.Type::values);
@@ -159,7 +158,7 @@ public class ${JavaModName}Boat extends Boat {
         }
 
         public Block getPlanks() {
-            return planks;
+            return Blocks.OAK_PLANKS;
         }
 
         public boolean hasChest() {

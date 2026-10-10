@@ -35,8 +35,8 @@ package ${package}.entity;
 import net.minecraft.network.syncher.EntityDataAccessor;
 
 <#assign chestBoatEntities = specialentities?filter(e -> e.isBoatChestVariant())>
-<#assign boatsWithTickEvent = specialentities?filter(e -> hasProcedure(e.onTickUpdate))>
-<#assign boatsWithCollidesEvent = specialentities?filter(e -> hasProcedure(e.onPlayerCollidesWith))>
+<#assign boatsWithTickEvent = chestBoatEntities?filter(e -> hasProcedure(e.onTickUpdate))>
+<#assign boatsWithCollidesEvent = chestBoatEntities?filter(e -> hasProcedure(e.onPlayerCollidesWith))>
 public class ${JavaModName}ChestBoat extends ChestBoat {
 	private static final EntityDataAccessor<Integer> DATA_ID_TYPE = SynchedEntityData.defineId(${JavaModName}ChestBoat.class, EntityDataSerializers.INT);
 
